@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Base de datos local e importaciones
+data/flutter_memory.db
+data/backups/
+data/sync/_descargado.json
+
+# Entorno virtual y dependencias
+.venv/
+venv/
+ENV/
+
+# Sistemas operativos
+.DS_Store
+Thumbs.db
+desktop.ini
