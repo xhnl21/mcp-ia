@@ -1,0 +1,56 @@
+site_name: "mcp-ia (Memoria Local & Servidor MCP)"
+site_description: "Documentación oficial del sistema de memoria persistente local para desarrollo Flutter/Dart con servidor MCP."
+site_url: ""
+
+theme:
+  name: material
+  language: es
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: "Cambiar a modo oscuro"
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: "Cambiar a modo claro"
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - content.code.copy
+    - content.code.annotate
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - attr_list
+  - md_in_html
+  - admonition
+  - pymdownx.details
+
+nav:
+  - Home: index.md
+  - Arquitectura y Funcionamiento: mcp-ia.md
+  - Cómo Agregar Conocimiento: agregar-conocimiento.md
+  - Estructura DDD y Aprendizaje: ejemplo-ddd.md
+  - Guías Técnicas:
+      - Guía de Uso CLI: guia-uso.md
+      - Integración IDE: integracion.md
+      - Categorías y Tags: tags-categorias.md
+      - Esquema de BD: schema.md
