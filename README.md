@@ -43,7 +43,7 @@ mcp-ia/
 
 Requisito: Python 3.9+ (instalado y en el PATH del sistema).
 
-### 1. Inicialización de la Base de Datos y dependencias
+### 1. Inicialización de la Base de Datos, Dependencias y Registro MCP
 Abre una terminal en la carpeta del repositorio y ejecuta el script de configuración:
 
 **En Windows:**
@@ -58,14 +58,20 @@ python3 scripts/setup.py
 
 *Nota: El argumento `--path` en Windows añade la carpeta `bin/` al PATH de tu usuario para que puedas usar el comando corto `fm` desde cualquier consola.*
 
+**¿Qué hace este script automáticamente?**
+1. Instala las dependencias necesarias (`rapidfuzz`, `requests`).
+2. Inicializa la base de datos SQLite y carga los datos de prueba iniciales (seed).
+3. **Registra automáticamente el servidor MCP en el IDE** creando el archivo `mcp_config.json` en dos lugares clave para una integración transparente:
+   - **Localmente** en tu espacio de trabajo: `.agents/mcp_config.json`
+   - **Globalmente** para Antigravity: `~/.gemini/config/mcp_config.json` (en Windows: `C:\Users\tu_usuario\.gemini\config\mcp_config.json`).
+
 ---
 
-## 🔌 Configuración del Servidor MCP (Integración con la IA)
+## 🔌 Configuración del Servidor MCP (Manual)
 
-El servidor [`mcp_server.py`](file:///c:/Users/user/Desktop/autoaprendizaje/mcp-ia/scripts/mcp_server.py) se comunica a través de la entrada y salida estándar (`stdio`) en formato JSON-RPC UTF-8, haciéndolo compatible de forma nativa con los clientes de IA en **Windows, Mac y Linux**.
+Si necesitas registrarlo manualmente en algún otro cliente de IA (como Claude Desktop o Cursor), el servidor [`mcp_server.py`](file:///c:/Users/user/Desktop/autoaprendizaje/mcp-ia/scripts/mcp_server.py) se comunica a través de la entrada y salida estándar (`stdio`) en formato JSON-RPC UTF-8.
 
-### Registro en el IDE (Antigravity / VS Code / Cursor)
-Edita el archivo de configuración de MCP (ej: `.agents/mcp_config.json` en tu espacio de trabajo o el archivo global de configuración) y añade la entrada del servidor apuntando a la ruta absoluta:
+Añade la siguiente sección a la configuración de tu cliente MCP:
 
 ```json
 {
@@ -78,7 +84,7 @@ Edita el archivo de configuración de MCP (ej: `.agents/mcp_config.json` en tu e
   }
 }
 ```
-*(En Mac/Linux asegúrate de cambiar `python` por `python3` y actualizar la ruta absoluta de los argumentos al estilo `/Users/tu_usuario/...`).*
+*(En Mac/Linux asegúrate de usar `"python3"` y la ruta de archivo absoluta equivalente).*
 
 Al cargarse, la IA tendrá acceso a las siguientes herramientas automáticas:
 1. `search_solutions`: Busca respuestas locales usando el limpiador de logs.

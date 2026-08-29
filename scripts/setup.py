@@ -72,6 +72,48 @@ def setup_path(do_it: bool) -> None:
         print(f"Añádelo manualmente a tu PATH: {BIN}")
 
 
+def setup_mcp_config() -> None:
+    """Registra de forma automática el servidor MCP local y globalmente."""
+    import json
+    
+    server_path = (BASE / "scripts" / "mcp_server.py").resolve()
+    # Usar barras normales para evitar problemas de escape en JSON
+    server_path_str = str(server_path).replace("\\", "/")
+    
+    # Determinar el ejecutable de python adecuado según plataforma
+    python_cmd = "python" if sys.platform == "win32" else "python3"
+    
+    config_data = {
+        "mcpServers": {
+            "mcp-ia": {
+                "command": python_cmd,
+                "args": [server_path_str],
+                "env": {}
+            }
+        }
+    }
+    
+    # 1. Configuración local del espacio de trabajo (.agents/mcp_config.json)
+    workspace_agents = BASE.parent / ".agents"
+    try:
+        workspace_agents.mkdir(parents=True, exist_ok=True)
+        with open(workspace_agents / "mcp_config.json", "w", encoding="utf-8") as f:
+            json.dump(config_data, f, ensure_ascii=False, indent=2)
+        print(f"Configuración MCP local registrada en: {workspace_agents / 'mcp_config.json'}")
+    except Exception as e:
+        print(f"No se pudo registrar la configuración MCP local: {e}")
+
+    # 2. Configuración global (~/.gemini/config/mcp_config.json)
+    global_config_dir = Path(os.path.expanduser("~")) / ".gemini" / "config"
+    try:
+        global_config_dir.mkdir(parents=True, exist_ok=True)
+        with open(global_config_dir / "mcp_config.json", "w", encoding="utf-8") as f:
+            json.dump(config_data, f, ensure_ascii=False, indent=2)
+        print(f"Configuración MCP global registrada en: {global_config_dir / 'mcp_config.json'}")
+    except Exception as e:
+        print(f"No se pudo registrar la configuración MCP global: {e}")
+
+
 def main() -> None:
     import argparse
     p = argparse.ArgumentParser(prog="fm-setup")
@@ -86,6 +128,8 @@ def main() -> None:
         setup_path(True)
     else:
         setup_path(False)
+        
+    setup_mcp_config()
     print("\nSetup completado. Prueba:  fm semilla  y  fm busca 'error'")
 
 
