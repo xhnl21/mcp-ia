@@ -22,3 +22,5 @@ desktop.ini
 # MkDocs static site
 site/
 
+data/flutter_memory.db-shm
+data/flutter_memory.db-wal
