@@ -1,0 +1,4 @@
+# Hooks del kit: siempre con saltos LF (Git Bash en Windows)
+kit-agentes/hooks/** text eol=lf
+*.sh text eol=lf
+*.bat text eol=crlf

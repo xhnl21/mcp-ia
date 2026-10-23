@@ -41,6 +41,7 @@ COMANDOS_AGY = [
     "flutter test", "flutter analyze", "git status", "git diff", "git log",
     "grep", "ls", "cat", "find", "wc",
 ]
+HOOKS_COMUNES = ["pre-commit", "pre-push", "commit-msg"]
 GITIGNORE = [".agents/prompts/lotes/", ".agents/prompts/kit.json", ".mcp.json",
              ".claude/settings.local.json"]
 
@@ -107,7 +108,7 @@ def instalar(a) -> None:
         lecciones.write_text(texto.replace("{PREFIJO}", prefijo).replace("{PROYECTO}", nombre),
                              encoding="utf-8")
     shutil.copy2(AQUI / "kit_agentes.py", destino / "kit_agentes.py")
-    for f in ("delegar.sh", "delegar.bat", "permisos_agy.sh", "permisos_agy.bat"):
+    for f in ("delegar.sh", "delegar.bat", "permisos_agy.sh", "permisos_agy.bat", "hooks.sh", "hooks.bat"):
         shutil.copy2(AQUI / "proyecto" / f, destino / f)
         if f.endswith(".sh"):
             os.chmod(destino / f, 0o755)
@@ -143,7 +144,85 @@ def instalar(a) -> None:
 
     print(f"✓ Kit instalado en {destino}")
     print(f"  Prefijo de lecciones: {prefijo}-001…  Carpetas para el agente: {a.carpetas}")
-    print("  Siguiente: `mcp` (registrar la base) y `permisos` (Antigravity).")
+    print("  Siguiente: `hooks` (pre-commit común), `mcp` (registrar la base) y `permisos` (Antigravity).")
+
+
+# ------------------------------------------------------------------------- hooks
+def fuente_hooks(proyecto: Path, override: str | None = None) -> Path:
+    """Hooks comunes: los del kit si se ejecuta desde mcp-ia; si no, los de la base."""
+    if (AQUI / "hooks").is_dir() and not override:
+        return AQUI / "hooks"
+    return mcp_ia_dir(proyecto, override) / "kit-agentes" / "hooks"
+
+
+def _sha(p: Path) -> str:
+    return hashlib.sha256(p.read_bytes()).hexdigest() if p.is_file() else ""
+
+
+def hooks(a) -> None:
+    """Instala o actualiza los hooks comunes; con --compartir devuelve las mejoras a mcp-ia."""
+    proyecto = raiz_git(Path(a.proyecto or ".").expanduser().resolve())
+    fuente = fuente_hooks(proyecto, a.mcp_ia)
+    if not fuente.is_dir():
+        sys.exit(f"❌ No encuentro los hooks comunes en {fuente}. Ejecuta `mcp` o pasa --mcp-ia.")
+    base = fuente.parent.parent
+    if a.actualizar and (base / ".git").exists():
+        subprocess.run(["git", "-C", str(base), "pull", "--ff-only", "-q"], check=False)
+    destino = proyecto / ".githooks"
+    registro_p = destino / "kit_hooks.json"
+    registro = leer_json(registro_p, {})
+    pendientes = []
+    for f in HOOKS_COMUNES:
+        src, dst = fuente / f, destino / f
+        h_src, h_dst, h_reg = _sha(src), _sha(dst), registro.get(f, "")
+        if a.compartir:
+            if not h_dst or h_dst == h_src:
+                print(f"  = {f}: sin cambios que compartir.")
+            elif h_reg and h_src != h_reg and not a.forzar:
+                pendientes.append(f)
+                print(f"  ✗ {f}: el kit también cambió desde que lo instalaste. Integra a mano "
+                      f"(diff {dst} {src}) o usa --forzar.")
+            else:
+                print(f"  ↑ {f}: se comparte con el kit." + (" (--ver: no se copia)" if a.ver else ""))
+                if not a.ver:
+                    shutil.copy2(dst, src)
+                    registro[f] = h_dst
+            continue
+        if h_dst == h_src:
+            print(f"  = {f}: al día.")
+            registro[f] = h_src
+        elif not h_dst or h_dst == h_reg or a.forzar:
+            print(f"  ↓ {f}: " + ("se instala." if not h_dst else "se actualiza desde el kit.")
+                  + (" (--ver: no se copia)" if a.ver else ""))
+            if not a.ver:
+                destino.mkdir(exist_ok=True)
+                if h_dst and h_dst != h_reg:
+                    shutil.copy2(dst, f"{dst}.bak-{dt.datetime.now():%Y%m%d-%H%M%S}")
+                shutil.copy2(src, dst)
+                os.chmod(dst, 0o755)
+                registro[f] = h_src
+        else:
+            pendientes.append(f)
+            print(f"  ✗ {f}: el proyecto tiene cambios propios. Compártelos con --compartir "
+                  "o reemplázalos con --forzar (guarda copia .bak).")
+    if a.ver:
+        return
+    escribir_json(registro_p, registro)
+    if a.compartir:
+        print(f"\nSiguiente: revisa `git -C {base} diff`, haz commit y push de mcp-ia; los demás "
+              "proyectos reciben la mejora con `hooks --actualizar`.")
+        return
+    subprocess.run(["git", "-C", str(proyecto), "config", "core.hooksPath", ".githooks"], check=False)
+    ga = proyecto / ".gitattributes"
+    actual = ga.read_text(encoding="utf-8") if ga.exists() else ""
+    if ".githooks/** text eol=lf" not in actual:
+        with ga.open("a", encoding="utf-8") as fh:
+            fh.write(("\n" if actual and not actual.endswith("\n") else "")
+                     + "# Hooks del kit: siempre con saltos LF (Git Bash en Windows)\n.githooks/** text eol=lf\n")
+    print(f"✓ Hooks en {destino} (core.hooksPath = .githooks).")
+    print("  Reglas propias del proyecto: .githooks/pre-commit.local, pre-push.local y obligatorio.sh.")
+    if pendientes:
+        print(f"  Pendientes: {', '.join(pendientes)}.")
 
 
 # ---------------------------------------------------------------------- permisos
@@ -360,6 +439,13 @@ def verificar(a) -> None:
     for x in carpetas:
         check(f"write_file({proyecto.as_posix()}/{x})" in agy.get("permissions", {}).get("allow", []),
               f"Antigravity puede escribir en {x}")
+    fuente = fuente_hooks(proyecto)
+    hp = subprocess.run(["git", "-C", str(proyecto), "config", "core.hooksPath"],
+                        capture_output=True, text=True).stdout.strip()
+    check(hp == ".githooks", "git usa .githooks (core.hooksPath)")
+    for f in HOOKS_COMUNES:
+        check(_sha(proyecto / ".githooks" / f) == _sha(fuente / f) != "",
+              f".githooks/{f} igual al del kit (si no: `hooks --actualizar` o `hooks --compartir`)")
     for exe in ("git", "agy", "opencode"):
         check(shutil.which(exe) is not None, f"`{exe}` disponible en el PATH" + ("" if exe != "opencode" else " (opcional)"))
     print("✓ Todo listo." if ok else "Hay puntos pendientes (✗).")
@@ -385,10 +471,18 @@ def main() -> None:
     de.add_argument("tarea")
     de.add_argument("nombre", nargs="?", default="lote")
     de.add_argument("--solo-prompt", action="store_true", help="Arma el prompt sin lanzar el agente.")
+    h = sub.add_parser("hooks", help="Instala/actualiza el pre-commit común o comparte sus mejoras.")
+    h.add_argument("proyecto", nargs="?")
+    h.add_argument("--compartir", action="store_true", help="Copia al kit las mejoras del proyecto.")
+    h.add_argument("--actualizar", action="store_true", help="Hace git pull de mcp-ia antes de instalar.")
+    h.add_argument("--forzar", action="store_true", help="Reemplaza aunque haya cambios propios (con copia .bak).")
+    h.add_argument("--ver", action="store_true", help="Solo muestra lo que haría.")
+    h.add_argument("--mcp-ia", default=None)
     v = sub.add_parser("verificar")
     v.add_argument("proyecto", nargs="?")
     a = p.parse_args()
-    {"instalar": instalar, "permisos": permisos, "mcp": mcp, "delegar": delegar, "verificar": verificar}[a.cmd](a)
+    {"instalar": instalar, "permisos": permisos, "mcp": mcp, "delegar": delegar, "hooks": hooks,
+     "verificar": verificar}[a.cmd](a)
 
 
 if __name__ == "__main__":
