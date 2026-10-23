@@ -149,7 +149,10 @@ def report(top: int = 15) -> str:
 def export_json(path: Optional[str] = None) -> str:
     """Exporta todas las soluciones a JSON (para backup/import)."""
     conn = init_if_needed()
-    rows = conn.execute("SELECT * FROM soluciones").fetchall()
+    rows = conn.execute(
+        "SELECT s.*, c.nombre AS categoria FROM soluciones s "
+        "LEFT JOIN categorias c ON c.id = s.categorias_id"
+    ).fetchall()
     data = [dict(r) for r in rows]
     for d in data:
         tags = conn.execute(
@@ -176,6 +179,18 @@ def import_json(path: str) -> int:
         dup = conn.execute("SELECT id FROM soluciones WHERE hash = ?", (h,)).fetchone()
         if dup:
             continue
+        # Las lecciones de agentes (url leccion://ID) se identifican por su ID:
+        # si ya existe, no se duplica aunque su texto haya cambiado.
+        url = d.get("url") or ""
+        if url.startswith("leccion://") and conn.execute(
+            "SELECT id FROM soluciones WHERE url = ?", (url,)
+        ).fetchone():
+            continue
+        if d.get("categoria") and not conn.execute(
+            "SELECT id FROM categorias WHERE nombre = ?", (d["categoria"],)
+        ).fetchone():
+            conn.execute("INSERT INTO categorias(nombre) VALUES (?)", (d["categoria"],))
+            conn.commit()
         conn.close()
         add_solution(
             titulo=d["titulo"], problema=d["problema"], solucion=d["solucion"],
