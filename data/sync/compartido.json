@@ -16,6 +16,7 @@
     "creada_en": "2026-08-31 16:04:15",
     "actualizada_en": "2026-08-31 16:04:15",
     "hash": "c42b27e06dad18c3c6920dda",
+    "categoria": "plataforma",
     "tags": [
       "plugin",
       "channel",
@@ -39,6 +40,7 @@
     "creada_en": "2026-08-31 16:04:15",
     "actualizada_en": "2026-08-31 16:04:15",
     "hash": "ec310f9d72e6f3f85098e5f9",
+    "categoria": "compilacion",
     "tags": [
       "null-safety",
       "nullable",
@@ -62,6 +64,7 @@
     "creada_en": "2026-08-31 16:04:15",
     "actualizada_en": "2026-08-31 16:04:15",
     "hash": "7f2dcb6f7809157668d38636",
+    "categoria": "estado",
     "tags": [
       "provider",
       "context",
@@ -85,6 +88,7 @@
     "creada_en": "2026-08-31 16:04:15",
     "actualizada_en": "2026-08-31 16:04:15",
     "hash": "f917ff9542dbc4a02303c45b",
+    "categoria": "build_errors",
     "tags": [
       "gradle",
       "kotlin",
@@ -108,6 +112,7 @@
     "creada_en": "2026-08-31 16:04:15",
     "actualizada_en": "2026-08-31 16:04:15",
     "hash": "8ef69cb0539e2d5e73beb2b2",
+    "categoria": "runtime",
     "tags": [
       "controller",
       "late",
@@ -131,6 +136,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "c423d4681f22c13bd3295bf3",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "artifact_maintenance"
@@ -153,6 +159,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "b0aadeab923eb9f895a7e1a1",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "rule_architecture_backend"
@@ -175,6 +182,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "916fec830ecb43e867818eca",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "token_optimization"
@@ -197,6 +205,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "8df9d47af69229d81d4cb17c",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "continuous_learning_pillars"
@@ -219,6 +228,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "c8c946ed22d07b8f554f5d69",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "security_standards"
@@ -241,6 +251,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "d8cb7e7d00e8a4171bc7c35c",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "formz_refactor_gotchas"
@@ -263,6 +274,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "11f5099e4030d8c93651b062",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "dartdoc_documentation"
@@ -285,6 +297,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "1c5217a20050bd64e69fa56b",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "autonomous_bug_fixer"
@@ -307,6 +320,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "ead72898a5b44602be3848fb",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "bloc_selector_performance"
@@ -329,6 +343,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "aff7c31a2ada8238e4982e06",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "v2_quality_security_rules"
@@ -351,6 +366,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "b6bebc8c56b83d38fcbd7a07",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "case_sensitivity_ci"
@@ -373,6 +389,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "977234a88c755b428d6ecefe",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "audit_all_errors"
@@ -395,6 +412,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "3faf13aec28b97c63e1f2833",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "refactor_tools"
@@ -417,6 +435,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "bb528e2bbdbbc432741ab3fa",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "gotcha_formz_input_refactoring"
@@ -439,6 +458,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "2c8bc11ea86b0147174b5329",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "rule_ui_presentation"
@@ -461,6 +481,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "4107ff350e05deb42235aa7b",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "brain_index_maintenance"
@@ -483,6 +504,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "c505c99e9a97de30cba4da0a",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "rule_testing_quality"
@@ -505,6 +527,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "47e2448c235c621deb33c97a",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "logging_standards"
@@ -527,6 +550,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "cf4b7707e9cde8338477613a",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "standards_compliance"
@@ -549,6 +573,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "f2aed2c068f19a944cb33ea3",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "professional_reports"
@@ -571,6 +596,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "6a23321ef425dca72ba4eac8",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "always_check_compliance_first"
@@ -593,6 +619,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "784dedf2cd6969f701782f0e",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "skill"
@@ -615,6 +642,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "7411d8a5f189a64b6c955c9f",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "skill"
@@ -637,6 +665,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "21dd0c1772f0410f9e0ed962",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "skill"
@@ -659,6 +688,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "ecdea9a1ad1db56efc901ca7",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "skill"
@@ -681,6 +711,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "b29912eaafb4b2b6f1f894e0",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "skill"
@@ -703,6 +734,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "01a71997aad6b9b483a63ac2",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "skill"
@@ -725,6 +757,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "a6b8d13dc284acfd7fe95791",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "standards"
@@ -747,6 +780,7 @@
     "creada_en": "2026-08-31 16:05:12",
     "actualizada_en": "2026-08-31 16:05:12",
     "hash": "8718f1abf72665ce012219d5",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "skill"
@@ -769,6 +803,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "724915aea1793f994b2b1001",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -792,6 +827,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "dd262fcc87006106249671a3",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -815,6 +851,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "58394522b08c3ac7fdba86bf",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -838,6 +875,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "412b4bc0746cf05dbd857e91",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -861,6 +899,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "f46e5a91dbbf4c30728e2ea2",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -884,6 +923,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "bab9395d0efb181b484a5dd3",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -907,6 +947,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "1c91bbd4e04a0353606186d1",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -930,6 +971,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "6e3ae5229df684fb33834b41",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -953,6 +995,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "0716fb813369288e62b31c16",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -976,6 +1019,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "e1c499f4f24b8a104a8066e2",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -999,6 +1043,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "ea4dd6fec5206ad8dfd5a6ee",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -1022,6 +1067,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "aeea2687eac81a78d0bc7870",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -1045,6 +1091,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "4563ff7c44523e5f7b96314a",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -1068,6 +1115,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "4109b7480b31b7c30a4c13db",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -1091,6 +1139,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "7718946400fad3666439b128",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -1114,6 +1163,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "8c71096689efc25c977dfb2b",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -1137,6 +1187,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "f6e181d79eddea01bde0080f",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -1160,6 +1211,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "460d9b1af57086a19fcd5e95",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -1183,6 +1235,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "285f99810856800213f8bc5d",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -1206,6 +1259,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "24b328f232f210a29b28e34c",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -1229,6 +1283,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "558c4e7e82c501a6b6a09107",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -1252,6 +1307,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "4e481441c4bed1d1364801d4",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -1275,6 +1331,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "042eb11a52a7897220973207",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -1298,6 +1355,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "eed93c06153ca543c01b97f5",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -1321,6 +1379,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "8d007946e06f0d670ebdd1eb",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -1344,6 +1403,7 @@
     "creada_en": "2026-08-31 16:10:04",
     "actualizada_en": "2026-08-31 16:10:04",
     "hash": "903382fa5a7a77296c29d60a",
+    "categoria": null,
     "tags": [
       "plan",
       "directiva",
@@ -1367,6 +1427,7 @@
     "creada_en": "2026-08-31 16:22:37",
     "actualizada_en": "2026-08-31 16:22:37",
     "hash": "35d82ee959ce359730dd6c5f",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "token-reporting"
@@ -1389,6 +1450,7 @@
     "creada_en": "2026-08-31 16:45:57",
     "actualizada_en": "2026-08-31 16:45:57",
     "hash": "faa058b85c9e703a15456d6c",
+    "categoria": null,
     "tags": [
       "agent-rule",
       "token-reporting"
@@ -1411,6 +1473,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "0564b1a9cd31cf7c758af8b0",
+    "categoria": null,
     "tags": [
       "stackoverflow",
       "flutter"
@@ -1433,6 +1496,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "12df83a24dd4e3b0438f1520",
+    "categoria": null,
     "tags": [
       "stackoverflow",
       "flutter"
@@ -1455,6 +1519,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "e24333bd82cdce796d06efb3",
+    "categoria": null,
     "tags": [
       "stackoverflow",
       "flutter"
@@ -1477,6 +1542,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "2495972eb625192aeb33969d",
+    "categoria": null,
     "tags": [
       "stackoverflow",
       "flutter"
@@ -1499,6 +1565,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "7d4762021d60277a7b62923b",
+    "categoria": null,
     "tags": [
       "stackoverflow",
       "flutter",
@@ -1522,6 +1589,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "e6b5d437ca480883d1ccb407",
+    "categoria": null,
     "tags": [
       "stackoverflow",
       "flutter"
@@ -1544,6 +1612,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "49ec43990bf8160258ecffea",
+    "categoria": null,
     "tags": [
       "stackoverflow",
       "flutter"
@@ -1566,6 +1635,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "afa09a0b58897742714d0793",
+    "categoria": null,
     "tags": [
       "stackoverflow",
       "flutter"
@@ -1588,6 +1658,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "cd725e37885430d5320a51a0",
+    "categoria": null,
     "tags": [
       "stackoverflow",
       "flutter",
@@ -1611,6 +1682,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "9eba5921391c5e8624338171",
+    "categoria": null,
     "tags": [
       "stackoverflow",
       "flutter"
@@ -1633,6 +1705,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "1da57c87057b271aec96ac8a",
+    "categoria": null,
     "tags": [
       "flutter",
       "github"
@@ -1655,6 +1728,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "9b831af6d46758b019a0287f",
+    "categoria": null,
     "tags": [
       "flutter",
       "github"
@@ -1677,6 +1751,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "391071db9693e135528598a2",
+    "categoria": null,
     "tags": [
       "flutter",
       "github"
@@ -1699,6 +1774,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "1e46530e97997866cc931b6e",
+    "categoria": null,
     "tags": [
       "flutter",
       "github"
@@ -1721,6 +1797,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "f3cf5019a313abb1fadabea4",
+    "categoria": null,
     "tags": [
       "flutter",
       "github"
@@ -1743,6 +1820,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "3d4029832f076ee3d76d380d",
+    "categoria": null,
     "tags": [
       "flutter",
       "github"
@@ -1765,6 +1843,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "add5f0109b1828d775a9c4b6",
+    "categoria": null,
     "tags": [
       "flutter",
       "github"
@@ -1787,6 +1866,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "63424c2a243a9b3ab05b9326",
+    "categoria": null,
     "tags": [
       "flutter",
       "github"
@@ -1809,6 +1889,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "fd801f8ddbfe43e3d2e7f1ba",
+    "categoria": null,
     "tags": [
       "flutter",
       "github"
@@ -1831,6 +1912,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "8c27e929174d89384829af8c",
+    "categoria": null,
     "tags": [
       "flutter",
       "github"
@@ -1853,6 +1935,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "887ccfff817204e34be7df37",
+    "categoria": null,
     "tags": [
       "docs",
       "navigation"
@@ -1875,6 +1958,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "2026fb033bc23e2ffe295acc",
+    "categoria": null,
     "tags": [
       "docs",
       "state"
@@ -1897,6 +1981,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "014233399bc8683ed120a7b7",
+    "categoria": null,
     "tags": [
       "docs",
       "testing"
@@ -1919,6 +2004,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "17766e3dce64cecdcd570dc0",
+    "categoria": null,
     "tags": [
       "docs",
       "deployment"
@@ -1941,6 +2027,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "d0e94f3462d118e308d3c673",
+    "categoria": null,
     "tags": [
       "docs",
       "platform"
@@ -1963,6 +2050,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "60af39fc30393eebcfa9fe6f",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -1985,6 +2073,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "dbbbb045630c203d9d1f4333",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2007,6 +2096,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "d3d64c0487c1ccc5d51392d7",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2029,6 +2119,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "2ef9c27b9d868c44d2534fef",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2051,6 +2142,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "13cc864d17aa64fc30c3d781",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2073,6 +2165,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "d56f370ef471bfe67be396bb",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2095,6 +2188,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "6f5a6f11c5972630076d38cf",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2117,6 +2211,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "e7103d339b16724e643a01ac",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2139,6 +2234,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "d7580393989fe5337f820c82",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2161,6 +2257,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "703b7be0f3bd786c48519312",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2183,6 +2280,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "82d87658c68ad644a1ccd288",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2205,6 +2303,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "2782df67e22bf05aadf02c26",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2227,6 +2326,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "c78c4d00a00a388467e37516",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2249,6 +2349,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "ed34c0d362f59bbe7f3c334c",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2271,6 +2372,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "6426885b4c671bf11a7abb00",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2293,6 +2395,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "a6c75933ca606207d67a9fca",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2315,6 +2418,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "206d60d85b52504c2413622c",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2337,6 +2441,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "ae9e27af3b7976e721b76fa3",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2359,6 +2464,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "57ebf25655f5a39e5d72ddf9",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2381,6 +2487,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "0cb2b8722b99e0a4680a90a3",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2403,6 +2510,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "40df417825b8d6ca15a7109e",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2425,6 +2533,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "f088580489d6cd6220a4858a",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2447,6 +2556,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "45d6aa329ff78271c87c8122",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2469,6 +2579,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "033c9e3e7ba5e4db2c5501cf",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2491,6 +2602,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "99e07f94665046488e8c074b",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2513,6 +2625,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "806bc664228c97062fe31d74",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2535,6 +2648,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "02418aa911d22f4ba737c9be",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2557,6 +2671,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "164f2c625885125bc18f78f5",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2579,6 +2694,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "36a23227670c9967ebeb7504",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2601,6 +2717,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "a9e70e0028f052f037c540b2",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2623,6 +2740,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "99fcc0fe0d249f59d18acdc5",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2645,6 +2763,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "095497908629c4e94a367769",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2667,6 +2786,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "22ccab845654ba861d0beddd",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2689,6 +2809,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "4b26e551340f1bdc1d144ddd",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2711,6 +2832,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "9ac9e8c289cfcf311381b0fd",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2733,6 +2855,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "5c356b66d8df523ff619633b",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2755,6 +2878,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "9e3f672dcdc6e940853f6219",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2777,6 +2901,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "af0b5f0cad44ea4ff8f9d26c",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2799,6 +2924,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "3ed582233a945f4c177d70c9",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2821,6 +2947,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "08c3bd6e094fef00e109c5f8",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2843,6 +2970,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "b6eb9cc44b76dfc986bb811a",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2865,6 +2993,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "3753c920504f774358355de4",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2887,6 +3016,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "376bb410b7d16a1f772ef349",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2909,6 +3039,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "67ba4f0d3f298d356efba232",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2931,6 +3062,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "09d45f5cae05b33b86cb93ac",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2953,6 +3085,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "c498427873fe375267a47106",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2975,6 +3108,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "ce8ed990e61a646099d1c64b",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -2997,6 +3131,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "27a97ba33aea9b7298b5eb24",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -3019,6 +3154,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "e0e0072a034aac17b4bb540e",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -3041,6 +3177,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "59a94ca665b0e22c1ed872de",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -3063,6 +3200,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "5d20335e2dd12ed28e8be9f9",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -3085,6 +3223,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "437f9881780cee80b8a28136",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -3107,6 +3246,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "15f114ffab916b53b63fad2d",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -3129,6 +3269,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "09c6afed265ea2ee77243346",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -3151,6 +3292,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "d85ccd3d542d57c7ecfb7c87",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -3173,6 +3315,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "c29931cad7f1b5e79552da26",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -3195,6 +3338,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "4c5938f6069a7c92af796dc9",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -3217,6 +3361,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "3373c7bd94035206189e9f0e",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -3239,6 +3384,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "5298c2b1277468e71f74d34b",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -3261,6 +3407,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "8a9ff012db4c1f3c173c1a78",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -3283,6 +3430,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "35c868a079538edef2c17e2f",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -3305,6 +3453,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "60b2956e9019fcd67f82a5c0",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -3327,6 +3476,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "4fecf0b9ec1ee1af67890df0",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -3349,6 +3499,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "7b54f80e3adbfeafd109a36b",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -3371,6 +3522,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "4c49fe4e5251f61a40b57857",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -3393,6 +3545,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "69c70d450c6d5ee827323a9b",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -3415,6 +3568,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "7a99c05482be42ac1ff2b6ca",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -3437,6 +3591,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "63442233fb99e1bd58f35302",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -3459,6 +3614,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "e890169d0037e8149afe886c",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -3481,6 +3637,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "cd40baa598479a836c8efbe5",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -3503,6 +3660,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "f8f2e176448f0bcb7eb3632f",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -3525,6 +3683,7 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "9c6fa84636a05ed5480d530c",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
@@ -3547,9 +3706,234 @@
     "creada_en": "2026-08-31 20:22:53",
     "actualizada_en": "2026-08-31 20:22:53",
     "hash": "c31879fd36e20b2facd5c825",
+    "categoria": null,
     "tags": [
       "awesome",
       "recurso"
     ]
+  },
+  {
+    "id": 161,
+    "titulo": "Git untracked content en submódulo (mcp-ia)",
+    "problema": "git status muestra modified: .agents/mcp-ia (untracked content) porque se crearon o modificaron archivos dentro del submódulo, pero el repositorio padre no puede agregarlos con git add .",
+    "solucion": "Crear un script o manualmente hacer: cd .agents/mcp-ia, git add ., git commit -m '...'. Luego regresar al padre (cd ../..) y hacer git add .agents/mcp-ia para actualizar la referencia del submódulo.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-08-31 20:29:22",
+    "actualizada_en": "2026-08-31 20:29:22",
+    "hash": "b24f937c5d59f42cf48cc74f",
+    "categoria": null,
+    "tags": [
+      "git",
+      "submodule",
+      "untracked"
+    ]
+  },
+  {
+    "id": 162,
+    "titulo": "L-001. Afirmaciones sin comando que las respalde",
+    "problema": "Afirmaciones sin comando que las respalde",
+    "solucion": "- **Lote:** anterior al 16/10/2026. **Veces:** 1.\n- **Qué pasó:** se escribieron cifras, porcentajes y certificaciones («10/10», «cumple») que ningún comando respaldaba; hubo que retirarlas después (commits `a6ae80c`, `c9a1386`).\n- **Qué hacer:** cada dato nuevo debe salir de un comando que hayas ejecutado y que puedas citar en el informe. Si no lo puedes comprobar, va a «No verificado».\n- **Comprobación:** `git diff | grep -n -E \"[0-9]+ ?%|10/10|cumple|certific\"` no debe mostrar líneas añadidas (`+`) tuyas.",
+    "categorias_id": 3577,
+    "url": "leccion://L-001",
+    "fuente": "leccion:zas",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-10-23 19:28:25",
+    "actualizada_en": "2026-10-23 19:28:25",
+    "hash": "leccion://L-001",
+    "categoria": "agentes",
+    "tags": []
+  },
+  {
+    "id": 163,
+    "titulo": "L-002. Quitar una función y dejar su código muerto",
+    "problema": "Quitar una función y dejar su código muerto",
+    "solucion": "- **Lote:** cambio del detalle de grupos (`lib/presentation/screens/groups/`), revisado el 21/10/2026. **Veces:** 1.\n- **Qué pasó:** se quitó la selección manual de Cajitas y usuarios (las filas pasaron a solo lectura), pero quedaron vivos los parámetros `onToggleDevice` y `onToggleOperator` de la vista, que la pantalla seguía pasando; los métodos `toggleDevice`/`toggleOperator` del cubit, usados solo por sus pruebas, y el parámetro `selected` de `GroupSelectableTile`, siempre en `false`. Incumple la regla 11. `flutter analyze` no lo detecta porque son miembros públicos.\n- **Qué hacer:** al quitar una función, buscar cada parámetro, método y callback que la servía (`grep -rn \"\\bnombre\\b\" lib test`) y eliminar los que se queden sin uso, junto con sus pruebas. Anotar en el informe lo que se eliminó.\n- **Comprobación:** para cada `final` de un archivo tocado, `grep -rn \"\\bnombre\\b\" lib` debe dar más usos que la declaración y el constructor (ver `REVISION.md`, sección 2).",
+    "categorias_id": 3577,
+    "url": "leccion://L-002",
+    "fuente": "leccion:zas",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-10-23 19:28:25",
+    "actualizada_en": "2026-10-23 19:28:25",
+    "hash": "leccion://L-002",
+    "categoria": "agentes",
+    "tags": []
+  },
+  {
+    "id": 164,
+    "titulo": "J-001. `agy -p` sin sesión iniciada",
+    "problema": "`agy -p` sin sesión iniciada",
+    "solucion": "- **Fecha:** 16/10/2026. **Veces:** 1.\n- **Qué pasó:** `agy -p` pidió OAuth de Google, esperó 30 s y salió con código 0 sin hacer nada. El código 0 no indica éxito.\n- **Qué hacer:** lanzar siempre con `sh .agents/prompts/delegar.sh`, que comprueba la sesión antes del lote y sale con código 2 si falta. Después de cada lote, revisar el log, no solo el código de salida.",
+    "categorias_id": 3577,
+    "url": "leccion://J-001",
+    "fuente": "leccion:zas",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-10-23 19:28:25",
+    "actualizada_en": "2026-10-23 19:28:25",
+    "hash": "leccion://J-001",
+    "categoria": "agentes",
+    "tags": []
+  },
+  {
+    "id": 165,
+    "titulo": "J-002. `timeout` no existe en macOS",
+    "problema": "`timeout` no existe en macOS",
+    "solucion": "- **Fecha:** 20/10/2026. **Veces:** 1.\n- **Qué pasó:** un comando con `timeout 60 …` no se ejecutó (`command not found`) y la prueba pareció no dar resultado.\n- **Qué hacer:** no usar `timeout` en scripts ni prompts. Para `agy`, usar `--print-timeout`; para esperas, un bucle con `sleep`.\n- **Comprobación:** `grep -rn \"timeout [0-9]\" .agents/prompts/*.sh` sin resultados.",
+    "categorias_id": 3577,
+    "url": "leccion://J-002",
+    "fuente": "leccion:zas",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-10-23 19:28:25",
+    "actualizada_en": "2026-10-23 19:28:25",
+    "hash": "leccion://J-002",
+    "categoria": "agentes",
+    "tags": []
+  },
+  {
+    "id": 166,
+    "titulo": "J-003. Reducir una lista del API a valores fijos conocidos",
+    "problema": "Reducir una lista del API a valores fijos conocidos",
+    "solucion": "- **Fecha:** 21/10/2026. **Veces:** 1.\n- **Qué pasó:** `GET /payment-options` devuelve `methods` con `code` y `name`. Se convirtió en un conjunto fijo de dos valores y la hoja pintó dos opciones escritas a mano: se perdió `TRANS_Bs` y nunca se mostró el `name` del API.\n- **Qué hacer:** al integrar una API que devuelve una lista, mostrar lo que devuelve, en su orden y con sus textos. Traducir a un flujo de la app solo los códigos que la app sabe procesar; los demás se muestran igual y avisan de que aún no están disponibles.\n- **Comprobación:** una prueba con la respuesta real que incluya un código desconocido y verifique que aparece en pantalla.",
+    "categorias_id": 3577,
+    "url": "leccion://J-003",
+    "fuente": "leccion:zas",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-10-23 19:28:25",
+    "actualizada_en": "2026-10-23 19:28:25",
+    "hash": "leccion://J-003",
+    "categoria": "agentes",
+    "tags": []
+  },
+  {
+    "id": 167,
+    "titulo": "J-004. Reutilizar una bandera de pruebas para una regla real",
+    "problema": "Reutilizar una bandera de pruebas para una regla real",
+    "solucion": "- **Fecha:** 21/10/2026. **Veces:** 1.\n- **Qué pasó:** la suspensión del comercio (evento `tenant_disconnected`) se implementó poniendo `StandaloneMode` en `true` y quitando la marca de pagado, porque ya llevaban a la alerta. Pero `StandaloneMode` y `TEST_NO_PAY` eran para probar el diseño, y una regla de negocio no debe depender de ellas.\n- **Qué hacer:** cada concepto, su propio estado (aquí, `tenant_suspended`). Antes de reutilizar una bandera, preguntar para qué existe. Y cada regla con un solo dueño: solo `tenant_reconnected` levanta la suspensión.\n- **Comprobación:** una prueba que confirme que la regla nueva no cambia la bandera ajena (`setTenantSuspended` no toca `StandaloneMode`).",
+    "categorias_id": 3577,
+    "url": "leccion://J-004",
+    "fuente": "leccion:zas",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-10-23 19:28:25",
+    "actualizada_en": "2026-10-23 19:28:25",
+    "hash": "leccion://J-004",
+    "categoria": "agentes",
+    "tags": []
+  },
+  {
+    "id": 168,
+    "titulo": "J-005. Poner una pantalla en el lugar equivocado por leer mal el pedido",
+    "problema": "Poner una pantalla en el lugar equivocado por leer mal el pedido",
+    "solucion": "- **Fecha:** 22/10/2026. **Veces:** 1.\n- **Qué pasó:** «en el dashboard usa la misma hoja» se implementó en la pantalla `DashboardScreen` (botón «Nueva venta»), pero el usuario se refería a Home (la calculadora, que vive en `dashboard_routes.dart`). Hubo que revertirlo.\n- **Qué hacer:** cuando el pedido nombra un módulo y no una pantalla, confirmar en qué pantalla va (ruta o captura) antes de escribir código. En las tareas, nombrar siempre la pantalla por su archivo y su ruta (`home_screen.dart`, `/home`).",
+    "categorias_id": 3577,
+    "url": "leccion://J-005",
+    "fuente": "leccion:zas",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-10-23 19:28:25",
+    "actualizada_en": "2026-10-23 19:28:25",
+    "hash": "leccion://J-005",
+    "categoria": "agentes",
+    "tags": []
+  },
+  {
+    "id": 169,
+    "titulo": "J-006. `agy -p` sin permisos de escritura sale con código 0",
+    "problema": "`agy -p` sin permisos de escritura sale con código 0",
+    "solucion": "- **Fecha:** 22/10/2026. **Veces:** 2.\n- **Qué pasó:** en modo sin pantalla, agy niega solo cualquier permiso que no esté en `~/.gemini/antigravity-cli/settings.json` (`permissions.allow`) y sale con código 0. La primera vez no tocó nada (`write_file`). La segunda hizo la tarea 1 y se cortó al ejecutar `flutter test … && grep … ; dart run … | wc -l`: su filtro (`agy_tool_safety`, «unquoted_shell_operators») pide revisión para cualquier comando con operadores, aunque cada parte esté en `allow`. El encadenado venía del prompt del jefe maestro. `delegar.sh` dio los dos lotes por buenos.\n- **Qué hacer:** antes de un lote que escribe, agregar en `permissions.allow` las reglas `write_file(<ruta absoluta>)` y `command(<binario y subcomando>)` de esa tarea, nunca `*`. `delegar.sh` ahora sale con código 4 si el log dice «auto-denied». Las comprobaciones de las tareas van un comando por línea, sin operadores ni comentarios (regla 15). Para saber qué se negó: `grep -a \"agy_tool_safety FINISHED: triggered=true\\|soft-denying\" ~/.gemini/antigravity-cli/log/cli-<fecha>.log`.\n- **Comprobación:** `grep -i \"auto-denied\" .agents/prompts/lotes/<lote>/salida.log` sin resultados.",
+    "categorias_id": 3577,
+    "url": "leccion://J-006",
+    "fuente": "leccion:zas",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-10-23 19:28:25",
+    "actualizada_en": "2026-10-23 19:28:25",
+    "hash": "leccion://J-006",
+    "categoria": "agentes",
+    "tags": []
+  },
+  {
+    "id": 170,
+    "titulo": "J-007. Cambiar un tipo sin buscar todas las pruebas que lo usan",
+    "problema": "Cambiar un tipo sin buscar todas las pruebas que lo usan",
+    "solucion": "- **Fecha:** 22/10/2026. **Veces:** 1.\n- **Qué pasó:** el lote de cuentas de pago agregó `ChargeMethod.bankTransfer` para `TRANS_Bs`. Una prueba fuera del alcance (`test/presentation/views/immediate_debit_view_test.dart`) esperaba `method == null` para ese código y falló. El agente hizo bien en no tocarla; el alcance estaba incompleto.\n- **Qué hacer:** al pedir un cambio en un enum o en un getter, el jefe maestro ejecuta `grep -rln \"<Tipo>\\|<código>\" lib test` y pone en el alcance cada archivo que lo usa.",
+    "categorias_id": 3577,
+    "url": "leccion://J-007",
+    "fuente": "leccion:zas",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-10-23 19:28:25",
+    "actualizada_en": "2026-10-23 19:28:25",
+    "hash": "leccion://J-007",
+    "categoria": "agentes",
+    "tags": []
+  },
+  {
+    "id": 171,
+    "titulo": "J-008. Tarea con un paquete nuevo sin su API en el prompt",
+    "problema": "Tarea con un paquete nuevo sin su API en el prompt",
+    "solucion": "- **Fecha:** 23/10/2026. **Veces:** 1.\n- **Qué pasó:** en el lote de FCM, Antigravity quiso leer `~/.pub-cache/.../flutter_local_notifications-22.3.2/lib/src/flutter_local_notifications_plugin.dart` para ver la API (cambió a parámetros con nombre). Esa ruta está fuera de sus permisos: se negó la lectura en el paso 48 y el lote terminó sin escribir nada. `delegar.sh` lo detectó (código 4).\n- **Qué hacer:** si la tarea usa un paquete nuevo o con una versión mayor nueva, el jefe maestro copia en el prompt las firmas que hacen falta (`grep -n` en `~/.pub-cache`) y le dice al agente que no lea `~/.pub-cache`.",
+    "categorias_id": 3577,
+    "url": "leccion://J-008",
+    "fuente": "leccion:zas",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-10-23 19:28:25",
+    "actualizada_en": "2026-10-23 19:28:25",
+    "hash": "leccion://J-008",
+    "categoria": "agentes",
+    "tags": []
   }
 ]
