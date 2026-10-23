@@ -16,6 +16,7 @@ Configura un proyecto para que la IA del editor actúe como **jefe maestro**: es
 | 1. Instalar en un proyecto | `sh instalar.sh <proyecto> --prefijo XX --carpetas "lib test docs"` | `instalar.bat <proyecto> --prefijo XX --carpetas "lib test docs"` |
 | 2. Registrar la base mcp-ia | `sh registrar_mcp.sh <proyecto>` | `registrar_mcp.bat <proyecto>` |
 | 3. Permisos de Antigravity (los ejecutas tú) | `sh permisos_agy.sh <proyecto> --ver` y después sin `--ver` | `permisos_agy.bat <proyecto> --ver` y después sin `--ver` |
+| 3b. Pre-commit común | `sh hooks.sh <proyecto>` | `hooks.bat <proyecto>` |
 | 4. Verificar | `sh verificar.sh <proyecto>` | `verificar.bat <proyecto>` |
 | Delegar una tarea (desde el proyecto) | `sh .agents/prompts/delegar.sh agy tarea.md nombre` | `.agents\prompts\delegar.bat agy tarea.md nombre` |
 
@@ -25,8 +26,17 @@ Configura un proyecto para que la IA del editor actúe como **jefe maestro**: es
 
 - `kit_agentes.py`: toda la lógica, solo biblioteca estándar. Los `.sh` y `.bat` son atajos que lo llaman.
 - `plantillas/`: `REGLAS.md`, `PLANTILLA_TAREA.md`, `REVISION.md`, `LECCIONES_AGENTES.md` y la sección para `AGENTS.md`.
-- `proyecto/`: los atajos `delegar` y `permisos_agy` que se copian en cada proyecto.
+- `proyecto/`: los atajos `delegar`, `permisos_agy` y `hooks` que se copian en cada proyecto.
+- `hooks/`: `pre-commit`, `pre-push` y `commit-msg` comunes (ver abajo).
 - `lecciones.py`: guarda y exporta las lecciones de los agentes en `mcp-ia` (se copia en `mcp-ia/scripts` si falta).
+
+## Pre-commit común y cómo se comparten sus mejoras
+
+- `hooks <proyecto>` copia los hooks de `kit-agentes/hooks/` a `<proyecto>/.githooks/`, activa `core.hooksPath` y anota en `.githooks/kit_hooks.json` qué versión instaló.
+- Gates: formato `dart format`, secretos, conflictos, `debugger()`, bypass SSL, **funciones repetidas** y sintaxis (`node --check`) en `.js`/`.gs` (Apps Script comparte el ámbito global), `analyze` y pruebas asociadas. El pre-push corre `analyze` y la suite completa en Dart/Flutter. `commit-msg` exige Conventional Commits.
+- Reglas propias de cada proyecto, que no se comparten: `.githooks/pre-commit.local` (Gate 5; recibe `STAGED_FILES`, `STAGED_DART_FILES` y puede agregar pruebas en `TESTS_EXTRA_FILE`), `.githooks/pre-push.local` y `.githooks/obligatorio.sh` (se ejecuta incluso con `SKIP_PRE_COMMIT=1`).
+- **Compartir una mejora:** edita el hook común en un proyecto, pruébalo y ejecuta `hooks <proyecto> --compartir`; después commit y push de mcp-ia. **Recibirla:** `hooks <proyecto> --actualizar` (hace `git pull` de mcp-ia). Si el proyecto y el kit cambiaron a la vez, el comando se detiene para que integres a mano; `--forzar` reemplaza con copia `.bak`.
+- `verificar` avisa si los hooks de un proyecto no coinciden con los del kit.
 
 ## Qué no toca
 

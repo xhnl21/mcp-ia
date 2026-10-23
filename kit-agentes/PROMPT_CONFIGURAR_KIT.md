@@ -40,6 +40,13 @@ Crea `.agents/prompts/` (reglas, plantilla de tarea, revisión, lecciones, `dele
 
 Clona `https://github.com/xhnl21/mcp-ia` en `~/mcp-ia` (si no está), instala sus dependencias, importa el conocimiento compartido (soluciones y lecciones de los agentes) y registra el servidor MCP en `.mcp.json` del proyecto (Claude Code) y en `~/.gemini/config/mcp_config.json` (Antigravity). Si ya tengo mcp-ia en otra ruta, agrega `--mcp-ia <ruta>`.
 
+### Paso 4b. Pre-commit común
+
+- macOS/Linux: `sh <KIT>/hooks.sh <PROYECTO> --ver` y después sin `--ver`
+- Windows: `<KIT>\hooks.bat <PROYECTO> --ver` y después sin `--ver`
+
+Instala en `<PROYECTO>/.githooks/` el `pre-commit`, `pre-push` y `commit-msg` comunes (secretos, conflictos, Conventional Commits, funciones repetidas y sintaxis en JS/Apps Script, y `dart format`, `analyze` y pruebas en Dart/Flutter) y activa `core.hooksPath`. Si el proyecto ya tenía hooks, **no los reemplaces sin preguntarme**: muéstrame la diferencia y propón pasar sus reglas propias a `.githooks/pre-commit.local` (o `pre-push.local`; lo que nunca se debe omitir, a `obligatorio.sh`) antes de usar `--forzar`.
+
 ### Paso 5. Permisos de Antigravity
 
 Primero muéstrame qué cambiaría, **sin aplicar**:
@@ -67,7 +74,8 @@ Confirma que el `prompt.md` generado incluye las reglas, la sección «Lecciones
 3. **Cada error de un agente se convierte en lección** en `.agents/prompts/LECCIONES_AGENTES.md` con ID `<PREFIJO>-NNN`. `delegar` la guarda en la base y la comparte con los demás proyectos.
 4. **Si una tarea usa un paquete nuevo**, copia en el prompt las firmas de su API: el agente no puede leer la caché de paquetes (`~/.pub-cache`, `node_modules` global).
 5. **Commits:** con mi identidad de git (`git commit -s`), sin firmas de la IA. No hagas push sin que te lo pida.
-6. **Nunca muestres secretos** (`.env*`, claves, contraseñas) ni los subas a git.
+6. **Pre-commit:** las reglas propias del proyecto van en `.githooks/pre-commit.local`; no edites el `pre-commit` común para eso. Si mejoras el común, compártelo con `hooks.sh --compartir` y haz commit y push de mcp-ia; los demás proyectos lo reciben con `hooks.sh --actualizar`.
+7. **Nunca muestres secretos** (`.env*`, claves, contraseñas) ni los subas a git.
 
 ### Paso 8. Resumen
 
