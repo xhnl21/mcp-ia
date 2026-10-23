@@ -34,7 +34,7 @@ Configura un proyecto para que la IA del editor actúe como **jefe maestro**: es
 
 - `hooks <proyecto>` copia los hooks de `kit-agentes/hooks/` a `<proyecto>/.githooks/`, activa `core.hooksPath` y anota en `.githooks/kit_hooks.json` qué versión instaló.
 - Gates: formato `dart format`, secretos, conflictos, `debugger()`, bypass SSL, **funciones repetidas** y sintaxis (`node --check`) en `.js`/`.gs` (Apps Script comparte el ámbito global), `analyze` y pruebas asociadas. El pre-push corre `analyze` y la suite completa en Dart/Flutter. `commit-msg` exige Conventional Commits.
-- Reglas propias de cada proyecto, que no se comparten: `.githooks/pre-commit.local` (Gate 5; recibe `STAGED_FILES`, `STAGED_DART_FILES` y puede agregar pruebas en `TESTS_EXTRA_FILE`), `.githooks/pre-push.local` y `.githooks/obligatorio.sh` (se ejecuta incluso con `SKIP_PRE_COMMIT=1`).
+- Reglas propias de cada proyecto, que no se comparten: `.githooks/pre-commit.local` (Gate 5; recibe `STAGED_FILES`, `STAGED_DART_FILES` y puede agregar pruebas en `TESTS_EXTRA_FILE`), `.githooks/pre-push.local`, `.githooks/commit-msg.local` (recibe la ruta del mensaje) y `.githooks/obligatorio.sh` (se ejecuta incluso con `SKIP_PRE_COMMIT=1`).
 - **Compartir una mejora:** edita el hook común en un proyecto, pruébalo y ejecuta `hooks <proyecto> --compartir`; después commit y push de mcp-ia. **Recibirla:** `hooks <proyecto> --actualizar` (hace `git pull` de mcp-ia). Si el proyecto y el kit cambiaron a la vez, el comando se detiene para que integres a mano; `--forzar` reemplaza con copia `.bak`.
 - `verificar` avisa si los hooks de un proyecto no coinciden con los del kit.
 
