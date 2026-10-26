@@ -1,8 +1,8 @@
 #!/bin/sh
 # ==============================================================================
 # Pre-push común del kit de agentes (se comparte entre proyectos vía mcp-ia).
-# Reglas propias del proyecto: .githooks/pre-push.local (se ejecuta primero).
-# Proyectos Dart/Flutter: analyze y la suite completa de pruebas.
+# Proyectos Dart/Flutter: analyze y la suite completa con --coverage.
+# Reglas propias del proyecto: .githooks/pre-push.local (después de la suite).
 # ==============================================================================
 
 HOOKS_DIR=$(dirname "$0")
@@ -14,21 +14,22 @@ NC='\033[0m'
 
 echo "\n${BLUE}${BOLD}🚀 Quality Gates de pre-push${NC}"
 
-if [ -f "$HOOKS_DIR/pre-push.local" ]; then
-  echo "\n${BLUE}Reglas del proyecto (.githooks/pre-push.local)...${NC}"
-  sh "$HOOKS_DIR/pre-push.local" "$@" || { echo "${RED}❌ Push rechazado por las reglas del proyecto.${NC}"; exit 1; }
-fi
-
 if [ -f pubspec.yaml ]; then
-  if grep -Eq '^[[:space:]]+sdk:[[:space:]]*flutter' pubspec.yaml; then TOOL=flutter; else TOOL=dart; fi
+  if grep -Eq '^[[:space:]]+sdk:[[:space:]]*flutter' pubspec.yaml; then TOOL=flutter; COV=--coverage; else TOOL=dart; COV=; fi
   echo "\n${BLUE}Análisis estático ($TOOL analyze)...${NC}"
   $TOOL analyze || { echo "${RED}❌ $TOOL analyze detectó issues. Push rechazado.${NC}"; exit 1; }
   echo "${GREEN}✓ Análisis aprobado.${NC}"
   if [ -d test ]; then
     echo "\n${BLUE}Suite completa de pruebas ($TOOL test)...${NC}"
-    $TOOL test || { echo "${RED}❌ Fallaron pruebas de la suite. Push rechazado.${NC}"; exit 1; }
+    $TOOL test $COV || { echo "${RED}❌ Fallaron pruebas de la suite. Push rechazado.${NC}"; exit 1; }
     echo "${GREEN}✓ Suite completa de pruebas aprobada con éxito.${NC}"
   fi
+fi
+
+# Reglas del proyecto: corren después de la suite, con coverage/lcov.info ya generado.
+if [ -f "$HOOKS_DIR/pre-push.local" ]; then
+  echo "\n${BLUE}Reglas del proyecto (.githooks/pre-push.local)...${NC}"
+  sh "$HOOKS_DIR/pre-push.local" "$@" || { echo "${RED}❌ Push rechazado por las reglas del proyecto.${NC}"; exit 1; }
 fi
 
 echo "\n${GREEN}${BOLD}🎉 ¡Todos los Quality Gates de pre-push pasaron! Procediendo con el push...${NC}\n"
