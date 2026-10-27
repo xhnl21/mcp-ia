@@ -77,7 +77,9 @@ def escribir_indice(ver: bool) -> None:
 
 
 def enlazar(destino: Path, fuente: Path, ver: bool) -> None:
-    if destino.is_symlink() and destino.resolve() == fuente.resolve():
+    # Se compara el destino literal: un enlace que llega a la fuente a través de
+    # otro enlace (p. ej. tras mover mcp-ia) se rehace para que apunte directo.
+    if destino.is_symlink() and os.readlink(destino) == str(fuente):
         print(f"  = {destino}")
         return
     print(f"  {'(ver) ' if ver else ''}+ {destino} → {fuente}")
