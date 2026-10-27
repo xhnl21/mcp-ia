@@ -1,0 +1,13 @@
+# Splash nativo: mismo color y símbolo que el primer cuadro de splash.mp4.
+# Regenerar: dart run flutter_native_splash:create
+# Dependencia: dev_dependencies -> flutter_native_splash: ^2.4.8
+flutter_native_splash:
+  color: "#081830"                 # = colores.fondo_splash de marca.json
+  image: "assets/branding/splash_logo.png"
+  android_12:
+    color: "#081830"
+    image: "assets/branding/splash_logo.png"
+  android: true
+  ios: false
+  web: false
+  fullscreen: true

@@ -1,0 +1,20 @@
+{
+  "app": "ReelKeeper",
+  "titulo": [["Reel", "#FFFFFF"], ["Keeper", "#FFC107"]],
+  "organizacion": "FurionSytem",
+  "frase": "Tus videos, a tu ritmo",
+  "pie": "desarrollado por",
+  "simbolo": { "tipo": "carrete", "cinta": true, "girar": true },
+  "colores": {
+    "fondo_splash": "#081830",
+    "degradado": ["#1565C0", "#0D2E63"],
+    "simbolo": "#FFFFFF",
+    "acento": "#FFC107",
+    "frase": "#42A5F5",
+    "pie": "#AABEDC",
+    "organizacion": "#FFFFFF"
+  },
+  "icono": { "escala_frente": 0.70 },
+  "video": { "ancho": 720, "alto": 1280, "fps": 30, "duracion": 3.6 },
+  "salida": "assets/branding"
+}
