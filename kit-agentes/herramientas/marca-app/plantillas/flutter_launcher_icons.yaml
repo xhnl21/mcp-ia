@@ -1,0 +1,10 @@
+# Ícono generado por la skill marca-app. Regenerar: dart run flutter_launcher_icons
+# Dependencia: dev_dependencies -> flutter_launcher_icons: ^0.14.4
+flutter_launcher_icons:
+  android: true
+  ios: false                       # true si el proyecto tiene iOS
+  image_path: "assets/branding/icono_completo.png"
+  min_sdk_android: 21              # el minSdk del proyecto
+  adaptive_icon_background: "assets/branding/icono_fondo.png"
+  adaptive_icon_foreground: "assets/branding/icono_frente.png"
+  adaptive_icon_monochrome: "assets/branding/icono_monocromo.png"
