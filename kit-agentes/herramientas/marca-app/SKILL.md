@@ -5,7 +5,7 @@ description: Crea el ícono de una app móvil (adaptativo de Android, con capa m
 
 # marca-app: ícono y splash con video
 
-> Fuente única: `mcp-ia/kit-agentes/herramientas/marca-app/` (repo `github.com/xhnl21/mcp-ia`). En cada máquina se instala con `sh kit-agentes/herramientas/instalar.sh marca-app`, que la enlaza en `~/.claude/skills/marca-app`. Para mejorarla: edita en mcp-ia, prueba, commit y push.
+> Fuente única: `mcp-ia/kit-agentes/herramientas/marca-app/` (repo `github.com/xhnl21/mcp-ia`). En cada máquina se instala con `sh kit-agentes/enlazar_compartido.sh`, que la enlaza en `~/.claude/skills/` (Claude Code) y `~/.gemini/config/skills/` (Antigravity). Para mejorarla: edita en mcp-ia, prueba, commit y push.
 
 Genera la marca visual de una app desde un archivo `marca.json`, con scripts reproducibles. Probado en ReelKeeper (Flutter, Android): Redmi Note 8 (Android 11, MIUI) y Pixel 9 (Android 15).
 

@@ -30,15 +30,28 @@ Configura un proyecto para que la IA del editor actúe como **jefe maestro**: es
 - `hooks/`: `pre-commit`, `pre-push` y `commit-msg` comunes (ver abajo).
 - `lecciones.py`: guarda y exporta las lecciones de los agentes en `mcp-ia` (se copia en `mcp-ia/scripts` si falta).
 
-## Herramientas compartidas (`herramientas/`)
+## Lo compartido: reglas, herramientas y conocimiento
 
-Herramientas para cualquier proyecto, en formato de skill de Claude Code (`SKILL.md`) más un `PROMPT.md` para otros agentes.
+Una sola fuente en este repo y **enlaces simbólicos** desde donde cada agente busca. Cambiar una regla o una herramienta aquí (y hacer `git pull` en cada máquina) la actualiza en todos los proyectos y en los dos agentes.
+
+| Qué | Fuente | Claude Code | Antigravity (`agy`) |
+|---|---|---|---|
+| Reglas para todos los proyectos | `compartido/reglas/*.md` | `~/.claude/reglas-compartidas/` + `@reglas-compartidas/INDICE.md` en `~/.claude/CLAUDE.md` | `~/.gemini/config/rules/<regla>.md` |
+| Herramientas (skills) | `herramientas/<nombre>/` (con `SKILL.md` y `PROMPT.md`) | `~/.claude/skills/<nombre>` | `~/.gemini/config/skills/<nombre>` |
+| Soluciones y lecciones | base `mcp-ia` (`data/`) | herramientas MCP o `compartido/mcpia.py` | herramientas MCP (`mcp(mcp-ia/search_solutions)`) |
+
+- **Instalar o actualizar los enlaces en una máquina:** `sh enlazar_compartido.sh` (`enlazar_compartido.bat` en Windows; necesita el Modo de desarrollador, si no, copia). `--ver` muestra lo que haría y `--quitar` borra los enlaces. Es idempotente y guarda un `.bak-<fecha>` de lo que reemplaza.
+- **Reglas de Antigravity:** cada `.md` de `compartido/reglas/` empieza con `trigger: always_on`. Sin ese encabezado, agy no la carga siempre (solución #205 en mcp-ia).
+- **Agregar una regla:** crea `compartido/reglas/<nombre>.md` con ese encabezado, ejecuta `enlazar_compartido` (regenera `INDICE.md` para Claude) y haz commit y push.
+- **Agregar una herramienta:** `herramientas/<nombre>/SKILL.md` (procedimiento) + `PROMPT.md` (para otros agentes); `enlazar_compartido` la enlaza en los dos agentes.
+
+| Regla | Qué exige |
+|---|---|
+| `regla-de-oro-mcp-ia.md` | **Todo problema resuelto se registra en mcp-ia** (`add_solution`) en el momento; antes de resolver, `search_solutions`. |
 
 | Herramienta | Qué hace |
 |---|---|
-| `marca-app` | Ícono adaptativo de Android (con capa monocroma) y splash nativo + video animado con el nombre de la app y de la organización, desde un `marca.json`. Pillow + imageio-ffmpeg, sin servicios de pago. |
-
-Instalar en esta máquina: `sh herramientas/instalar.sh` (todas) o `sh herramientas/instalar.sh marca-app`. Crea enlaces en `~/.claude/skills/`, así que un `git pull` de mcp-ia las actualiza. Para pedírselo a Antigravity u OpenCode, pega el `PROMPT.md` de la herramienta.
+| `marca-app` | Ícono adaptativo de Android (con capa monocroma) y splash nativo + video animado con el nombre de la app y de la organización, desde un `marca.json`. |
 
 ## Pre-commit común y cómo se comparten sus mejoras
 
