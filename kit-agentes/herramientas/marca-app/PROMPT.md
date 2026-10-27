@@ -2,7 +2,7 @@
 
 > Para pegar en Antigravity, OpenCode u otro agente que no cargue skills de Claude Code. Completa los datos entre `< >`. En Claude Code basta con decir «crea el ícono y el splash con la skill marca-app».
 >
-> **Primera vez en una máquina:** clona `https://github.com/xhnl21/mcp-ia` y ejecuta `sh kit-agentes/herramientas/instalar.sh marca-app`. Eso deja la herramienta en `~/.claude/skills/marca-app/` (un enlace: `git pull` de mcp-ia la actualiza).
+> **Primera vez en una máquina:** clona `https://github.com/xhnl21/mcp-ia` y ejecuta `sh kit-agentes/enlazar_compartido.sh`. Eso la enlaza en Claude Code (`~/.claude/skills/`) y en Antigravity (`~/.gemini/config/skills/`); `git pull` de mcp-ia la actualiza.
 
 ---
 
