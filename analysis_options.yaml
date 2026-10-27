@@ -1,0 +1,6 @@
+# mcp-ia no es un proyecto Dart: las plantillas .dart de las skills se copian a
+# una app Flutter (donde sí están flutter y video_player) y se analizan allá.
+# Sin esta exclusión, el editor marca cada import como error.
+analyzer:
+  exclude:
+    - "kit-agentes/herramientas/*/plantillas/**"
