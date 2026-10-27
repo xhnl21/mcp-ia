@@ -41,6 +41,7 @@ COMANDOS_AGY = [
     "flutter test", "flutter analyze", "git status", "git diff", "git log",
     "grep", "ls", "cat", "find", "wc",
 ]
+HERRAMIENTAS_MCP_AGY = ["mcp-ia/search_solutions"]
 HOOKS_COMUNES = ["pre-commit", "pre-push", "commit-msg"]
 GITIGNORE = [".agents/prompts/lotes/", ".agents/prompts/kit.json", ".mcp.json",
              ".claude/settings.local.json"]
@@ -237,7 +238,7 @@ def permisos(a) -> None:
     allow = data.setdefault("permissions", {}).setdefault("allow", [])
     raiz = proyecto.as_posix()
     nuevas = [] if raiz in ws else [("trustedWorkspaces", raiz)]
-    reglas = [f"write_file({raiz}/{x})" for x in carpetas] + [f"command({x})" for x in COMANDOS_AGY]
+    reglas = [f"write_file({raiz}/{x})" for x in carpetas] + [f"command({x})" for x in COMANDOS_AGY] + [f"mcp({m})" for m in HERRAMIENTAS_MCP_AGY]
     nuevas += [("permissions.allow", r) for r in reglas if r not in allow]
     print(f"Proyecto: {raiz}")
     if not nuevas:
