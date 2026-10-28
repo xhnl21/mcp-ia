@@ -13,8 +13,8 @@ La base `mcp-ia` es la memoria compartida entre proyectos. Un error resuelto que
 
 Cada máquina tiene su propia base y numera sus soluciones por su cuenta: lo que se registró en otra máquina no aparece hasta sincronizar.
 
-- Ejecuta `sh <mcp-ia>/scripts/sincronizar.sh` (macOS/Linux) o `<mcp-ia>\scripts\sincronizar.bat` (Windows) **al empezar** (para traer lo de las otras máquinas) y **al terminar** (para compartir lo tuyo). Mezcla el `compartido.json` de git y la copia de Google Drive sin duplicar, y hace commit.
-- Después avisa a la persona: falta `git push` en mcp-ia y, si la copia de Drive tenía menos soluciones, subir `data/sync/compartido.json` como nueva versión del mismo archivo de Drive (un agente no puede reemplazar su contenido).
+- Ejecuta `sh <mcp-ia>/scripts/sincronizar.sh` (macOS/Linux) o `<mcp-ia>\scripts\sincronizar.bat` (Windows) **al empezar** (para traer lo de las otras máquinas) y **al terminar** (para compartir lo tuyo). Mezcla el `compartido.json` de git (el único punto de encuentro) sin duplicar, y hace commit.
+- Después avisa a la persona: falta `git push` en mcp-ia.
 - Los ids (`#172`…) son locales: entre máquinas, cita las soluciones por su **título**.
 - **Agentes delegados**: no sincronizan; lo hace el jefe maestro.
 
