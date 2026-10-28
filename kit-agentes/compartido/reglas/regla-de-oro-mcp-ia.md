@@ -30,8 +30,19 @@ Cada máquina tiene su propia base y numera sus soluciones por su cuenta: lo que
    - `problem`: el mensaje de error exacto o el síntoma observable, y dónde aparece;
    - `solution`: la **causa** y el **arreglo** concreto (archivo, configuración o comando), de forma que alguien que no vio el problema lo pueda aplicar;
    - `category` (`compilacion`, `runtime`, `widgets`, `estado`, `plataforma`, `herramientas`…) y `tags` (tecnología y proyecto).
-4. Cuenta como «problema resuelto»: errores de compilación o de ejecución, fallos de pruebas, configuraciones de herramientas (Gradle, R8, permisos, hooks, CI), trampas de dispositivos (MIUI, emulador) y decisiones de una biblioteca que no estaban documentadas. Si te costó más de un intento, se registra.
+4. Cuenta como «problema resuelto»: errores de compilación o de ejecución, fallos de pruebas, configuraciones de herramientas (Gradle, R8, permisos, hooks, CI), trampas de dispositivos (MIUI, emulador) y decisiones de una biblioteca que no estaban documentadas. Si te costó más de un intento, se registra. **También lo que encuentras al revisar código** (una auditoría, un code review, una prueba manual), aunque todavía no haya fallado al ejecutar: si lo corriges, es un problema resuelto.
+   - Varios errores con la misma causa se pueden agrupar en una solución; cada **causa** distinta, en la suya.
 5. Si cambia una solución que ya existía, agrega una nueva que la mencione (o actualízala si la herramienta lo permite). No dejes la vieja como si siguiera vigente.
+
+## Antes de cada commit que contenga correcciones
+
+Comprobación obligatoria, para personas y agentes:
+
+1. Lista las causas que corrige el commit (un `fix:` casi siempre tiene al menos una; un `refactor:` o `feat:` también puede tenerlas).
+2. Por cada causa: **¿ya tiene su `add_solution`?** Búscala con `search_solutions` o `python3 mcpia.py "<síntoma>"`.
+3. Si falta alguna, **regístrala primero y haz el commit después**. Un commit con correcciones sin su registro deja la tarea sin terminar.
+
+El hook `commit-msg` del kit lo recuerda en cada commit `fix:` (no bloquea).
 
 ## Si no tienes las herramientas MCP cargadas
 
@@ -40,5 +51,5 @@ Cada máquina tiene su propia base y numera sus soluciones por su cuenta: lo que
 
 ## Cómo se comprueba
 
-- Al cerrar una tarea o un lote: por cada error resuelto, `python3 mcpia.py "<error>"` debe devolver su solución entre los primeros resultados.
+- Al cerrar una tarea o un lote, **y antes de cada commit con correcciones**: por cada error resuelto (también los encontrados en una revisión), `python3 mcpia.py "<error>"` debe devolver su solución entre los primeros resultados.
 - Una respuesta del tipo «lo arreglé» sin el ID de `add_solution` (o el informe con error, causa y solución, en los agentes delegados) deja la tarea **sin terminar**.

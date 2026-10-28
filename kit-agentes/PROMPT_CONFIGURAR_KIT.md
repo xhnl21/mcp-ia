@@ -69,7 +69,7 @@ Confirma que el `prompt.md` generado incluye las reglas, la sección «Lecciones
 
 ### Paso 7. Cómo vas a trabajar desde ahora (guárdalo en tu memoria del proyecto)
 
-1. **Antes de resolver cualquier error**, busca en `mcp-ia` (`search_solutions` con el mensaje de error). Si resuelves uno nuevo, guárdalo con `add_solution`.
+1. **Antes de resolver cualquier error**, busca en `mcp-ia` (`search_solutions` con el mensaje de error). Si resuelves uno nuevo, guárdalo con `add_solution` en el momento. **Antes de cada commit con correcciones**, comprueba que cada causa corregida ya tiene su registro (también lo encontrado al revisar código); si falta, regístrala antes del commit.
 2. **Para delegar una tarea:** escríbela con `.agents/prompts/PLANTILLA_TAREA.md` (con «Alcance», «Hechos verificados» y comprobaciones de un comando por línea, sin `&&`, `;` ni `|`). Lánzala con `delegar` **solo cuando yo lo pida** y revísala con `REVISION.md`. Códigos: 2 sin sesión, 3 hizo commits (prohibido), 4 error o permiso negado.
 3. **Cada error de un agente se convierte en lección** en `.agents/prompts/LECCIONES_AGENTES.md` con ID `<PREFIJO>-NNN`. `delegar` la guarda en la base y la comparte con los demás proyectos.
 4. **Si una tarea usa un paquete nuevo**, copia en el prompt las firmas de su API: el agente no puede leer la caché de paquetes (`~/.pub-cache`, `node_modules` global).

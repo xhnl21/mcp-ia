@@ -55,5 +55,6 @@ Por cada corrección que haga el jefe maestro:
 
 ## 5. Cerrar el lote
 
-- Corregir lo que falte y hacer los commits con la firma del usuario (`git commit -s`).
+- Corregir lo que falte. **Antes del commit:** cada error resuelto del lote (los del informe del agente y los que encontraste al revisar) tiene su `add_solution` en mcp-ia; si falta alguno, registrarlo primero.
+- Hacer los commits con la firma del usuario (`git commit -s`).
 - Anotar en `lotes/<lote>/revision.md` el resultado: aceptado, corregido o rechazado, y las lecciones creadas.
