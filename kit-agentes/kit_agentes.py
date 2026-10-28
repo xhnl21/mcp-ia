@@ -318,7 +318,17 @@ def _snapshot(raiz: Path) -> dict[str, str]:
 
 
 def _agente(nombre: str) -> str:
-    exe = shutil.which(nombre)
+    exe = os.environ.get(f"{nombre.upper()}_BIN")
+    if not exe and ES_WINDOWS:
+        # npm deja junto al .cmd un script sin extensión que Windows no ejecuta
+        # (WinError 193); el .cmd tampoco sirve: cmd.exe rompe un prompt de varias
+        # líneas. Se usa el .exe real del paquete.
+        exe = shutil.which(f"{nombre}.exe")
+        shim = None if exe else shutil.which(f"{nombre}.cmd")
+        if shim:
+            reales = sorted((Path(shim).parent / "node_modules").glob(f"*/bin/{nombre}.exe"))
+            exe = str(reales[0]) if reales else None
+    exe = exe or shutil.which(nombre)
     if not exe:
         sys.exit(f"❌ No se encontró `{nombre}` en el PATH.")
     return exe
