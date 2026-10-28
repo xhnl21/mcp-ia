@@ -4932,5 +4932,85 @@
       "sync",
       "multi-maquina"
     ]
+  },
+  {
+    "id": 213,
+    "titulo": "[walkietalkie] Estado de entrega o borrado de mensajes imposible: cada equipo inventa el id del mensaje",
+    "problema": "Al implementar ✓✓/leído y borrar mensaje en un chat por WebSocket (servidor en un teléfono, clientes), los avisos por id no encontraban el mensaje en los otros equipos.",
+    "solucion": "Causa: el emisor enviaba el contenido sin id y cada receptor creaba el suyo (DateTime.now()); el servidor tampoco lo agregaba al reenviar. Arreglo: guardar primero el mensaje local (obtener su uuid) y mandar ese id en el payload (channel_message.message.id); el servidor asigna uno si falta y reenvía el mismo; los receptores guardan con ese id. Luego: message_status {message_ids, status} que solo avanza (sent<delivered<read, UPDATE ... WHERE status IN (anteriores)), y delete_message aceptado solo si el user_id con que la conexión se unió al canal es el sender del mensaje. Migración Drift: addColumn status con default sent.",
+    "categorias_id": 4,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-10-28 13:44:54",
+    "actualizada_en": "2026-10-28 13:44:54",
+    "hash": "e89fde2355b95386708711fd",
+    "categoria": "estado",
+    "tags": [
+      "flutter",
+      "drift",
+      "websocket",
+      "chat",
+      "read-receipts",
+      "walkietalkie"
+    ]
+  },
+  {
+    "id": 214,
+    "titulo": "[flutter] dart format lib reformatea archivos ajenos y deja ifs sin llaves (curly_braces_in_flow_control_structures)",
+    "problema": "Tras dart format lib test en walkietalkie, flutter analyze pasó a dar 5 infos curly_braces_in_flow_control_structures en archivos que no se habían tocado (base_repository.dart, error_handler_mixin.dart) y git status mostró 49 archivos modificados.",
+    "solucion": "Causa: el formateador parte en dos líneas los if de una línea sin llaves de archivos que nunca se habían formateado. Arreglo: formatear solo los archivos del cambio (dart format <archivos>), o restaurar los ajenos: git status --short | awk ... | grep -v -x -F -f lista_propia.txt | xargs git checkout --. El pre-commit del kit ya formatea los archivos preparados, así que no hace falta formatear todo lib.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-10-28 13:44:54",
+    "actualizada_en": "2026-10-28 13:44:54",
+    "hash": "6ba57763008313c07b762df0",
+    "categoria": null,
+    "tags": [
+      "flutter",
+      "git",
+      "walkietalkie",
+      "dart-format",
+      "lints"
+    ]
+  },
+  {
+    "id": 215,
+    "titulo": "[flutter] Errores capturados que no llegan a la auditoría: catch vacíos y Logger estático que solo imprime",
+    "problema": "En walkietalkie, un error manejado (p. ej. delete_message rechazado) no aparecía en Ajustes > Ver registros: 51 catch vacíos, 43 que solo devolvían/emitían estado y un Logger.error estático que solo hacía debugPrint.",
+    "solucion": "1) Logger estático con un destino (static AuditSink? auditSink) que el contenedor DI conecta a LoggerService; error/warning reenvían siempre, con guard _forwarding contra bucles y try/catch propio. 2) El origen se calcula en Logger (primer frame de StackTrace.current fuera de debbug.dart) y se pasa como fileName/functionName/lineNumber; si no, la auditoría anota el archivo del reenvío (injection_container.dart). 3) Codemod: cada catch sin registro pasa a catch (e, st) { Logger.error(\"metodo falló\", e, st); } (warning si el try hace close/dispose/delete). 4) Excepción solo dentro del sistema de registro, con // audit-exempt: motivo. 5) Test que recorre lib/ y falla si un catch no registra (patrón de llaves balanceadas desde catch(...){). Lo no capturado queda en GlobalErrorHandler (FlutterError.onError, PlatformDispatcher.onError, runZonedGuarded).",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-10-28 14:09:38",
+    "actualizada_en": "2026-10-28 14:09:38",
+    "hash": "55b18a55bb5040e812e3cc4b",
+    "categoria": null,
+    "tags": [
+      "auditoria",
+      "flutter",
+      "walkietalkie",
+      "logging",
+      "try-catch",
+      "lint"
+    ]
   }
 ]
