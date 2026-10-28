@@ -1,7 +1,7 @@
 """Núcleo compartido de la skill marca-app: configuración, colores y símbolos.
 
 Lee `marca.json` del proyecto (ver ../ejemplos/) y dibuja el símbolo de la
-app (carrete, monograma o una imagen propia). Todo se dibuja a 4x y se reduce
+app (carrete, monograma, walkie o una imagen propia). Todo se dibuja a 4x y se reduce
 con LANCZOS para suavizar los bordes.
 """
 import json
@@ -83,13 +83,19 @@ class Marca:
         os.makedirs(os.path.dirname(ruta), exist_ok=True)
         return ruta
 
-    def simbolo_imagen(self, lado, angulo=0.0, escala=4, solo_silueta=False):
-        """Símbolo de la app sobre fondo transparente, de `lado` x `lado` px."""
+    def simbolo_imagen(self, lado, angulo=0.0, escala=4, solo_silueta=False, fase=None):
+        """Símbolo de la app sobre fondo transparente, de `lado` x `lado` px.
+
+        `fase` (segundos del video) anima los símbolos que pulsan (walkie);
+        con None se dibujan quietos, como en el ícono.
+        """
         tipo = self.simbolo.get("tipo", "carrete")
         color = self.color_simbolo
         acento = None if solo_silueta else self.acento
         if tipo == "carrete":
             return carrete(lado, color, acento, angulo, self.simbolo.get("cinta", True), escala)
+        if tipo == "walkie":
+            return walkie(lado, color, acento, fase, escala)
         if tipo == "monograma":
             fondo_letras = None if solo_silueta else self.degradado[-1]
             return monograma(lado, self.simbolo.get("texto", self.app[:2]), color, fondo_letras, escala)
@@ -104,11 +110,16 @@ class Marca:
                 blanco.putalpha(lienzo.getchannel("A"))
                 return blanco
             return lienzo
-        raise SystemExit(f"marca.json: simbolo.tipo «{tipo}» no existe (carrete, monograma o imagen).")
+        raise SystemExit(f"marca.json: simbolo.tipo «{tipo}» no existe (carrete, monograma, walkie o imagen).")
 
     @property
     def gira(self):
         return self.simbolo.get("girar", self.simbolo.get("tipo") == "carrete")
+
+    @property
+    def pulsa(self):
+        """El símbolo se anima con `fase` en el video (ondas que salen)."""
+        return self.simbolo.get("pulsar", self.simbolo.get("tipo") == "walkie")
 
 
 def fuente(peso, tam):
@@ -179,3 +190,61 @@ def monograma(lado, texto, color, color_letras, escala=4):
     relleno = (0, 0, 0, 0) if color_letras is None else color_letras
     d.text((L / 2, L / 2), texto, font=letra, fill=relleno, anchor="mm")
     return img.resize((lado, lado), Image.LANCZOS)
+
+
+def walkie(lado, color, ondas, fase=None, escala=4):
+    """Walkie-talkie con antena y ondas de radio a la derecha.
+
+    Sirve para apps de voz o radio. `ondas` es el color de las ondas y de la luz
+    de la antena (None: silueta, sin ondas, para la capa monocroma). Con `fase`
+    (segundos) las tres ondas salen una tras otra y la luz parpadea; sin fase,
+    quedan todas visibles.
+    """
+    L = lado * escala
+    img = Image.new("RGBA", (L, L), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    transparente = (0, 0, 0, 0)
+
+    # Cuerpo: un poco a la izquierda para dejar sitio a las ondas.
+    cx = L * 0.42
+    ancho, alto = L * 0.34, L * 0.56
+    x0, y0 = cx - ancho / 2, L * 0.30
+    d.rounded_rectangle((x0, y0, x0 + ancho, y0 + alto), radius=ancho * 0.22, fill=color)
+    # Antena.
+    ax = x0 + ancho * 0.24
+    d.rounded_rectangle((ax - L * 0.028, L * 0.10, ax + L * 0.028, y0 + L * 0.04),
+                        radius=L * 0.028, fill=color)
+    # Pantalla calada y rejilla del parlante.
+    m = ancho * 0.16
+    d.rounded_rectangle((x0 + m, y0 + alto * 0.12, x0 + ancho - m, y0 + alto * 0.34),
+                        radius=ancho * 0.07, fill=transparente)
+    for i in range(3):
+        yy = y0 + alto * (0.50 + i * 0.12)
+        d.rounded_rectangle((x0 + m, yy, x0 + ancho - m, yy + alto * 0.045),
+                            radius=alto * 0.02, fill=transparente)
+
+    if ondas is not None:
+        # Luz de la antena: parpadea al transmitir.
+        luz = 1.0 if fase is None else 0.35 + 0.65 * (0.5 + 0.5 * math.cos(fase * 2 * math.pi * 1.5))
+        r = L * 0.035
+        d.ellipse((ax - r, L * 0.10 - r, ax + r, L * 0.10 + r), fill=ondas[:3] + (int(255 * luz),))
+        # Ondas: arcos concéntricos desde la punta de la antena hacia la derecha.
+        capa = Image.new("RGBA", (L, L), (0, 0, 0, 0))
+        dc = ImageDraw.Draw(capa)
+        ox, oy = ax, L * 0.16
+        grosor = int(L * 0.045)
+        for i, radio in enumerate((L * 0.20, L * 0.32, L * 0.44)):
+            if fase is None:
+                alfa = 1.0
+            else:
+                # Cada onda aparece 0,25 s después de la anterior; ciclo de 1,2 s.
+                x = ((fase - i * 0.25) % 1.2) / 1.2
+                alfa = math.sin(math.pi * min(1.0, x * 1.6)) if x < 0.625 else 0.0
+            if alfa <= 0.02:
+                continue
+            caja = (ox - radio, oy - radio, ox + radio, oy + radio)
+            dc.arc(caja, start=-60, end=20, fill=ondas[:3] + (int(255 * alfa),), width=grosor)
+        img.alpha_composite(capa)
+
+    return img.resize((lado, lado), Image.LANCZOS)
+

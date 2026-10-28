@@ -1,7 +1,7 @@
 {
   "app": "Estilo Neutral",
   "titulo": [["Estilo ", "#FFFFFF"], ["Neutral", "#E0C48A"]],
-  "organizacion": "FurionSytem",
+  "organizacion": "FurionSystem",
   "frase": "Tu salón, en orden",
   "simbolo": { "tipo": "monograma", "texto": "EN", "girar": false },
   "colores": {

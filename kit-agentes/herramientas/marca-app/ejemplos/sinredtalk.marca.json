@@ -1,0 +1,20 @@
+{
+  "app": "SinRed Talk",
+  "titulo": [["SinRed", "#FFFFFF"], [" Talk", "#64FFDA"]],
+  "organizacion": "FurionSystem",
+  "frase": "Habla sin Internet",
+  "pie": "desarrollado por",
+  "simbolo": { "tipo": "walkie" },
+  "colores": {
+    "fondo_splash": "#04221E",
+    "degradado": ["#00897B", "#00352F"],
+    "simbolo": "#FFFFFF",
+    "acento": "#64FFDA",
+    "frase": "#4DB6AC",
+    "pie": "#A7C4BF",
+    "organizacion": "#FFFFFF"
+  },
+  "icono": { "escala_frente": 0.66 },
+  "video": { "ancho": 720, "alto": 1280, "fps": 30, "duracion": 3.6 },
+  "salida": "assets/branding"
+}
