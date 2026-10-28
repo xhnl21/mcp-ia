@@ -5333,5 +5333,32 @@
       "errores",
       "ux"
     ]
+  },
+  {
+    "id": 228,
+    "titulo": "[herramientas] Cliente WebSocket de prueba: el servidor lo corta a los ~15 s y su log llega tarde",
+    "problema": "Al probar el servidor de walkietalkie con un cliente de prueba (dart): la conexión se cerraba sola a los ~15 s (logcat: Connection closed) y mensajes que el servidor sí envió (sending to …: webrtc_reject) no aparecían en el archivo de log del cliente al leerlo.",
+    "solucion": "Causas: (1) el servidor tiene heartbeat: envía {type: ping} y cierra la conexión si no recibe pong; el cliente de prueba no respondía. (2) La salida del cliente pasaba por 'grep -v … > archivo': grep escribiendo a un archivo usa búfer y las líneas aparecen tarde. Arreglo: en el listener del cliente, si llega ping responder ws.add(jsonEncode({type: pong})); redirigir la salida directo al archivo (o grep --line-buffered) y esperar a que el proceso termine (until ! pgrep -f …; do sleep 1; done) antes de leer. Antes de dar por malo el servidor, confirmar en su log si envió el mensaje.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-10-28 18:35:25",
+    "actualizada_en": "2026-10-28 18:35:25",
+    "hash": "2876d71df70af8c5d793a825",
+    "categoria": null,
+    "tags": [
+      "testing",
+      "websocket",
+      "walkietalkie",
+      "heartbeat",
+      "grep",
+      "buffer"
+    ]
   }
 ]
