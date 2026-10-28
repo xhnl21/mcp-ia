@@ -125,7 +125,14 @@ scripts\sincronizar.bat          # Windows
 git push
 ```
 
-Trae `origin`, mezcla el `data/sync/compartido.json` remoto con tu base local (sin duplicados: compara un hash del contenido), avanza la rama, exporta la unión y hace commit. Ejecútalo al empezar y al terminar cada sesión en una máquina. Los ids (`#172`…) son **locales de cada máquina**: para citar una solución entre máquinas, usa su título.
+Trae `origin`, mezcla con tu base local el `data/sync/compartido.json` de git **y la copia de Google Drive** (sin duplicados: compara un hash del contenido), avanza la rama, exporta la unión y hace commit. Ejecútalo **al empezar y al terminar** cada sesión en una máquina. Los ids (`#172`…) son **locales de cada máquina**: para citar una solución entre máquinas, usa su título.
+
+| Punto de encuentro | Quién lo usa | Cómo se actualiza |
+|---|---|---|
+| `data/sync/compartido.json` en git | Todo el que clona mcp-ia (principal) | `sincronizar` + `git push` |
+| [Copia en Google Drive](https://drive.google.com/file/d/1728stc7O7fLAZ_N6FWBKsCvkapYIc1Hp/view) (`FM_DRIVE_ID`) | Quien no tiene el repo | Se **lee** sola en `sincronizar`. Para **subirla**: en Drive, clic derecho en el archivo → *Administrar versiones* → *Subir nueva versión* con tu `data/sync/compartido.json` (conserva el enlace y el id). Con Google Drive para escritorio, apunta `FM_SYNC_FILE` a ese archivo y `sync.py subir` lo actualiza solo |
+
+**Agentes de IA:** la regla compartida `kit-agentes/compartido/reglas/regla-de-oro-mcp-ia.md` (enlazada en Claude Code y Antigravity con `enlazar_compartido`) les indica ejecutar `sincronizar` al empezar y al terminar, y avisar a la persona si falta el `git push` o subir la copia a Drive (un agente no puede reemplazar el contenido de un archivo de Drive).
 
 **A mano:**
 
