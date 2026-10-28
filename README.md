@@ -117,6 +117,18 @@ py scripts/learn.py "MissingPluginException: No implementation found for method 
 
 ## 🤝 Sincronización del Conocimiento (`sync.py`)
 
+**Entre tus máquinas (Mac, Windows…), en un paso:**
+
+```bash
+sh scripts/sincronizar.sh        # macOS / Linux
+scripts\sincronizar.bat          # Windows
+git push
+```
+
+Trae `origin`, mezcla el `data/sync/compartido.json` remoto con tu base local (sin duplicados: compara un hash del contenido), avanza la rama, exporta la unión y hace commit. Ejecútalo al empezar y al terminar cada sesión en una máquina. Los ids (`#172`…) son **locales de cada máquina**: para citar una solución entre máquinas, usa su título.
+
+**A mano:**
+
 Para compartir los errores aprendidos con tus compañeros de equipo:
 
 ```bash
