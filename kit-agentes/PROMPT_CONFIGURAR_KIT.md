@@ -1,13 +1,13 @@
 # Prompt: configurar el kit del jefe maestro en un proyecto
 
-> **Cómo usarlo:** abre tu proyecto en el editor con tu IA (Claude Code, Antigravity, Cursor…), descomprime `kit-agentes.zip` en cualquier carpeta y pega este prompt completo en el chat. Cambia solo las tres líneas de «Datos».
+> **Cómo usarlo:** abre tu proyecto en el editor con tu IA (Claude Code, Antigravity, Cursor…) y pega este prompt completo en el chat. Cambia solo las tres líneas de «Datos». El kit viene dentro del repositorio `mcp-ia` (carpeta `kit-agentes/`): no hace falta descargar ningún zip, que además quedaría desactualizado.
 
 ---
 
 ## Datos (complétalos antes de pegar)
 
 - **Ruta del proyecto:** `<ruta absoluta del repositorio git, p. ej. /Users/ana/proyectos/mi_app o C:\proyectos\mi_app>`
-- **Ruta donde descomprimí el kit:** `<p. ej. /Users/ana/Descargas/kit-agentes o C:\Users\ana\Downloads\kit-agentes>`
+- **Ruta de mcp-ia:** `<donde está o estará el clon de https://github.com/xhnl21/mcp-ia, p. ej. /Users/ana/mcp-ia o C:\Users\ana\mcp-ia>`
 - **Prefijo de lecciones del proyecto:** `<2 o 3 letras en mayúscula, p. ej. MA>`
 
 ## Tu tarea
@@ -16,11 +16,13 @@ Configura en mi proyecto el **kit del jefe maestro**: tú (la IA del editor) ser
 
 Responde siempre en español. Ejecuta los pasos en orden, **un comando por llamada**, y después de cada paso muéstrame el resultado en una o dos líneas. Si un paso falla, detente, explícame la causa y no sigas.
 
-En los comandos, `<KIT>` es la ruta del kit y `<PROYECTO>` la del proyecto. En macOS o Linux usa los `.sh` con `sh`; en Windows usa los `.bat`.
+En los comandos, `<MCP_IA>` es la ruta de mcp-ia, `<KIT>` es `<MCP_IA>/kit-agentes` y `<PROYECTO>` la del proyecto. En macOS o Linux usa los `.sh` con `sh`; en Windows usa los `.bat`.
 
 ### Paso 1. Requisitos
 
 Comprueba, sin instalar nada, que existen y dime sus versiones: `git`, `python3` (en Windows `py -3` o `python`, 3.9 o superior) y `agy`. `opencode` es opcional. Comprueba que `<PROYECTO>` es un repositorio git. Si falta algo, dime cómo instalarlo y detente.
+
+Después, el kit: si `<MCP_IA>` no existe, `git clone https://github.com/xhnl21/mcp-ia <MCP_IA>`; si existe, `git -C <MCP_IA> pull --ff-only` para usar la última versión.
 
 ### Paso 2. Elegir las carpetas del agente
 
@@ -35,10 +37,10 @@ Crea `.agents/prompts/` (reglas, plantilla de tarea, revisión, lecciones, `dele
 
 ### Paso 4. Base de soluciones mcp-ia
 
-- macOS/Linux: `sh <KIT>/registrar_mcp.sh <PROYECTO>`
-- Windows: `<KIT>\registrar_mcp.bat <PROYECTO>`
+- macOS/Linux: `sh <KIT>/registrar_mcp.sh <PROYECTO> --mcp-ia <MCP_IA>`
+- Windows: `<KIT>\registrar_mcp.bat <PROYECTO> --mcp-ia <MCP_IA>`
 
-Clona `https://github.com/xhnl21/mcp-ia` en `~/mcp-ia` (si no está), instala sus dependencias, importa el conocimiento compartido (soluciones y lecciones de los agentes) y registra el servidor MCP en `.mcp.json` del proyecto (Claude Code) y en `~/.gemini/config/mcp_config.json` (Antigravity). Si ya tengo mcp-ia en otra ruta, agrega `--mcp-ia <ruta>`.
+Clona `https://github.com/xhnl21/mcp-ia` en `~/mcp-ia` (si no está), instala sus dependencias, importa el conocimiento compartido (soluciones y lecciones de los agentes) y registra el servidor MCP en `.mcp.json` del proyecto (Claude Code) y en `~/.gemini/config/mcp_config.json` (Antigravity). Como mcp-ia ya está en `<MCP_IA>`, agrega `--mcp-ia <MCP_IA>`.
 
 ### Paso 4b. Pre-commit común
 
