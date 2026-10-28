@@ -1,7 +1,7 @@
 {
   "app": "ReelKeeper",
   "titulo": [["Reel", "#FFFFFF"], ["Keeper", "#FFC107"]],
-  "organizacion": "FurionSytem",
+  "organizacion": "FurionSystem",
   "frase": "Tus videos, a tu ritmo",
   "pie": "desarrollado por",
   "simbolo": { "tipo": "carrete", "cinta": true, "girar": true },

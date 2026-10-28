@@ -70,8 +70,11 @@ class Escena:
         escala = (0.85 + 0.15 * entrada) * (1 - 0.25 * subida)
         lado = max(2, int(self.lado_simbolo * escala))
         angulo = 140 * t if m.gira else 0.0
+        # Hasta que el símbolo entra, quieto como el splash nativo (todas las
+        # ondas visibles: sin parpadeo); después las ondas salen.
+        fase = t - 0.6 if m.pulsa and t >= 0.6 else None
         # Sin aparición gradual: el splash nativo ya muestra el símbolo opaco.
-        pieza = m.simbolo_imagen(lado, angulo=angulo, escala=2)
+        pieza = m.simbolo_imagen(lado, angulo=angulo, escala=2, fase=fase)
         cy = self.alto * (0.5 - 0.14 * subida)
         img.alpha_composite(pieza, (int(self.ancho / 2 - lado / 2), int(cy - lado / 2)))
 

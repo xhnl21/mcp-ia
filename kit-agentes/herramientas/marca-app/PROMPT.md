@@ -10,7 +10,7 @@ Crea el ícono y el splash con video de esta app usando las herramientas de `~/.
 
 **Datos de la marca:**
 - App: `<Nombre de la app>`. Título del splash en dos colores: `<"Parte1" blanco, "Parte2" color de acento>`.
-- Organización (escríbela exactamente así): `<FurionSytem>`.
+- Organización (escríbela exactamente así): `<FurionSystem>`.
 - Frase corta del splash (opcional): `<Tus videos, a tu ritmo>`.
 - Símbolo: `<carrete | monograma con las iniciales "XX" | imagen en assets/logo.png>`.
 - Colores: deriva el degradado del color semilla del tema del proyecto. Fondo del splash: `<#081830 o un tono oscuro de la paleta>`.

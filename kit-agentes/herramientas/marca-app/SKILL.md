@@ -14,20 +14,21 @@ Genera la marca visual de una app desde un archivo `marca.json`, con scripts rep
   scripts/marca.sh            lanzador: prepara ~/.cache/marca-app/venv y genera
   scripts/generar_icono.py    ícono adaptativo + logo del splash + vista previa
   scripts/generar_video_splash.py  splash.mp4 + primer cuadro
-  scripts/marca.py            símbolos (carrete, monograma, imagen) y colores
+  scripts/marca.py            símbolos (carrete, walkie, monograma, imagen) y colores
   fonts/                      Montserrat (licencia OFL: se puede incluir en apps)
   plantillas/                 flutter_launcher_icons.yaml, flutter_native_splash.yaml, splash_page.dart
-  ejemplos/                   reelkeeper.marca.json (carrete), monograma.marca.json
+  ejemplos/                   reelkeeper.marca.json (carrete), sinredtalk.marca.json (walkie), monograma.marca.json
   PROMPT.md                   este mismo pedido, para pegar en otro agente
 ```
 
 ## 1. Reunir los datos (preguntar lo que no esté claro)
 
 - **Nombre de la app** y cómo partir el título en dos colores (`"titulo": [["Reel","#FFFFFF"],["Keeper","#FFC107"]]`).
-- **Organización, escrita exactamente** como la quiere el usuario. Si parece un error de tipeo, pregunta una vez y respeta la respuesta (en ReelKeeper es «FurionSytem», confirmado).
+- **Organización, escrita exactamente** como la quiere el usuario. Si parece un error de tipeo, pregunta una vez y respeta la respuesta (la empresa de ReelKeeper y SinRed Talk es «FurionSystem»).
 - **Colores:** lee el color semilla del tema (`ColorScheme.fromSeed`, `AppColors`…) y deriva el degradado de él. No inventes una paleta que choque con la app.
 - **Frase** corta (opcional) y **símbolo:**
   - `carrete`: apps de video. Gira en el splash.
+  - `walkie`: walkie-talkie con ondas de radio (apps de voz o radio). En el splash las ondas salen una tras otra y la antena parpadea.
   - `monograma`: iniciales en un círculo; sirve para cualquier app.
   - `imagen`: un PNG propio del proyecto (`"ruta": "assets/logo.png"`).
 - **Nunca pongas texto largo en el ícono:** a 48 px no se lee. El nombre y la organización van en el splash.
@@ -73,6 +74,8 @@ Mira las imágenes antes de integrar. Si el símbolo se corta en la máscara cir
 | La cinta del carrete se corta | `flutter_launcher_icons` deja visible el 98 % del frente | `escala_frente` 0,70 |
 | Parpadeo al empezar el video | El símbolo aparecía gradualmente y el reproductor tarda en cargar | El video empieza opaco y la página muestra `splash_primer_cuadro.png` mientras carga |
 | El splash espera 6 s | El reproductor se detiene unos ms antes de `duration` | `isCompleted` o un margen de 150 ms |
+| `'_' is already declared` en la plantilla | Comodines `_` repetidos exigen Dart 3.7 | La plantilla usa `(_, __, ___)` |
+| `'decodeLazy' isn't defined for ZLibDecoder` | `image` nuevo con `archive` viejo en el proyecto | `flutter pub upgrade archive` |
 | Fuente con licencia dudosa | Avenir y Helvetica son de Apple | Montserrat (OFL) en `fonts/` |
 
 ## Al terminar
