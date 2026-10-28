@@ -4907,5 +4907,30 @@
       "facebook-lite",
       "correccion"
     ]
+  },
+  {
+    "id": 212,
+    "titulo": "[mcp-ia] Las soluciones registradas en otra máquina no aparecen (bases divergentes)",
+    "problema": "Soluciones registradas en Windows (#172-#181) no se encuentran en la Mac con search_solutions, y el mismo número de solución es otra cosa en cada máquina.",
+    "solucion": "Causa: cada máquina tiene su base local data/flutter_memory.db (fuera de git) con ids autoincrementales propios; el punto de encuentro data/sync/compartido.json (en git) solo se actualiza con sync.py subir, y nadie lo ejecutaba (quedó en 171 soluciones el 23-10). Arreglo: scripts/sincronizar.sh (macOS/Linux) o scripts\\sincronizar.bat (Windows): git fetch, sync.py bajar del compartido.json de origin (dedupe por hash del contenido), git pull --ff-only, sync.py subir y commit; luego git push. Ejecutarlo al empezar y al terminar en cada máquina. Citar soluciones entre máquinas por título, no por id.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-10-28 12:39:02",
+    "actualizada_en": "2026-10-28 12:39:02",
+    "hash": "69d8b2ac8240779e7331432c",
+    "categoria": null,
+    "tags": [
+      "git",
+      "mcp-ia",
+      "sync",
+      "multi-maquina"
+    ]
   }
 ]
