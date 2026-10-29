@@ -5777,5 +5777,30 @@
       "cola",
       "offline"
     ]
+  },
+  {
+    "id": 245,
+    "titulo": "[walkietalkie] El cliente marcaba ✓ sin confirmación y no se enteraba de los mensajes rechazados",
+    "problema": "Un mensaje del cliente rechazado por el servidor (not_a_member, invalid_message, canal inexistente) quedaba en ✓ como si se hubiera enviado; el error ('type':'error','message':reason) no decía qué mensaje era y un canal inexistente se ignoraba en silencio. Además el ✓✓ (delivered) se mandaba siempre, aunque nadie más estuviera en el canal.",
+    "solucion": "Servidor (MessageRouter._handleChannelMessage, ahora async): tras guardar el mensaje manda 'message_ack' {channel_id, message_id}; 'message_status delivered' solo si se reenvió a ≥1 miembro; _reject(..., channelId, messageId) incluye el id, y canal inexistente/cerrado → 'channel_not_found'. Cliente: en modo cliente el mensaje se guarda pending (⏱) aunque haya conexión; ClientSyncService: 'message_ack' → sent (✓), 'error' con message_id → MessageStatus.failed (⚠ rojo, último valor del enum para que advanceTo no lo pise). La cola ya no marca ✓ al enviar: si no llega el ack se reenvía en la siguiente conexión (el servidor guarda por id). Se quitó ICommunicationNode.canSendNow (ya no hacía falta).",
+    "categorias_id": 4,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-10-29 14:45:52",
+    "actualizada_en": "2026-10-29 14:45:52",
+    "hash": "5b67ee2733065bc73f9a64d9",
+    "categoria": "estado",
+    "tags": [
+      "flutter",
+      "websocket",
+      "walkietalkie",
+      "ack"
+    ]
   }
 ]
