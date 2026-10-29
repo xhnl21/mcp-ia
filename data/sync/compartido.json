@@ -5974,5 +5974,30 @@
       "utf8",
       "scripts"
     ]
+  },
+  {
+    "id": 253,
+    "titulo": "[zas] Un toque no aparece en «Soporte técnico» aunque sí se registra",
+    "problema": "Se toca un botón (por ejemplo «Ver historial» del dashboard, widgetId btn_direct_access_Ver_historial) y al consultar GET action_logs desde «Soporte técnico» el registro no aparece. Los nombres son correctos: el toque se guarda en la base local.",
+    "solucion": "Causa: AuditSyncService envía los registros locales a action_logs/register_app cada 5 minutos (y al iniciar sesión o recuperar red); consultar enseguida no incluye lo pendiente. Además created_at del backend es la hora de llegada al servidor (UTC), no la del toque. Arreglo: IAuditSyncService.syncNow() (espera el envío en curso y lanza otro) y TechSupportCubit recibe sendPendingLogs (registrado en locator_tech_support.dart como locator<IAuditSyncService>().syncNow) y lo llama antes de consultar en search(). Si aún no aparece: revisar «Cargar más» (la lista viene de 20 en 20, los más nuevos primero) y que la fecha UTC no haya pasado al día siguiente (después de las 20:00 en Venezuela).",
+    "categorias_id": 6,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-10-29 19:10:22",
+    "actualizada_en": "2026-10-29 19:10:22",
+    "hash": "60dd9f10792e0a6820e9a7d1",
+    "categoria": "red",
+    "tags": [
+      "auditoria",
+      "zas",
+      "sync",
+      "action_logs"
+    ]
   }
 ]
