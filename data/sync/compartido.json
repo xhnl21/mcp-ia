@@ -5999,5 +5999,55 @@
       "sync",
       "action_logs"
     ]
+  },
+  {
+    "id": 254,
+    "titulo": "[zas] top_level_cycle al pasar a GoRouter un callback que usa la propia variable del router",
+    "problema": "error • The type of 'route' can't be inferred because it depends on itself through the cycle: route (top_level_cycle), en lib/config/routes/routes.dart al escribir `final route = GoRouter(observers: [AuditNavigatorObserver(currentLocation: () => route.routerDelegate.currentConfiguration.uri.path)])`.",
+    "solucion": "Causa: la variable de nivel superior `route` no tiene tipo explícito y su inicializador la menciona (aunque sea dentro de un closure que se ejecuta después), así que el analizador no puede inferir su tipo. Arreglo: declarar el tipo, `final GoRouter route = GoRouter(...)`. El closure es válido en tiempo de ejecución porque solo lee `route` cuando ya está inicializada.",
+    "categorias_id": 1,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-10-29 20:29:18",
+    "actualizada_en": "2026-10-29 20:29:18",
+    "hash": "4c03080ec995d83ac434f6c7",
+    "categoria": "compilacion",
+    "tags": [
+      "dart",
+      "zas",
+      "go_router",
+      "inferencia"
+    ]
+  },
+  {
+    "id": 255,
+    "titulo": "[zas] Auditoría: ids de botón con datos (referencia bancaria, nombre) y screen_name inconsistente",
+    "problema": "Revisión de los registros de auditoría (action_logs): widget_id escritos a mano incluían datos (btn_sale_transaction_${sale.reference} con la referencia bancaria, btn_edit_user_${user.id}) y parameters con el nombre del usuario (user_name: user.fullName); screen_name mezclaba formatos (tech-support, ConfigMenuScreen, /summary, HomeScreen) y el título de una venta (timeline) se usaba como id.",
+    "solucion": "Causa: cada llamada armaba su widgetId y screenName a mano. Arreglo: lib/domain/services/audit_ids.dart define enums AuditElement/AuditAction, auditViewName(ruta) y buildAuditId → widget_id = <vista>_<elemento>_action_<acción>[_<sufijo>], y screen_name = vista sacada de la ruta (logAuditAction/auditedCallback/AuditableAction en presentation; AuditNavigatorObserver con currentLocation del GoRouter). Los ids nunca llevan datos: si hace falta identificar un elemento se usa su id interno en parameters, nunca nombres, referencias ni montos. La prueba test/presentation/audit_unique_ids_test.dart detecta ids repetidos por archivo. La migración de ~260 llamadas se hizo con una tabla generada (prefijo → elemento, palabra → acción) y revisión manual de los dinámicos y switches (enable/disable según el valor).",
+    "categorias_id": 4,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-10-29 20:29:18",
+    "actualizada_en": "2026-10-29 20:29:18",
+    "hash": "0be09a1d8a1d0fbb804e5a15",
+    "categoria": "estado",
+    "tags": [
+      "auditoria",
+      "zas",
+      "action_logs",
+      "privacidad"
+    ]
   }
 ]
