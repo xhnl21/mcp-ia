@@ -5675,5 +5675,56 @@
       "merge",
       "swap"
     ]
+  },
+  {
+    "id": 241,
+    "titulo": "[zas] La auditoría perdía registros en silencio y acumulaba suscripciones de conectividad",
+    "problema": "AuditSyncService (POST action_logs/register_app) borraba sin dejar rastro los registros con syncAttempts >= 5 (un 401 por token vencido o un endpoint caído bastaban para perder los movimientos), contaba los 401 como intentos fallidos y agregaba un listener de Connectivity().onConnectivityChanged en cada inicio de sesión sin cancelarlo nunca.",
+    "solucion": "En lib/infrastructure/services/audit_sync_service.dart: guardar la suscripción en `static StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription`, cancelarla antes de crear otra y en stopPeriodicSync(); antes de purgar, contar los registros con syncAttempts >= _maxRetries y registrar `Logger.error('Auditoría: se descartan N registros…')`; ante HTTP 401 no incrementar syncAttempts (Logger.warning) para reintentar con el token renovado. Para probarlo: `@visibleForTesting static Dio Function(String, String)? debugDioFactory`, `static AuditDatabase? debugDatabase`, `debugSyncNow()` y `AuditDatabase.forTesting(NativeDatabase.memory())`.",
+    "categorias_id": 6,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-10-29 13:43:10",
+    "actualizada_en": "2026-10-29 13:43:10",
+    "hash": "786c97ad3ea638d02e45e928",
+    "categoria": "red",
+    "tags": [
+      "auditoria",
+      "dio",
+      "zas",
+      "drift",
+      "connectivity_plus"
+    ]
+  },
+  {
+    "id": 242,
+    "titulo": "ambiguous_import: Key definido en package:encrypt y package:flutter/foundation",
+    "problema": "Error de análisis/compilación en una prueba: \"ambiguous_import: The name 'Key' is defined in the libraries 'package:encrypt/encrypt.dart' and 'package:flutter/src/foundation/key.dart'\".",
+    "solucion": "Causa: el archivo importa package:flutter/foundation.dart (por ejemplo para interceptar debugPrint o usar @visibleForTesting) y package:encrypt/encrypt.dart, que exportan ambos un símbolo Key. Solución: `import 'package:flutter/foundation.dart' hide Key;` (o `show debugPrint, visibleForTesting`), o importar encrypt con prefijo (`as enc`).",
+    "categorias_id": 1,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-10-29 13:43:10",
+    "actualizada_en": "2026-10-29 13:43:10",
+    "hash": "2b89e4115bd80fb6a3ba0e6e",
+    "categoria": "compilacion",
+    "tags": [
+      "flutter",
+      "dart",
+      "encrypt",
+      "imports"
+    ]
   }
 ]
