@@ -7773,5 +7773,58 @@
       "walkietalkie",
       "localizacion"
     ]
+  },
+  {
+    "id": 323,
+    "titulo": "[zas] Future en curso queda «pegado» si la función async falla de forma síncrona antes de asignarlo",
+    "problema": "LocationPrefetcher (lib/application/services/location_prefetcher.dart) guardaba la búsqueda en curso así: `final f = _read(); _inFlight = f;` y `_read()` limpiaba `_inFlight = null` en su `finally`. Si el caso de uso del GPS lanzaba en el acto (sin llegar a un await real), el try/catch/finally de la función async corría completo DENTRO de la llamada `_read()`, antes de `_inFlight = f`. Resultado: `_inFlight` quedaba apuntando a un Future ya terminado con '' y cada cobro posterior devolvía '' sin reintentar. Lo detectó la prueba «si el GPS falla devuelve vacío y el siguiente cobro reintenta» (Expected '5,6', Actual '').",
+    "solucion": "Causa: el cuerpo de una función async corre de forma síncrona hasta el primer await; un throw síncrono hace que catch y finally se ejecuten antes de que el llamador asigne el Future devuelto. Arreglo: no limpiar el estado «en curso» dentro de la función; hacerlo desde quien lo asigna, después de asignarlo: `final future = _read(); _inFlight = future; unawaited(future.whenComplete(() { if (identical(_inFlight, future)) _inFlight = null; }));` (whenComplete siempre corre en un microtask posterior). Probar con un mock `thenThrow` (síncrono), no solo con `thenAnswer` async.",
+    "categorias_id": 5,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-02 18:17:29",
+    "actualizada_en": "2026-11-02 18:17:29",
+    "hash": "9b0be6948fc72727d31d5984",
+    "categoria": "asincronia",
+    "tags": [
+      "dart",
+      "zas",
+      "async",
+      "future",
+      "cache",
+      "geolocator"
+    ]
+  },
+  {
+    "id": 324,
+    "titulo": "[walkietalkie] Eco o chillido en llamadas WebRTC cuando dos teléfonos están cerca con altavoz",
+    "problema": "Usuarios: «cuando los teléfonos están cerca se genera eco o ruido» en llamadas de voz (flutter_webrtc, altavoz por defecto, echoCancellation/noiseSuppression/autoGainControl activos y AEC por hardware en Android 10+).",
+    "solucion": "Causa: acople acústico entre dispositivos. El micrófono de A capta el altavoz de B, que reproduce la voz de A; vuelve por la red y forma un bucle (eco; chillido si la ganancia supera 1). La AEC de cada teléfono solo resta lo que reproduce su propio altavoz, así que no hay ajuste de constraints que lo evite. Arreglo: marcar al participante «a mi lado» (tocar su ficha en la llamada) desactiva sus pistas remotas (MediaStreamTrack.enabled=false en la pista que llega en onTrack; flutter_webrtc lo aplica a remoteTracks en nativo) y se lo avisa con la señal webrtc_nearby {on} dirigida (to) para que el otro haga lo mismo; el servidor (MessageRouter) debe incluir el tipo nuevo en el case de webrtc_*. WebRTCManager guarda los silenciados para aplicarlos a pistas que llegan después (ICE restart). Archivos: webrtc_manager.dart (setPeerPlayback), audio_call_cubit.dart (toggleNearby/_setNearby), audio_call_banner_widget.dart (ActionChip + aviso «¿Hay eco?»). Alternativas descartadas: detección automática de cercanía (experimental), pulsar para hablar o auricular por defecto.",
+    "categorias_id": 2,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-02 18:30:34",
+    "actualizada_en": "2026-11-02 18:30:34",
+    "hash": "c3877c222ef4954cc9196b67",
+    "categoria": "runtime",
+    "tags": [
+      "flutter",
+      "walkietalkie",
+      "webrtc",
+      "audio",
+      "eco"
+    ]
   }
 ]
