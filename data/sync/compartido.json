@@ -7619,5 +7619,31 @@
       "bloc",
       "qa"
     ]
+  },
+  {
+    "id": 317,
+    "titulo": "[walkietalkie] El escaneo de red (Scan Network) no se puede detener",
+    "problema": "En Discover Servers, tras pulsar «Scan Network» la pantalla queda en «Scanning for servers...» hasta 30 s sin botón para detenerla; con resultados la búsqueda sigue y no hay forma de volver; al conectar, un servidor nuevo descubierto tapaba el estado de conexión (connectToServer reutilizaba DiscoveryScanning).",
+    "solucion": "Causa: DiscoveryCubit.stopDiscovery solo cancelaba la suscripción, no cambiaba el estado ni la página lo ofrecía. Arreglo: DiscoveryResults lleva isScanning; stopDiscovery cancela (_cancelDiscovery) y emite DiscoveryInitial o los resultados sin isScanning; reset() vuelve al inicio; nuevo estado DiscoveryConnecting y connectToServer detiene la búsqueda antes; el listener ignora servidores si ya no busca (await de IPs propias). discovery_page: botón Stop en buscando y en la lista, Back/Scan again al terminar y Back en error. Prueba: test/presentation/discovery/discovery_cubit_stop_test.dart.",
+    "categorias_id": 4,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-02 17:33:37",
+    "actualizada_en": "2026-11-02 17:33:37",
+    "hash": "466c5d3373ba5fab226cac63",
+    "categoria": "estado",
+    "tags": [
+      "flutter",
+      "walkietalkie",
+      "bloc",
+      "mdns",
+      "discovery"
+    ]
   }
 ]
