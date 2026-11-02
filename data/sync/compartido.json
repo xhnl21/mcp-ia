@@ -7645,5 +7645,57 @@
       "mdns",
       "discovery"
     ]
+  },
+  {
+    "id": 318,
+    "titulo": "[walkietalkie] Registro global de toques en Flutter: el control tocado salía «vacío»",
+    "problema": "Un Listener en MaterialApp.builder hace hitTestInView y recorre el árbol de Elements podando las ramas cuyo renderObject no está en la ruta del hit test; nunca encontraba el botón tocado (siempre 'vacío').",
+    "solucion": "Causa: algunos RenderObject no se agregan a la ruta del hit test aunque sus hijos sí (RenderFractionalTranslation de la animación de página: su hitTest llama solo a hitTestChildren). Arreglo: no podar; recorrer todo el árbol y aceptar un Element solo si element.renderObject está en el conjunto de targets del HitTestResult (así un botón tapado por un diálogo no cuenta). Resolver el control en onPointerDown (al levantar ya pudo navegar) y descartar si el dedo se movió más de kTouchSlop. En pruebas, tester.longPress manda timeStamp cero: usar createGesture().down/up con timeStamp explícito. Archivo: lib/presentation/core/widgets/tap_audit_listener.dart.",
+    "categorias_id": 3,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-02 17:57:47",
+    "actualizada_en": "2026-11-02 17:57:47",
+    "hash": "48f393a2d5887c7729e1c82a",
+    "categoria": "widgets",
+    "tags": [
+      "auditoria",
+      "flutter",
+      "walkietalkie",
+      "hit-test",
+      "gestures"
+    ]
+  },
+  {
+    "id": 319,
+    "titulo": "[walkietalkie] go_router: cambios de pestaña y rutas dentro de StatefulShellRoute no llegan al NavigatorObserver",
+    "problema": "La auditoría de navegación (NavigatorObserver pasado a GoRouter(observers:)) no registraba los cambios de pestaña ni lo que se abría dentro de cada rama (p. ej. /channels/<id>).",
+    "solucion": "Causa: los observers de GoRouter solo se aplican al navegador raíz; cada StatefulShellBranch tiene su propio navegador sin observers. Arreglo: escuchar router.routerDelegate.addListener y registrar currentConfiguration.uri.path cuando cambia (sin query, por si lleva claves). Archivo: lib/core/router/audit_location_logger.dart. Complemento: BlocObserver global (Bloc.observer) que guarda solo el cambio de tipo de estado, y AppLifecycleListener.onStateChange para el ciclo de vida.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-02 17:57:47",
+    "actualizada_en": "2026-11-02 17:57:47",
+    "hash": "41849cd2ad6ae6dc22d5e759",
+    "categoria": null,
+    "tags": [
+      "auditoria",
+      "flutter",
+      "walkietalkie",
+      "bloc",
+      "go_router"
+    ]
   }
 ]
