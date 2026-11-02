@@ -7826,5 +7826,32 @@
       "audio",
       "eco"
     ]
+  },
+  {
+    "id": 325,
+    "titulo": "[zas] El QR del cobro tardaba ~4-5 s: espera fija de 3 s en OrderCubit y GPS de alta precisión en el camino",
+    "problema": "Usuarios reportaron que el QR de «Generar Zas» (vista Cobro Activo, /collection) tardaba mucho en mostrarse. Medido en Redmi Note 8 con marcas ⏱ Cobro: payment-options 0,4–0,65 s + espera fija 3,0 s + ubicación + backend 0,7–1,3 s + dibujo 0,07 s = 4,3–5,1 s (sin contar la elección del método). OrderCubit.createOrder y changeStatus tenían `await Future.delayed(const Duration(seconds: 3))` antes de pedir el QR, y _geoLocation pedía getCurrentPosition(accuracy: high, timeLimit: 10 s) en ese momento.",
+    "solucion": "Causas: (1) espera fija de 3 s sin función en lib/presentation/cubits/order/order_cubit.dart (createOrder y changeStatus) más un emit intermedio a inProgress con QR vacío; (2) el GPS se pedía justo al cobrar. Arreglo: quitar el Future.delayed y el emit intermedio: la vista de carga (OrderStatus.loading) dura lo que tarda el backend, porque _handleOrderResponse ya emite inProgress con el QR. Para la ubicación, LocationPrefetcher (lib/application/services/location_prefetcher.dart, singleton en locator) la busca al abrir la calculadora y al escribir el monto (solo con permiso concedido, sin diálogos) y el cobro la reutiliza si tiene <2 min o espera la búsqueda en curso. Resultado medido: de elegir Pago Móvil a QR visible 0,62–0,76 s (antes 4,0–4,4 s). Medición: ChargeTrace (lib/config/charge_trace.dart), filtrar logcat por «⏱ Cobro».",
+    "categorias_id": 2,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-02 18:56:53",
+    "actualizada_en": "2026-11-02 18:56:53",
+    "hash": "49886ddd2f44d483485f0746",
+    "categoria": "runtime",
+    "tags": [
+      "flutter",
+      "zas",
+      "bloc",
+      "qr",
+      "geolocator",
+      "performance"
+    ]
   }
 ]
