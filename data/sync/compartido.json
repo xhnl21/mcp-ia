@@ -7697,5 +7697,31 @@
       "bloc",
       "go_router"
     ]
+  },
+  {
+    "id": 320,
+    "titulo": "[walkietalkie] Páginas abiertas con Navigator.push dentro de una pestaña de go_router no quedan en la auditoría",
+    "problema": "Con StatefulShellRoute, «Crear canal» (FAB en Channels) y el escáner QR se abrían con Navigator.push(MaterialPageRoute) y no aparecía ninguna navegación en el registro; los diálogos salían como «RouteSettings(none, null)». Además el FAB «+» se registraba sin nombre.",
+    "solucion": "Causa: el push va al navegador de la rama, que no tenía observadores (GoRouter(observers:) solo cubre el raíz) y la ubicación de go_router no cambia. Arreglo: StatefulShellBranch(observers: ...) con una instancia NUEVA de AuditRouterObserver por rama (un NavigatorObserver solo puede estar en un navegador): AppRouter recibe branchObservers como fábrica. RouteSettings(name:) en los MaterialPageRoute y, sin nombre, describir la ruta por su runtimeType (DialogRoute, ModalBottomSheetRoute). Poner tooltip a IconButton/FloatingActionButton sin texto para que el registro (y la accesibilidad) tengan nombre. Prueba: test/core/router/audit_router_observer_test.dart.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-02 18:07:44",
+    "actualizada_en": "2026-11-02 18:07:44",
+    "hash": "d309007078b10333f11be5e7",
+    "categoria": null,
+    "tags": [
+      "auditoria",
+      "flutter",
+      "walkietalkie",
+      "go_router",
+      "navigator"
+    ]
   }
 ]
