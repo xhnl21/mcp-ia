@@ -7723,5 +7723,55 @@
       "go_router",
       "navigator"
     ]
+  },
+  {
+    "id": 321,
+    "titulo": "[walkietalkie] flutter pub add flutter_localizations falla: intl ^0.18.1 prohibido",
+    "problema": "Because every version of flutter_localizations from sdk depends on intl ^0.20.3 and websocket_app depends on intl ^0.18.1, flutter_localizations from sdk is forbidden.",
+    "solucion": "Causa: flutter_localizations fija intl a la versión del SDK. Arreglo: subir intl en pubspec.yaml a la que pide el mensaje (intl: ^0.20.3) y luego `flutter pub add flutter_localizations --sdk=flutter`. Después, en MaterialApp: locale: Locale('es','419'), supportedLocales y localizationsDelegates: GlobalMaterialLocalizations.delegates (botón atrás «Atrás», copiar/pegar y selectores en español latino). DateFormat de intl 0.20 no cambió para el uso de la app.",
+    "categorias_id": 1,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-02 18:14:41",
+    "actualizada_en": "2026-11-02 18:14:41",
+    "hash": "126e7663f01de5ffacfa0550",
+    "categoria": "compilacion",
+    "tags": [
+      "flutter",
+      "walkietalkie",
+      "intl",
+      "localizacion"
+    ]
+  },
+  {
+    "id": 322,
+    "titulo": "[walkietalkie] tester.pageBack() falla tras poner la app en español: «Found 0 widgets with type CupertinoNavigationBarBackButton»",
+    "problema": "Después de agregar GlobalMaterialLocalizations con locale es_419, test/presentation/hotspot_page_test.dart falla en tester.pageBack(): 'One back button expected on screen'.",
+    "solucion": "Causa: pageBack() busca el BackButton por el tooltip en inglés «Back» (o el botón de Cupertino); con la app en español el tooltip es «Atrás». Arreglo: await tester.tap(find.byTooltip('Atrás')) (o find.byType(BackButton)). También cambiar los find.text con títulos traducidos (p. ej. 'Server Dashboard' → 'Panel del servidor').",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-02 18:14:41",
+    "actualizada_en": "2026-11-02 18:14:41",
+    "hash": "28bc328245e5feb25d190050",
+    "categoria": null,
+    "tags": [
+      "flutter",
+      "flutter_test",
+      "walkietalkie",
+      "localizacion"
+    ]
   }
 ]
