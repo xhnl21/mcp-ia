@@ -7878,5 +7878,30 @@
       "cedula",
       "estilo_neutral"
     ]
+  },
+  {
+    "id": 327,
+    "titulo": "[estilo_neutral] El pre-commit rechaza un arreglo chico: «ERROR DE ANÁLISIS ESTÁTICO» por avisos info anteriores",
+    "problema": "git commit falla en Gate 4/7 (flutter analyze) con 89 avisos info curly_braces_in_flow_control_structures en sheets_data_service.dart y formularios que no tocó el cambio; además Gate 0 reformatea a 80 columnas los archivos del commit (código escrito a 120), y el diff crece a miles de líneas.",
+    "solucion": "Causa: el gate (.githooks/pre-commit, 2026-10-26) es posterior al código; flutter analyze falla también con infos y Gate 0 aplica dart format a todo archivo en stage. Arreglo sin --no-verify: guardar copia de los archivos con el arreglo, git checkout de esos archivos, `dart format <archivos>` + `dart fix --apply --code=curly_braces_in_flow_control_structures <archivo>`, commit `style:` solo con eso; luego restaurar las copias (y dart format) para que el commit `fix:` quede con el diff mínimo. Corrige la nota de #326 («no correr dart format»): en este repo el hook formatea igual, mejor separar el formato en su propio commit.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-02 19:37:35",
+    "actualizada_en": "2026-11-02 19:37:35",
+    "hash": "13641bbc45f095678468855d",
+    "categoria": null,
+    "tags": [
+      "dart-format",
+      "estilo_neutral",
+      "git-hooks",
+      "flutter-analyze"
+    ]
   }
 ]
