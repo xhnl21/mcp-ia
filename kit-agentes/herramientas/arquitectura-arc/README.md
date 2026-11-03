@@ -17,9 +17,9 @@ Uso: pasarle al agente el prompt de la regla dentro del proyecto. Si el auditor 
 | Proyecto | Auditor | Reglas activas | Notas |
 |---|---|---|---|
 | walkietalkie | Referencia (analyzer 8.4.1) | 009, 010, 011, 012, 013 | `safeEmitMixin = ErrorHandlerMixin`, `pinningClass = TrustedServerStore`, `errorHandlerClass = Logger`, tres carpetas `data_sources/` |
-| estilo_neutral | Referencia (analyzer 14.7.0) | 009, 010, 011 | Sin pinning ni manejador central: 012 y 013 sin activar |
-| estilo_neutral_cliente | Referencia (analyzer 14.7.0) | 009, 010, 011 | Sin pinning ni datasources: 012 y 013 sin activar |
-| ReelKeeper | Propio (por líneas, ARC-001 a ARC-007) | 009, 010, 011 portadas | Sin línea base: ningún archivo pasaba los límites. Sin clientes HTTP ni manejador central |
+| estilo_neutral | Referencia (analyzer 14.7.0) | 009 a 013 | `errorHandlerClass = Failure` (lib/core/error), datasources de cualquier feature; `DioClient` sin pinning con excepción hasta 2027-05-03 |
+| estilo_neutral_cliente | Referencia (analyzer 14.7.0) | 009 a 013 | Datasources = `lib/data/`, `errorHandlerClass = ClienteApiException`; el `Dio` y cinco catch intencionales de `cliente_api.dart` (y uno de `google_auth.dart`) con excepción hasta 2027-05-03 |
+| ReelKeeper | Propio (por líneas, ARC-001 a ARC-007) | 009 a 013 portadas | Sin línea base (nada pasaba los límites); sin clientes HTTP; `errorHandlerClass = Failure` (Either). Ojo: sus `Failure` llevan `e.toString()` y la vista muestra `failure.message` |
 | indios | — | — | No es un proyecto Dart |
 
 ## Lo aprendido al aplicarlas
@@ -28,4 +28,6 @@ Uso: pasarle al agente el prompt de la regla dentro del proyecto. Si el auditor 
 - **No subir analyzer de más:** `flutter pub add --dev analyzer` puede mover dependencias transitivas de drift/freezed. Fijarlo en la versión que ya estaba resuelta: `flutter pub add --dev "analyzer:>=8.4.1 <9.0.0"`.
 - **Guardián del hook:** dentro de comillas simples, `grep -E` necesita `\.`, no `\\.` (las versiones anteriores de estos prompts traían el doble).
 - **Prueba genérica:** la prueba del detector puede leer los parámetros del auditor (`safeEmitMixin`, `pinningClass`, `errorHandlerClass`, `datasourcesDirs`, `stateBaseClasses`) y saltar los grupos de reglas inactivas (`skip: !activeRules.contains(...)`); así el mismo archivo sirve en todos los proyectos.
+- **Activar ARC-012/013 antes de tener pinning o manejador central:** se puede, para que el proyecto no crezca sin ellos. `pinningClass` lleva el nombre que tendrá la clase (`CertificatePinningConfig`): mientras no exista, ningún cliente HTTP nuevo pasa. Lo que ya existía va a `excepciones` con motivo concreto y `vence`; al vencer vuelve a bloquear y obliga a decidir.
+- **Datasources de features futuras:** en vez de una lista fija de carpetas, un patrón (`datasourcesPath = RegExp(r'^lib/(features/\w+/)?infrastructure/datasources/')`), y la prueba elige un ejemplo que lo cumpla.
 - **Proyectos con formato automático en el pre-commit:** al tocar muchos Cubits sin formato previo, hacer primero un commit `style:` solo con `dart format` y las llaves que pida el análisis, y después el cambio real, para que el diff se pueda revisar.
