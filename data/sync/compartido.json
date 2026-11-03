@@ -8222,5 +8222,30 @@
       "dialog",
       "listenwhen"
     ]
+  },
+  {
+    "id": 341,
+    "titulo": "[reelkeeper] La pantalla mostraba el texto técnico de la excepción (Failure.message con e.toString())",
+    "problema": "Datasources y repositorios hacían return left(Failure.database(message: e.toString())) (24 lugares) y las pantallas (library_page, player_page, receiver_error_card) mostraban failure.message: el usuario veía 'SqliteException(1)…' o la salida cruda de yt-dlp ('ERROR: [youtube] …'). La regla ARC-013 no lo detecta porque sí se arma un Failure.",
+    "solucion": "Causa: el mismo campo servía para el detalle técnico y para el texto de la pantalla. Arreglo en un solo lugar: getter Failure.userMessage en lib/core/error/failure.dart (freezed: agregar `const Failure._();`) con un texto por tipo; solo invalidUrl y binaryNotFound devuelven su message (ya son textos para el usuario, del dominio y del canal nativo). Las tres pantallas usan userMessage; message queda para depurar. Pruebas: test/core/error/failure_test.dart y receiver_error_card_test.dart (falla con el código anterior).",
+    "categorias_id": 3,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-03 13:52:31",
+    "actualizada_en": "2026-11-03 13:52:31",
+    "hash": "e18888369dd19b3775f05852",
+    "categoria": "widgets",
+    "tags": [
+      "flutter",
+      "reelkeeper",
+      "errores",
+      "freezed"
+    ]
   }
 ]
