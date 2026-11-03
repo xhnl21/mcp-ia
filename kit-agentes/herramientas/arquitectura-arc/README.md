@@ -1,4 +1,4 @@
-# Reglas de arquitectura ARC-009 a ARC-018
+# Reglas de arquitectura ARC-009 a ARC-019
 
 Prompts autocontenidos para que un agente (Claude Code, Antigravity u OpenCode) agregue una regla de arquitectura al pre-commit de un proyecto Dart/Flutter. Todos comparten el mismo auditor (`scripts/script_audit_architecture.dart`, con el AST de `analyzer`), su configuración (`scripts/arc_config.json`) y su prueba (`test/scripts/script_audit_architecture_test.dart`): el código del auditor es idéntico en los nueve prompts. Orden recomendado y dependencias: [ARC INDICE de prompts.md](ARC%20INDICE%20de%20prompts.md).
 
@@ -13,6 +13,7 @@ Prompts autocontenidos para que un agente (Claude Code, Antigravity u OpenCode) 
 | ARC-016 | [ARC-016 Equatable props completos.md](ARC-016%20Equatable%20props%20completos.md) | Todo campo de un `Equatable` está en `props` | `equatable` |
 | ARC-017 | [ARC-017 clave de cifrado en el codigo.md](ARC-017%20clave%20de%20cifrado%20en%20el%20codigo.md) | La clave de SQLCipher (`PRAGMA key`) no es un literal | Una base SQLCipher; si no, no se activa |
 | ARC-018 | [ARC-018 id del comercio de la sesion.md](ARC-018%20id%20del%20comercio%20de%20la%20sesion.md) | El id de la sesión sale de un único resolutor | Un dato de sesión con varios nombres; si no, no se activa |
+| ARC-019 | [ARC-019 force-unwrap fuera del dominio.md](ARC-019%20force-unwrap%20fuera%20del%20dominio.md) | Ningún `!` postfijo nuevo fuera de la capa que ya lo prohíbe (detectado por AST) | Línea base (casos existentes) |
 | Aviso | [Aviso codificacion de archivos md.md](Aviso%20codificacion%20de%20archivos%20md.md) | El pre-commit avisa (sin bloquear) de un `.md` con tildes dañadas | — |
 
 Uso: pasarle al agente el prompt de la regla dentro del proyecto. Si el auditor ya existe (otro prompt ARC lo creó), solo se agrega la regla a `activeRules`.

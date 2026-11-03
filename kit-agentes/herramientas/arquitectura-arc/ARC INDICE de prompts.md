@@ -22,6 +22,7 @@
 | 8 | `ARC-013 errores de datasources.md` | Texto técnico de errores visible al usuario y errores sin auditar | Manejador central de errores | Se corrige antes de activar |
 | 9 | `ARC-017 clave de cifrado en el codigo.md` | Clave de la base cifrada escrita en el código | SQLCipher | Se corrige antes de activar (con migración) |
 | 10 | `ARC-018 id del comercio de la sesion.md` | Lecturas a mano de un dato de sesión con varios nombres | Un método único que lo resuelve | Línea base |
+| 11 | `ARC-019 force-unwrap fuera del dominio.md` | `Null check operator used on a null value` por un `!` sobre un dato nulo | Ninguno (también TypeScript, Kotlin y Swift) | Línea base: puede bajar, no subir |
 
 ## Qué queda en el proyecto destino
 
