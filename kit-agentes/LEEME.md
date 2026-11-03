@@ -44,6 +44,7 @@ Una sola fuente en este repo y **enlaces simbólicos** desde donde cada agente b
 - **Reglas de Antigravity:** cada `.md` de `compartido/reglas/` empieza con `trigger: always_on`. Sin ese encabezado, agy no la carga siempre (solución #205 en mcp-ia).
 - **Agregar una regla:** crea `compartido/reglas/<nombre>.md` con ese encabezado, ejecuta `enlazar_compartido` (regenera `INDICE.md` para Claude) y haz commit y push.
 - **Agregar una herramienta:** `herramientas/<nombre>/SKILL.md` (procedimiento) + `PROMPT.md` (para otros agentes); `enlazar_compartido` la enlaza en los dos agentes.
+- **Prompts de reglas de arquitectura (ARC-009 a ARC-013):** `herramientas/arquitectura-arc/`, uno por regla, para pasárselos a un agente dentro de un proyecto Dart/Flutter. No es una skill (no tiene `SKILL.md`, así que `enlazar_compartido` no la enlaza); su `README.md` lleva qué proyecto adoptó cada regla y lo aprendido al aplicarlas.
 
 | Regla | Qué exige |
 |---|---|
