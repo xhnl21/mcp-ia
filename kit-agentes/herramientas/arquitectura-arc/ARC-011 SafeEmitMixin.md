@@ -16,6 +16,27 @@ Reglas de trabajo, en este orden:
 6. Antes de declarar una función, clase o constante nueva, **busca si el nombre ya existe** (`grep -rn "nombre" lib scripts test`). En Dart un nombre repetido en el mismo archivo no compila, pero en archivos distintos puede ocultar al otro por imports.
 7. Cada dato de tu informe debe salir de un comando que ejecutaste. Lo que no pudiste comprobar va en «No verificado».
 
+## 0.1 ¿Aplica a este proyecto? Qué puedes omitir
+
+**Requisito:** El proyecto usa `flutter_bloc` o `bloc` (`grep -n "bloc" pubspec.yaml`).
+
+**Si no se cumple:** Si no usa bloc (usa Riverpod, Provider, GetX…), **la regla no aplica: no la actives** e infórmalo.
+
+**Puedes omitir, según el proyecto:**
+
+- Si el proyecto ya tiene `SafeEmitMixin` (o un equivalente), omite crearlo (sección 1): solo ajusta `safeEmitMixin` al nombre existente.
+- Si el equipo decide que los `Bloc` (con `Emitter`) no lo necesitan, quita `Bloc` y `HydratedBloc` de `stateBaseClasses` y omite sus casos de prueba.
+- Si **todos** los Cubits ya usan el mixin, omite el paso 2 de la sección 8 (no hay nada que corregir).
+- Proyecto **sin el kit de mcp-ia**: omite la sección 7.1 y usa la 7.2.
+- Proyecto **con el kit**: omite la sección 7.2.
+- Proyecto **sin CI activo**: omite la sección 7.3.
+- Proyecto **Dart puro** (sin Flutter): en las pruebas usa `package:test` en lugar de `flutter_test` (sección 6) y `dart test`/`dart analyze` en lugar de `flutter test`/`flutter analyze` (sección 10).
+- Si el auditor de referencia **ya existe** (lo creó otro prompt ARC), omite crearlo (sección 4) y la configuración inicial (sección 5): solo agregas la regla (tabla de la sección 3).
+- Si la regla **no tiene línea base** (todas salvo ARC-009, ARC-010 y ARC-018), omite todo lo relativo a `--generar-linea-base`.
+- Si la regla **no aplica** al proyecto (ver arriba), omite todo lo demás: no crees el auditor solo para dejarla inactiva; informa y termina.
+
+Todo lo que omitas, menciónalo en el informe (sección 13) con el motivo.
+
 ## 1. Contexto y motivo
 
 En `flutter_bloc`, llamar a `emit` después de `close()` lanza `StateError: Cannot emit new states after calling close`. Pasa cuando una operación asíncrona (una petición HTTP, un temporizador, un stream) termina después de que la pantalla se cerró y su Cubit se destruyó. El error aparece en producción, de forma intermitente y difícil de reproducir.
@@ -81,6 +102,7 @@ Decide según lo encontrado:
 |---|---|
 | No existe `scripts/script_audit_architecture.dart` | Lo creas completo (sección 4) con `activeRules = {'ARC-011'}`. |
 | Existe y es el **auditor de referencia de este prompt** (tiene `activeRules` y la sección `// ARC-011`) | Solo agregas `'ARC-011'` a `activeRules` y ajustas los parámetros de la regla. No lo reescribas. |
+| Existe el auditor de referencia pero **sin la sección `// ARC-011`** (lo creó una versión anterior de estos prompts, con menos reglas) | Reemplázalo por el de la sección 4 **conservando** los valores de los parámetros que ya tenía y su `activeRules` (más `'ARC-011'`). Antes, `git diff` del archivo para no perder ajustes propios; la línea base de `arc_config.json` no cambia. |
 | Existe pero es **otro auditor propio** del proyecto (otra estructura) | No lo reemplaces. Porta solo la detección de la regla (la función o el método `visit...` marcado `// ARC-011`) a su estructura, con sus pruebas. Si eso no es posible sin reescribirlo, detente e informa. |
 | No hay `analyzer` en `dev_dependencies` | `dart pub add --dev analyzer` (o `flutter pub add --dev analyzer`). Anota la versión resuelta: el código está probado con **analyzer 13.3.0**; con versiones < 13 cambia `node.namePart.typeName` por `node.name` (ver sección 11). |
 
@@ -146,6 +168,19 @@ const Set<String> httpClients = {'Dio', 'HttpClient'};
 const String datasourcesDir = 'lib/infrastructure/datasources/';
 const String errorHandlerClass = 'CentralErrorHandler';
 
+/// ARC-015: llamadas que muestran un aviso al usuario dentro de un listener.
+final RegExp noticeCall = RegExp(r'show\w*Dialog|showModal\w*|showSnackBar');
+
+/// ARC-018: archivo que define el método que lee el id del comercio de la
+/// sesión (el único que puede leerlo a mano), el método y las lecturas a mano
+/// que se prohíben fuera de él.
+const String merchantIdSourceFile =
+    'lib/presentation/cubits/auth/handlers/login_session_handler.dart';
+const String merchantIdGetter = 'loginCubit.getCurrentMerchantId()';
+final RegExp sessionMerchantIdRead = RegExp(
+  r'''(getData\(\)|loginData|sessionData)\??\[['"](merchantId|merchant_id)['"]\]''',
+);
+
 /// Reglas activas. Quita de aquí las que el proyecto no adopta.
 const Set<String> activeRules = {
   'ARC-009',
@@ -153,10 +188,14 @@ const Set<String> activeRules = {
   'ARC-011',
   'ARC-012',
   'ARC-013',
+  'ARC-015',
+  'ARC-016',
+  'ARC-017',
+  'ARC-018',
 };
 
 /// Reglas que admiten línea base (las demás bloquean siempre).
-const Set<String> baselineRules = {'ARC-009', 'ARC-010'};
+const Set<String> baselineRules = {'ARC-009', 'ARC-010', 'ARC-018'};
 
 // ---------------------------------------------------------------------------
 // Modelo
@@ -299,7 +338,28 @@ List<ArcViolation> auditSource(String path, String source) {
   return [
     ...visitor.violations,
     ..._auditFileSize(normalizedPath, lines, result.unit),
+    ..._auditMerchantIdReads(normalizedPath, lines),
   ].where((v) => activeRules.contains(v.rule)).toList();
+}
+
+/// ARC-018: el id del comercio de la sesión se lee con [merchantIdGetter],
+/// que resuelve los nombres que usa el backend; leerlo a mano repite (o se
+/// salta) esa lógica. Las lecturas de mensajes del backend no cuentan.
+List<ArcViolation> _auditMerchantIdReads(String path, List<String> lines) {
+  if (!path.startsWith('lib/') || path == merchantIdSourceFile) return const [];
+  return [
+    for (var i = 0; i < lines.length; i++)
+      if (!lines[i].trimLeft().startsWith('//') &&
+          sessionMerchantIdRead.hasMatch(lines[i]))
+        ArcViolation(
+          rule: 'ARC-018',
+          file: path,
+          line: i + 1,
+          code: lines[i].trim(),
+          reason:
+              'Lee el id del comercio de la sesión con $merchantIdGetter, no a mano.',
+        ),
+  ];
 }
 
 /// ARC-009 y ARC-010: exceso de líneas o de imports. El peso es lo que sobra.
@@ -365,6 +425,17 @@ Set<String> _errorHelpersOf(CompilationUnit unit) {
   return helpers;
 }
 
+/// Junta los `if` de un bloque (también los `else if`, que son `if` anidados).
+class _IfFinder extends RecursiveAstVisitor<void> {
+  final ifs = <IfStatement>[];
+
+  @override
+  void visitIfStatement(IfStatement node) {
+    ifs.add(node);
+    super.visitIfStatement(node);
+  }
+}
+
 class _ArcAstVisitor extends RecursiveAstVisitor<void> {
   final String filePath;
   final LineInfo lineInfo;
@@ -412,7 +483,115 @@ class _ArcAstVisitor extends RecursiveAstVisitor<void> {
         '${name.lexeme} extiende $superName sin $safeEmitMixin: un emit tras close() lanzaría StateError.',
       );
     }
+    if (filePath.startsWith('lib/') && superName == 'Equatable') {
+      _checkEquatableProps(node);
+    }
     super.visitClassDeclaration(node);
+  }
+
+  // ARC-016 ------------------------------------------------------------------
+  /// Un campo de un `Equatable` que falta en `props` no cuenta para la
+  /// igualdad: si solo cambia ese campo, el estado nuevo se considera igual,
+  /// el Cubit no lo emite y la pantalla no se actualiza.
+  void _checkEquatableProps(ClassDeclaration node) {
+    final fields = <Token>[];
+    String? props;
+    for (final member in node.body.childEntities) {
+      if (member is FieldDeclaration && !member.isStatic) {
+        fields.addAll(member.fields.variables.map((v) => v.name));
+      } else if (member is MethodDeclaration && member.name.lexeme == 'props') {
+        props = member.body.toSource();
+      }
+    }
+    // Sin props propio (heredado de una base) no se puede comprobar aquí.
+    if (props == null) return;
+    for (final field in fields) {
+      if (!RegExp('\\b${field.lexeme}\\b').hasMatch(props)) {
+        _add(
+          'ARC-016',
+          field.offset,
+          '${field.lexeme} no está en props de ${node.namePart.typeName.lexeme}: un cambio solo de ese campo no se emite.',
+        );
+      }
+    }
+  }
+
+  // ARC-017 ------------------------------------------------------------------
+  @override
+  void visitSimpleStringLiteral(SimpleStringLiteral node) {
+    // Una clave escrita en el código se extrae del binario. Con interpolación
+    // ('$key') el literal es StringInterpolation y no pasa por aquí.
+    if (filePath.startsWith('lib/') &&
+        RegExp(
+          r'PRAGMA\s+(re)?key',
+          caseSensitive: false,
+        ).hasMatch(node.value)) {
+      _add(
+        'ARC-017',
+        node.offset,
+        'Clave de cifrado escrita en el código: léela del almacenamiento seguro e interpólala.',
+      );
+    }
+    super.visitSimpleStringLiteral(node);
+  }
+
+  // ARC-015 ------------------------------------------------------------------
+  /// Un listener que muestra un aviso según un campo del estado
+  /// (`state.status == error`) necesita un `listenWhen` que lo compare con el
+  /// anterior; si no, el aviso se repite con cualquier otra emisión mientras
+  /// el campo siga igual. Los que solo preguntan el tipo (`state is XError`)
+  /// reaccionan a eventos y no cuentan.
+  void _checkBlocListener(String name, ArgumentList args, int offset) {
+    if (!filePath.startsWith('lib/')) return;
+    if (name != 'BlocListener' && name != 'BlocConsumer') return;
+    // analyzer >= 13: los argumentos con nombre son NamedArgument
+    // (name/argumentExpression); antes, NamedExpression (name.label/expression).
+    Expression? arg(String key) {
+      for (final a in args.arguments.whereType<NamedArgument>()) {
+        if (a.name.lexeme == key) return a.argumentExpression;
+      }
+      return null;
+    }
+
+    final listener = arg('listener');
+    if (listener is! FunctionExpression) return;
+    final params = listener.parameters?.parameters ?? const [];
+    final stateName = params.length > 1 ? params[1].name?.lexeme ?? '' : '';
+    if (stateName.isEmpty || !_showsNoticeOnField(listener.body, stateName)) {
+      return;
+    }
+    final listenWhen = arg('listenWhen');
+    final whenParams = listenWhen is FunctionExpression
+        ? listenWhen.parameters?.parameters ?? const <FormalParameter>[]
+        : const <FormalParameter>[];
+    final previous = whenParams.isNotEmpty
+        ? whenParams.first.name?.lexeme ?? ''
+        : '';
+    final usesPrevious =
+        listenWhen is FunctionExpression &&
+        previous.isNotEmpty &&
+        !previous.startsWith('_') &&
+        RegExp('\\b$previous\\b').hasMatch(listenWhen.body.toSource());
+    if (!usesPrevious) {
+      _add(
+        'ARC-015',
+        offset,
+        '$name muestra un aviso según un campo del estado sin un listenWhen que lo compare con el anterior: el aviso se repite con cualquier otra emisión.',
+      );
+    }
+  }
+
+  /// Si algún `if` del listener muestra un aviso y su condición compara un
+  /// campo del estado (`state.status == x`, `state.message != null`).
+  static bool _showsNoticeOnField(FunctionBody body, String stateName) {
+    final field = RegExp('\\b$stateName\\.\\w+[\\w.?]*\\s*(==|!=)');
+    final finder = _IfFinder();
+    body.accept(finder);
+    return finder.ifs.any(
+      (i) =>
+          field.hasMatch(i.expression.toSource()) &&
+          noticeCall.hasMatch(i.thenStatement.toSource()),
+    );
   }
 
   // ARC-012 ------------------------------------------------------------------
@@ -428,6 +607,11 @@ class _ArcAstVisitor extends RecursiveAstVisitor<void> {
 
   @override
   void visitInstanceCreationExpression(InstanceCreationExpression node) {
+    _checkBlocListener(
+      node.constructorName.type.name.lexeme,
+      node.argumentList,
+      node.offset,
+    );
     _checkHttpClient(
       node.constructorName.type.name.lexeme,
       node.constructorName.offset,
@@ -440,6 +624,7 @@ class _ArcAstVisitor extends RecursiveAstVisitor<void> {
     // Sin resolución de tipos, `Dio()` se lee como una llamada, no como `new`.
     if (node.target == null) {
       _checkHttpClient(node.methodName.name, node.methodName.offset);
+      _checkBlocListener(node.methodName.name, node.argumentList, node.offset);
     }
     super.visitMethodInvocation(node);
   }
@@ -645,7 +830,8 @@ Si no existe, créalo así (las claves son obligatorias aunque estén vacías):
   "excepciones": [],
   "linea_base": {
     "ARC-009": {},
-    "ARC-010": {}
+    "ARC-010": {},
+    "ARC-018": {}
   }
 }
 ````
@@ -665,7 +851,7 @@ La línea base **no se edita a mano**: se genera con `dart run scripts/script_au
 
 ## 6. Pruebas del detector
 
-El detector también se prueba, para que nadie lo debilite sin que falle el commit. Crea (o completa) `test/scripts/script_audit_architecture_test.dart`. Este es el archivo de referencia con los casos de **todas** las reglas ARC-009 a ARC-013; **conserva solo los grupos de las reglas que estén en `activeRules`** (y el grupo «línea base» si alguna de ARC-009/ARC-010 está activa), y agrega los casos propios del proyecto que se indican en la sección 2.
+El detector también se prueba, para que nadie lo debilite sin que falle el commit. Crea (o completa) `test/scripts/script_audit_architecture_test.dart`. Este es el archivo de referencia con los casos de **todas** las reglas ARC-009 a ARC-018; **conserva solo los grupos de las reglas que estén en `activeRules`** (y el grupo «línea base» si alguna de ARC-009, ARC-010 o ARC-018 está activa), y agrega los casos propios del proyecto que se indican en la sección 2.
 
 ````dart
 // test/scripts/script_audit_architecture_test.dart
@@ -679,7 +865,8 @@ import '../../scripts/script_audit_architecture.dart'
         applyConfig,
         auditSource,
         maxFileImports,
-        maxFileLines;
+        maxFileLines,
+        merchantIdSourceFile;
 
 List<String> rulesOf(String path, String source) =>
     auditSource(path, source).map((v) => v.rule).toList();
@@ -777,7 +964,7 @@ void main() {
     });
 
     test('permite la clase con el mixin y otras clases', () {
-      final source =
+      const source =
           'class A extends Cubit<S> with SafeEmitMixin<S> {}\n'
           'class B extends StatelessWidget {}';
       expect(rulesOf('lib/c.dart', source), isNot(contains('ARC-011')));
@@ -844,6 +1031,141 @@ void main() {
       expect(
         rulesOf('lib/presentation/x.dart', source),
         isNot(contains('ARC-013')),
+      );
+    });
+  });
+
+  group('ARC-015 (avisos repetidos en listeners)', () {
+    const path = 'lib/presentation/screens/x/x_screen.dart';
+    String screen(
+      String listenWhen, {
+      String condition = 'state.status == S.error',
+    }) =>
+        '''
+Widget build(BuildContext context) => BlocConsumer<C, S>(
+  $listenWhen
+  listener: (context, state) {
+    if ($condition) {
+      DialogUtils.showTemporaryDialog(context, 'Error');
+    }
+  },
+  builder: (context, state) => const SizedBox(),
+);
+''';
+
+    test('detecta un aviso según un campo sin listenWhen', () {
+      expect(rulesOf(path, screen('')), contains('ARC-015'));
+      expect(
+        rulesOf(path, screen('', condition: 'state.message != null')),
+        contains('ARC-015'),
+      );
+    });
+
+    test('detecta un listenWhen que no mira el estado anterior', () {
+      final source = screen('listenWhen: (_, c) => c.status == S.error,');
+      expect(rulesOf(path, source), contains('ARC-015'));
+    });
+
+    test('permite un listenWhen que compara con el anterior', () {
+      final source = screen('listenWhen: (p, c) => p.status != c.status,');
+      expect(rulesOf(path, source), isNot(contains('ARC-015')));
+    });
+
+    test('un aviso según el tipo del estado no cuenta', () {
+      final source = screen('', condition: 'state is XError');
+      expect(rulesOf(path, source), isNot(contains('ARC-015')));
+    });
+
+    test('una comparación de campos fuera del if del aviso no cuenta', () {
+      const source = '''
+Widget build(BuildContext context) => BlocConsumer<C, S>(
+  listener: (context, state) {
+    if (state is XError) DialogUtils.showTemporaryDialog(context, 'Error');
+    if (state.index != null) move(state.index);
+  },
+  builder: (context, state) => const SizedBox(),
+);
+''';
+      expect(rulesOf(path, source), isNot(contains('ARC-015')));
+    });
+  });
+
+  group('ARC-016 (Equatable: todos los campos en props)', () {
+    test('detecta el campo que falta en props', () {
+      const source = '''
+class S extends Equatable {
+  final int a;
+  final String b;
+  const S(this.a, this.b);
+  @override
+  List<Object?> get props => [a];
+}''';
+      final v = auditSource('lib/x.dart', source);
+      expect(v.map((v) => v.rule), contains('ARC-016'));
+      expect(v.firstWhere((v) => v.rule == 'ARC-016').reason, contains('b'));
+    });
+
+    test('permite todos los campos, estáticos fuera y props heredado', () {
+      const source = '''
+class S extends Equatable {
+  static const x = 1;
+  final int a;
+  const S(this.a);
+  @override
+  List<Object?> get props => [a];
+}
+class T extends Equatable {
+  final int a;
+  const T(this.a);
+}''';
+      expect(rulesOf('lib/x.dart', source), isNot(contains('ARC-016')));
+    });
+  });
+
+  group('ARC-017 (clave de cifrado escrita en el código)', () {
+    test('detecta PRAGMA key y rekey con texto fijo', () {
+      for (final sql in ["PRAGMA key = 'abc';", "pragma rekey = 'x';"]) {
+        expect(
+          rulesOf('lib/x.dart', 'void f(db) { db.execute("$sql"); }'),
+          contains('ARC-017'),
+          reason: sql,
+        );
+      }
+    });
+
+    test('permite la clave interpolada desde una variable', () {
+      const source = r'''void f(db, k) { db.execute("PRAGMA key = '$k';"); }''';
+      expect(rulesOf('lib/x.dart', source), isNot(contains('ARC-017')));
+    });
+  });
+
+  group('ARC-018 (id del comercio de la sesión)', () {
+    test('detecta lecturas a mano de los datos de sesión', () {
+      for (final code in [
+        "final id = loginData['merchantId'];",
+        "final id = sessionData['merchant_id'];",
+        "final id = loginCubit.getData()['merchantId'];",
+      ]) {
+        expect(rulesOf('lib/x.dart', code), contains('ARC-018'), reason: code);
+      }
+    });
+
+    test('permite getCurrentMerchantId, mensajes del backend y el handler', () {
+      const allowed = [
+        'final id = loginCubit.getCurrentMerchantId();',
+        "final id = rawData['merchant_id'];",
+        "// loginData['merchantId'] en un comentario",
+      ];
+      for (final code in allowed) {
+        expect(
+          rulesOf('lib/x.dart', code),
+          isNot(contains('ARC-018')),
+          reason: code,
+        );
+      }
+      expect(
+        rulesOf(merchantIdSourceFile, "final id = loginData['merchantId'];"),
+        isNot(contains('ARC-018')),
       );
     });
   });
@@ -944,8 +1266,7 @@ Lista de comprobación:
 | Síntoma | Causa | Arreglo |
 |---|---|---|
 | `The getter 'name' isn't defined for the type 'ClassDeclaration'` | analyzer ≥ 13 movió el nombre de la clase a `ClassNamePart` | Usa `node.namePart.typeName` (ya lo hace el código de referencia). Con analyzer < 13 es al revés: usa `node.name`. |
-| Con analyzer < 13: `The property 'childEntities' can't be unconditionally accessed` y `'body' is experimental` en `_errorHelpersOf` | En analyzer < 13 `ClassDeclaration.body` es experimental y puede ser nulo | Recorre `declaration.members` en lugar de `declaration.body.childEntities`. Probado con analyzer 8.4.1 (walkietalkie); con 14.7.0 el código de referencia compila sin cambios. |
-| El guardián del pre-commit nunca agrega la prueba del detector | Versiones anteriores de este prompt traían `\\.` dentro de las comillas simples del `grep -E`: el grep recibe dos barras y busca una barra literal | Usa `\.` (una barra), como en la sección 7.1. Comprueba: `echo scripts/arc_config.json \| grep -Eq '^(scripts/arc_config\.json)' && echo ok`. |
+| `The name 'NamedArgument' isn't a type` (o, al revés, `NamedExpression` sin `label`) | La API de los argumentos con nombre cambió en analyzer 13 | analyzer ≥ 13: `NamedArgument` con `name.lexeme` y `argumentExpression` (lo usa el código de referencia). analyzer < 13: `NamedExpression` con `name.label.name` y `expression`. |
 | `Target of URI doesn't exist: 'package:analyzer/...'` | Falta la dependencia | `dart pub add --dev analyzer` (o `flutter pub add --dev analyzer`). |
 | La prueba del detector no encuentra `auditSource`/`applyConfig` | El import relativo no apunta al script | El test vive en `test/scripts/` y el script en `scripts/`: el import es `'../../scripts/script_audit_architecture.dart'`. |
 | El hook no ejecuta la auditoría en un commit que solo cambia el JSON | El bloque quedó después de la salida temprana «sin archivos Dart» | Muévelo antes (sección 7.1). |
