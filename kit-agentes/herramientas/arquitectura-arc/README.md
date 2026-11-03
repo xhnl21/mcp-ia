@@ -19,7 +19,7 @@ Uso: pasarle al agente el prompt de la regla dentro del proyecto. Si el auditor 
 | walkietalkie | Referencia (analyzer 8.4.1) | 009, 010, 011, 012, 013 | `safeEmitMixin = ErrorHandlerMixin`, `pinningClass = TrustedServerStore`, `errorHandlerClass = Logger`, tres carpetas `data_sources/` |
 | estilo_neutral | Referencia (analyzer 14.7.0) | 009 a 013 | `errorHandlerClass = Failure` (lib/core/error), datasources de cualquier feature; `DioClient` sin pinning con excepción hasta 2027-05-03 |
 | estilo_neutral_cliente | Referencia (analyzer 14.7.0) | 009 a 013 | Datasources = `lib/data/`, `errorHandlerClass = ClienteApiException`; el `Dio` y cinco catch intencionales de `cliente_api.dart` (y uno de `google_auth.dart`) con excepción hasta 2027-05-03 |
-| ReelKeeper | Propio (por líneas, ARC-001 a ARC-007) | 009 a 013 portadas | Sin línea base (nada pasaba los límites); sin clientes HTTP; `errorHandlerClass = Failure` (Either). Ojo: sus `Failure` llevan `e.toString()` y la vista muestra `failure.message` |
+| ReelKeeper | Propio (por líneas, ARC-001 a ARC-007) | 009 a 013 portadas | Sin línea base (nada pasaba los límites); sin clientes HTTP; `errorHandlerClass = Failure` (Either). Sus `Failure` llevan `e.toString()` en `message`: la vista muestra `userMessage` (mcp-ia #341), ya que ARC-013 no lo detecta |
 | indios | — | — | No es un proyecto Dart |
 
 ## Lo aprendido al aplicarlas
