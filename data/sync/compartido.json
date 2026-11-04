@@ -9571,5 +9571,59 @@
       "oauth",
       "google_sign_in"
     ]
+  },
+  {
+    "id": 394,
+    "titulo": "[zas] Comprobante de débito inmediato muestra BANCO EMISOR N/A y TELÉFONO ---",
+    "problema": "Después de un débito inmediato confirmado, el comprobante (CollectionSuccessView) mostraba «BANCO EMISOR N/A» y «TELÉFONO DEL PAGADOR ---». Sin embargo, la respuesta de orders/instant-debit/confirm sí trae debtor_bank_name y debtor_phone.",
+    "solucion": "Causa: justo después de confirmar llega por WebSocket un evento order_status de la misma orden con bank_name, number_phone y bank_reference en null. OrderPollingHandler.handleOrderResponse copiaba esos campos sin condición y borraba lo que había puesto showInstantDebitResult. Arreglo en lib/presentation/cubits/order/handlers/order_polling_handler.dart: si el evento es de la misma orden y del mismo paso (response.orderId == state.orderId y currentStep igual, o el del estado en 0 = desconocido), un campo vacío o nulo pasa como null a copyWith y se conserva el valor anterior. En una parte distinta de una división se reemplaza siempre. Prueba: order_cubit_test «un order_status sin banco ni teléfono no borra los del débito» (stub de mockRepo.parseOrderStatusEvent).",
+    "categorias_id": 4,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-04 20:20:08",
+    "actualizada_en": "2026-11-04 20:20:08",
+    "hash": "e195ad855c4c16ab71cbac81",
+    "categoria": "estado",
+    "tags": [
+      "flutter",
+      "zas",
+      "websocket",
+      "debito-inmediato",
+      "comprobante",
+      "order_status",
+      "copywith"
+    ]
+  },
+  {
+    "id": 395,
+    "titulo": "[estilo_neutral] Builds release sin ofuscar desde algunos scripts (ofuscación repartida en cada script)",
+    "problema": "Revisión FLT-006: tools/deploy.sh y script/script.sh hacían 'flutter build apk/appbundle --release' sin --obfuscate, y script/build_app.sh solo ofuscaba prod; solo tools/distribuir_firebase.sh ofuscaba todo release. Según el script usado, el APK salía con nombres de clase legibles.",
+    "solucion": "Causa: cada script armaba sus propios parámetros de compilación. Arreglo: tools/ofuscacion.sh con flags_ofuscacion <variante> [versión] (versión por defecto la de pubspec.yaml) que deja OFUSCAR=(--obfuscate --split-debug-info=build/app/outputs/symbols/<variante>/v<versión>); los cuatro scripts hacen 'source tools/ofuscacion.sh' y pasan \"${OFUSCAR[@]}\" a flutter build. Comprobar con distribuir_firebase.sh qa --simular y, en el APK, que strings libapp.so | grep -c <ClasePrivada> dé 0.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-04 20:27:29",
+    "actualizada_en": "2026-11-04 20:27:29",
+    "hash": "9700533b67a9e3d6d1997381",
+    "categoria": null,
+    "tags": [
+      "flutter",
+      "bash",
+      "seguridad",
+      "estilo_neutral",
+      "ofuscacion"
+    ]
   }
 ]
