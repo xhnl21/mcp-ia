@@ -10397,5 +10397,82 @@
       "git",
       "formato"
     ]
+  },
+  {
+    "id": 422,
+    "titulo": "[zas] ARC-025 no revisaba carpetas widget/ (singular) ni widgets/ de subcarpetas: widgets del registro leían el cubit",
+    "problema": "RegisterStepFourAccountCard, RegisterStepThreeBankSection y RegisterStepThreeBeneficiarySection (lib/presentation/screens/trade_register/widget/) usaban context.read<TradeRegister…Cubit>() y BlocSelector/BlocBuilder, y la auditoría ARC-025 daba APROBADO. Tampoco se revisaban screens/auth/two_factor/widgets/ ni screens/config/modal/widgets/.",
+    "solucion": "Causa: el patrón de ARC-025 en scripts/script_audit_architecture.dart era r'^lib/presentation/screens/[^/]+/widgets/' (un solo nivel y solo plural). Arreglo: r'^lib/presentation/screens/.+/widgets?/' más casos en el grupo ARC-025 de test/scripts/script_audit_architecture_test.dart. Los tres widgets pasan a recibir el estado (o la cuenta y canRemove) y un ValueChanged<String> por campo; la pantalla coordinadora conecta cada callback con el cubit (paso 4: con el id de la cuenta; paso 3: un BlocBuilder que pasa el estado a las dos secciones). Pruebas: register_step_three_screen_test y el caso «cada campo de la tarjeta llega al cubit con el id de su cuenta» del paso 4.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-05 19:07:31",
+    "actualizada_en": "2026-11-05 19:07:31",
+    "hash": "2ee87260ccaffe54b5beebb2",
+    "categoria": null,
+    "tags": [
+      "auditoria",
+      "flutter",
+      "zas",
+      "bloc",
+      "arc-025"
+    ]
+  },
+  {
+    "id": 423,
+    "titulo": "[zas] Image.network sin errorBuilder: la imagen que no carga lanza error de Flutter y rompe la prueba siguiente en el emulador",
+    "problema": "ProductImagePickerSection (lib/presentation/screens/products/widgets/product_image_picker_section.dart) mostraba Image.network(formMockImageUrl) sin errorBuilder. Al correr las pruebas en el emulador: 'EXCEPTION CAUGHT BY IMAGE RESOURCE SERVICE ... SocketException: Failed host lookup' y la prueba SIGUIENTE (pago parcial) fallaba, porque el error de red llega segundos después. En la Mac (flutter test responde 400 a toda descarga) un tester.takeException() inmediato lo escondía.",
+    "solucion": "Causa: sin errorBuilder, un fallo de carga se reporta a FlutterError (caja roja en debug) en lugar de mostrar un respaldo. Arreglo: errorBuilder: (_, _, _) => const _UploadPlaceholder() (la misma zona 'Sube una imagen'). Prueba: tester.runAsync(() => Future.delayed(2 s)) para dejar que la descarga falle de verdad, pump, expect(tester.takeException(), isNull) y que se vea el ícono de la cámara; falla sin el errorBuilder. Lección: en pruebas de widget no tapar errores de red con takeException inmediato; en dispositivo llegan tarde y contaminan otra prueba.",
+    "categorias_id": 3,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-05 19:16:06",
+    "actualizada_en": "2026-11-05 19:16:06",
+    "hash": "ff772b226581b82afe16fe7e",
+    "categoria": "widgets",
+    "tags": [
+      "flutter",
+      "zas",
+      "emulador",
+      "image-network",
+      "integration-test"
+    ]
+  },
+  {
+    "id": 424,
+    "titulo": "[estilo_neutral] Administradores con contraseña sin segundo factor (saltaban el 2FA de Google)",
+    "problema": "Auditoría M2: el login con contraseña (ps1) dejaba a un administrador depender solo de una contraseña, sin el segundo factor que da Google.",
+    "solucion": "En _claIngresar, si el dispositivo no es conocido y _claEsAdministrador (permiso total; falla cerrado ante error) pide un código de 8 dígitos por correo (_claSegundoFactor, propósito 'ingreso', 5 intentos/15 min, 5 envíos/hora). Sin código responde code 'segundo_factor'; la app lo captura como SegundoFactorRequerido (extends StateError, _errorDelServidor en sheets_data_service_cierres.dart por el tope ARC-009) y LoginCubit muestra el campo de código. Los dispositivos conocidos (DISP_<email>) y quienes no son administradores entran solo con la contraseña. Las pruebas de servidor usan el helper entrar() que completa el segundo paso.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-05 19:26:36",
+    "actualizada_en": "2026-11-05 19:26:36",
+    "hash": "9dccaca101ea2deb0ac41f2b",
+    "categoria": null,
+    "tags": [
+      "login",
+      "estilo_neutral",
+      "apps-script",
+      "2fa"
+    ]
   }
 ]
