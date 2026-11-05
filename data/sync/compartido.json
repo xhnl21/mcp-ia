@@ -10474,5 +10474,55 @@
       "apps-script",
       "2fa"
     ]
+  },
+  {
+    "id": 425,
+    "titulo": "[estilo_neutral] adb shell input text falla con # en la contraseña (Argument expected after \"text\")",
+    "problema": "Al escribir una contraseña como ##Clave## con `adb shell input text '##Clave##'` el comando imprime el uso de input y el campo queda vacío.",
+    "solucion": "Causa: adb pasa el texto al shell del teléfono, donde # inicia un comentario. Arreglo: escapar cada # con barra: adb shell input text '\\#\\#Clave\\#\\#'. En zsh no iterar con `for f in \"a b c\"; set -- $f` (no separa palabras): llamar a cada campo por separado.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-05 20:00:22",
+    "actualizada_en": "2026-11-05 20:00:22",
+    "hash": "cf4c0df175ce1b005d5889e8",
+    "categoria": null,
+    "tags": [
+      "android",
+      "adb",
+      "pruebas",
+      "zsh"
+    ]
+  },
+  {
+    "id": 426,
+    "titulo": "[estilo_neutral] App nueva con servidor de PROD anterior: el login con contraseña responde 'Pedido sin sesión de Google'",
+    "problema": "En la app prod (con ps1) el login con correo y contraseña muestra 'Pedido sin sesión de Google verificada. Actualizá la app...'.",
+    "solucion": "Causa: el Apps Script de producción todavía no tiene personal_ingresar (nunca se desplegó); la acción cae en la validación de identidad y da 401. Arreglo: desplegar el servidor (tools/deploy.sh --script, TEST primero) antes o junto con publicar la app. Mientras tanto el login con Google y la sesión restaurada siguen funcionando.",
+    "categorias_id": 9,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-05 20:00:22",
+    "actualizada_en": "2026-11-05 20:00:22",
+    "hash": "96372fa4be14489a8f5cc971",
+    "categoria": "plataforma",
+    "tags": [
+      "estilo_neutral",
+      "apps-script",
+      "deploy",
+      "prod"
+    ]
   }
 ]
