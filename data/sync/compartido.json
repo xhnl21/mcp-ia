@@ -10199,5 +10199,78 @@
       "g",
       "v"
     ]
+  },
+  {
+    "id": 414,
+    "titulo": "[estilo_neutral] Interruptores AUTENTICACION_OBLIGATORIA/PERMISOS_OBLIGATORIOS=no dejaban el servidor abierto",
+    "problema": "Auditoría: con AUTENTICACION_OBLIGATORIA=no el servidor aceptaba usuario_sesion del cliente sin token; con PERMISOS_OBLIGATORIOS=no se apagaban todos los permisos.",
+    "solucion": "Causa: interruptores de emergencia en propiedades del script. Arreglo: _autenticacionObligatoria() y _permisosActivos() devuelven true siempre y se quitó la rama sin token de _identidadDelPedido. Las pruebas Node simulan el 'no' con tools/apps_script/tests/_shim_pruebas.js (solo arnés).",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-05 18:21:45",
+    "actualizada_en": "2026-11-05 18:21:45",
+    "hash": "347fbacc943ab4fc4bdf8b8a",
+    "categoria": null,
+    "tags": [
+      "estilo_neutral",
+      "apps-script",
+      "auth"
+    ]
+  },
+  {
+    "id": 415,
+    "titulo": "[estilo_neutral] Permisos fallaban abiertos: hojas sin regla y upload_image sin permiso/tamaño/tipo",
+    "problema": "Auditoría: _verificarPermiso devolvía null para hojas fuera de PERMISO_DE_HOJA y upload_image solo exigía sesión (sin límite de tamaño, MIME libre).",
+    "solucion": "Arreglo en google_apps_script.js: hoja sin regla solo la escribe un administrador (excepto HOJAS_ESCRITURA_LIBRE); upload_image valida MIME image/jpeg|png|webp, LIMITE_IMAGEN_BASE64 y _verificarPermisoSubida (Perfiles: membresía; Logos: organizaciones.editar; Productos: inventario.crear/editar).",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-05 18:21:45",
+    "actualizada_en": "2026-11-05 18:21:45",
+    "hash": "6a22e707bb0bb37dcbfe13b7",
+    "categoria": null,
+    "tags": [
+      "permisos",
+      "estilo_neutral",
+      "apps-script"
+    ]
+  },
+  {
+    "id": 416,
+    "titulo": "[estilo_neutral] Pedidos basura ocupaban el candado global y la idempotencia no ligaba usuario",
+    "problema": "Auditoría: _doPostInterno tomaba LockService antes de autenticar (DoS con tokens inválidos / PBKDF2); la llave idem_ solo usaba la clave del cliente.",
+    "solucion": "Arreglo: identidad y personal_ingresar se resuelven antes del candado (_accionSinSesion); llave de idempotencia = SHA-256(email|accion|clave) tras validar identidad; sesiones ps1 de 14 días, contraseña mínima 10 y acción personal_cerrar_sesion (_claCerrarSesiones sube la versión).",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-05 18:21:45",
+    "actualizada_en": "2026-11-05 18:21:45",
+    "hash": "45493f34688ae2676d8af4fc",
+    "categoria": null,
+    "tags": [
+      "dos",
+      "estilo_neutral",
+      "apps-script",
+      "sesion"
+    ]
   }
 ]
