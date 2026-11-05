@@ -9625,5 +9625,32 @@
       "estilo_neutral",
       "ofuscacion"
     ]
+  },
+  {
+    "id": 396,
+    "titulo": "[zas] Teléfono del pagador en formato internacional (58414…) en el comprobante de débito",
+    "problema": "El comprobante del débito inmediato en una venta simple mostraba «TELÉFONO DEL PAGADOR 584141234567», mientras que en el pago dividido mostraba «04141234567».",
+    "solucion": "Causa: en la venta simple el teléfono sale de debtor_phone de orders/instant-debit/confirm, que el banco manda en formato internacional sin «+». En el dividido se usa el teléfono que escribió el cajero. Arreglo: función de dominio toLocalPhone (lib/domain/entities/order/local_phone.dart, exportada por domain/order.dart): replaceFirst(RegExp(r'^\\+?58(?=\\d{10}$)'), '0'). Se aplica en InstantDebitRepositoryImpl._orderResult ('number_phone'). Como el repositorio estaba en el límite de ARC-009/ARC-010, se reemplazaron 9 imports de dominio por el barril domain/order.dart y se bajó la línea base con --generar-linea-base.",
+    "categorias_id": 2,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-04 20:33:14",
+    "actualizada_en": "2026-11-04 20:33:14",
+    "hash": "94954a25b020cc3bf947549e",
+    "categoria": "runtime",
+    "tags": [
+      "flutter",
+      "zas",
+      "debito-inmediato",
+      "arc-009",
+      "formato",
+      "telefono"
+    ]
   }
 ]
