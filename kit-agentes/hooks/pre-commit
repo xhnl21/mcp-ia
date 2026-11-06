@@ -9,7 +9,7 @@
 #
 # Gates:
 #   0 Formato automático de los .dart del commit
-#   1 Secretos y archivos sensibles
+#   1 Secretos y archivos sensibles (nombres, claves privadas y gitleaks)
 #   2 Conflictos, depuración, bypass SSL, funciones repetidas y sintaxis JS/GS
 #   3 dart format (comprobación)
 #   4 flutter/dart analyze de los .dart del commit
@@ -117,6 +117,22 @@ for file in $STAGED_FILES; do
     exit 1
   fi
 done
+
+# Secretos en el contenido de lo que se va a subir (tokens, claves de API):
+# gitleaks, si está instalado. Usa el .gitleaks.toml del proyecto si existe.
+if command -v gitleaks >/dev/null 2>&1; then
+  GITLEAKS_OUT=$(mktemp)
+  if ! gitleaks git --pre-commit --staged --no-banner --redact -v >"$GITLEAKS_OUT" 2>&1; then
+    grep -E 'RuleID|File|Line|Secret' "$GITLEAKS_OUT"
+    rm -f "$GITLEAKS_OUT"
+    echo "${RED}${BOLD}❌ ERROR DE SEGURIDAD: gitleaks encontró un posible secreto en el commit.${NC}"
+    echo "${YELLOW}👉 Sácalo del código (almacenamiento seguro o variables de entorno). Un falso positivo va a .gitleaks.toml solo con revisión.${NC}"
+    exit 1
+  fi
+  rm -f "$GITLEAKS_OUT"
+else
+  echo "${YELLOW}  ⚠️ gitleaks no está instalado (brew install gitleaks): se omite la búsqueda de secretos en el contenido.${NC}"
+fi
 
 echo "${GREEN}  ✓ No se detectaron archivos sensibles ni claves expuestas.${NC}"
 
