@@ -1,6 +1,6 @@
 # Accesibilidad, errores auditados y toques auditados (Flutter)
 
-Vale para todos los proyectos Flutter. En zas la hace cumplir el auditor ARC (`scripts/script_audit_architecture.dart`, reglas ARC-027 a ARC-029), que es la implementación de referencia. En los proyectos que no tienen auditor, el agente la revisa a mano.
+Vale para todos los proyectos Flutter. En zas la hace cumplir el auditor ARC (`scripts/script_audit_architecture.dart`, reglas ARC-027 a ARC-029), que es la implementación de referencia, copiada en `kit-agentes/herramientas/hooks-nivel-ci/referencia-zas/` (ver `hooks-nivel-ci/README.md`). En los proyectos que no tienen auditor, el agente la revisa a mano.
 
 ## 1. Accesibilidad (ARC-027, sin línea base)
 

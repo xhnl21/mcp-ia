@@ -5,3 +5,4 @@ Generado por `kit-agentes/enlazar_compartido.py`: una línea `@` por regla de `c
 @regla-accesibilidad-y-auditoria-flutter.md
 @regla-de-oro-mcp-ia.md
 @regla-firebase-google-cloud.md
+@regla-hooks-nivel-ci.md
