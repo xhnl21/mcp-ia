@@ -30,13 +30,13 @@ El hook `pre-commit` implementa compuertas de calidad (**Quality Gates**) alinea
 
 ## 🧩 Estructura: hooks comunes y reglas de ZAS
 
-`pre-commit`, `pre-push` y `commit-msg` son los **hooks comunes del kit de agentes** (se comparten entre proyectos desde `mcp-ia/kit-agentes/hooks`; su versión instalada queda en `.githooks/kit_hooks.json`). Las reglas propias de ZAS viven aparte y el hook común las llama:
+`pre-commit`, `pre-push` y `commit-msg` son los **hooks comunes del kit de agentes** (se comparten entre proyectos desde `mcp-ia/kit-agentes/hooks`; su versión instalada queda en `.githooks/kit_hooks.json`). Los comunes ya traen **gitleaks** (pre-commit, Gate 1, con `.gitleaks.toml`) y **osv-scanner** (pre-push, archivos de bloqueo de la raíz). Las reglas propias de ZAS viven aparte y el hook común las llama:
 
 | Archivo | Qué hace |
 |---|---|
 | `.githooks/pre-commit.local` | Gate 5: tokens DTCG, `Color(0x…)`, `Colors.X`, ARC-002, `verify_legacy_tokens.sh` y la auditoría ARC-001 a ARC-029. |
 | `.githooks/obligatorio.sh` | Auditoría ARC que se ejecuta incluso con `SKIP_PRE_COMMIT=1`. |
-| `.githooks/pre-push.local` | Después de `flutter analyze` y la suite: ramas protegidas, versión de Flutter, `pubspec.lock`, osv-scanner, auditoría ARC, cobertura global (54 %) y de las líneas cambiadas (80 %). |
+| `.githooks/pre-push.local` | Después de `flutter analyze` y la suite: ramas protegidas, versión de Flutter, `pubspec.lock`, auditoría ARC, cobertura global (54 %) y de las líneas cambiadas (80 %). |
 
 Para una regla nueva de ZAS edita `pre-commit.local`. Si mejoras un hook común, compártelo con `python3 <mcp-ia>/kit-agentes/kit_agentes.py hooks . --compartir` (y commit y push de mcp-ia); para recibir mejoras: `hooks . --actualizar`.
 

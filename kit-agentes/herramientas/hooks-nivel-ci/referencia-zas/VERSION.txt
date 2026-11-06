@@ -1,1 +1,1 @@
-Copiado de zas 0c192bba 2026-11-06 (opt/arc_auditor).
+Copiado de zas fdb7f282 2026-11-06 (opt/arc_auditor).

@@ -113,8 +113,8 @@ Corre cada comando desde la raíz del repositorio, con el `PATH` de fvm. Anota e
 |---|---|---|
 | 1 | `git config core.hooksPath` | `.githooks` |
 | 2 | `sh scripts/check_sdk_version.sh && echo ok` | `ok` |
-| 3 | `gitleaks git --pre-commit --staged --no-banner --redact` | `no leaks found` (es lo que hace el hook: revisa solo lo que vas a subir) |
-| 4 | `osv-scanner scan source -L pubspec.lock` | `No issues found` |
+| 3 | `gitleaks git --pre-commit --staged --no-banner --redact -v` | `no leaks found` (es lo que hace el hook: revisa solo lo que vas a subir) |
+| 4 | `osv-scanner scan source .` | `No issues found` (es lo que hace el hook: los archivos de bloqueo de la raíz) |
 | 5 | `dart run scripts/script_audit_architecture.dart` | `✅ [APROBADO]: Cero violaciones detectadas.` |
 | 6 | `dart run scripts/script_audit_architecture.dart --modulos` | Tabla de módulos sin `⚠️` |
 | 7 | `flutter analyze` | `No issues found!` |
@@ -140,7 +140,7 @@ Los tres hooks principales (`pre-commit`, `pre-push`, `commit-msg`) son **comune
 | Gate | Qué revisa |
 |---|---|
 | 0 | Aplica `dart format` a los `.dart` del commit y los vuelve a agregar |
-| 1 | Archivos sensibles y patrones de secretos |
+| 1 | Archivos sensibles, claves privadas y **secretos con `gitleaks`** en lo que se va a subir (con `.gitleaks.toml`) |
 | 2 | Marcas de conflicto, código de depuración, bypass de SSL y funciones con nombre repetido |
 | 3 | `dart format` (comprobación) |
 | 4 | `flutter analyze` de los archivos del commit |
@@ -150,27 +150,26 @@ Los tres hooks principales (`pre-commit`, `pre-push`, `commit-msg`) son **comune
 **Gate 5, reglas de zas, en este orden:**
 
 1. **Versión de Flutter:** debe ser la de `.fvmrc` (`scripts/check_sdk_version.sh`).
-2. **Secretos con `gitleaks`**, solo en lo que se va a subir.
-3. **`pubspec.lock` coherente** con `pubspec.yaml`, si cambió alguno de los dos.
-4. **Código generado al día** (`scripts/check_generated_code.sh`): si cambió un `.arb`, corre `flutter gen-l10n`; si cambió una tabla de drift, corre `build_runner`, que tarda unos minutos.
-5. **Aviso** si hay cambios en `lib/` sin agregar: la auditoría también los ve.
-6. **Sistema de diseño (DTCG):** sin tokens legacy u ordinales, sin `Color(0x…)` ni `Colors.X` fuera de `app_colors.dart` y `app_theme.dart`.
-7. **ARC-002:** sin `setState()` en `lib/presentation/screens/`.
-8. **Pruebas espejo:** un archivo nuevo de `lib/application` o `lib/infrastructure` trae su prueba (`scripts/check_layer_tests.dart`).
-9. **Auditoría de toques:** las pantallas registran sus toques (`scripts/check_audited_screens.dart`).
-10. **Tokens en todo el repositorio** (`scripts/verify_legacy_tokens.sh`).
-11. **Auditoría ARC-001 a ARC-029 sobre todo `lib/`** (sección 6).
+2. **`pubspec.lock` coherente** con `pubspec.yaml`, si cambió alguno de los dos.
+3. **Código generado al día** (`scripts/check_generated_code.sh`): si cambió un `.arb`, corre `flutter gen-l10n`; si cambió una tabla de drift, corre `build_runner`, que tarda unos minutos.
+4. **Aviso** si hay cambios en `lib/` sin agregar: la auditoría también los ve.
+5. **Sistema de diseño (DTCG):** sin tokens legacy u ordinales, sin `Color(0x…)` ni `Colors.X` fuera de `app_colors.dart` y `app_theme.dart`.
+6. **ARC-002:** sin `setState()` en `lib/presentation/screens/`.
+7. **Pruebas espejo:** un archivo nuevo de `lib/application` o `lib/infrastructure` trae su prueba (`scripts/check_layer_tests.dart`).
+8. **Auditoría de toques:** las pantallas registran sus toques (`scripts/check_audited_screens.dart`).
+9. **Tokens en todo el repositorio** (`scripts/verify_legacy_tokens.sh`).
+10. **Auditoría ARC-001 a ARC-029 sobre todo `lib/`** (sección 6).
 
 **`obligatorio.sh`** repite la auditoría ARC. Se ejecuta **siempre**, incluso si alguien pone `SKIP_PRE_COMMIT=1`.
 
 ### 5.3 `pre-push`: al subir
 
-1. `flutter analyze` del proyecto completo.
-2. `flutter test --coverage` con la suite completa.
-3. Reglas de zas (`.githooks/pre-push.local`):
+1. **Vulnerabilidades** con `osv-scanner` sobre `pubspec.lock` (hook común: los archivos de bloqueo de la raíz). Sin conexión, solo avisa.
+2. `flutter analyze` del proyecto completo.
+3. `flutter test --coverage` con la suite completa.
+4. Reglas de zas (`.githooks/pre-push.local`):
    - **Ramas protegidas:** no se sube directo a `dev`, `main` ni `master`; se usa un merge request. La excepción autorizada es `PERMITIR_PUSH_RAMA_PROTEGIDA=1 git push`.
    - Versión de Flutter y `pubspec.lock`.
-   - **Vulnerabilidades** con `osv-scanner`. Sin conexión, solo avisa.
    - Auditoría ARC.
    - **Cobertura global** mínima de **54 %** (`scripts/check_coverage.sh`). El mínimo solo se sube, nunca se baja.
    - **Cobertura de las líneas cambiadas** frente a `origin/dev`: mínimo **80 %** (`scripts/check_diff_coverage.dart`).
