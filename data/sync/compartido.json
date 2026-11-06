@@ -10757,5 +10757,57 @@
       "apps-script",
       "clientes"
     ]
+  },
+  {
+    "id": 436,
+    "titulo": "[zas] git push falla con «.githooks/pre-push: line 42: syntax error near unexpected token `else'» aunque el hook está bien",
+    "problema": "Al hacer git push desde VS Code, después de ~5 minutos (la suite de pruebas ya había corrido) el push falló con `.githooks/pre-push: line 42: syntax error near unexpected token 'else'` y `error: failed to push some refs`. `sh -n .githooks/pre-push` y `bash -n` no dan error.",
+    "solucion": "Causa: el hook se reemplazó mientras se ejecutaba. El push empezó a las 14:40:45 y `hooks.sh <proyecto> --actualizar` reescribió .githooks/pre-push a las 14:41:27. sh lee el script de a pedazos mientras lo ejecuta: al cambiar el archivo, siguió leyendo el nuevo desde la posición del viejo y cayó a mitad de un `if`. Arreglo: no hay nada que corregir en el hook; volver a hacer `git push` con el hook ya actualizado. Prevención: no actualizar ni editar los hooks (`hooks.sh --actualizar`, `--forzar`) mientras hay un commit o un push en curso; comprobar con `stat -f %Sm .githooks/pre-push` contra la hora del push si aparece un error de sintaxis que `sh -n` no reproduce.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-06 18:46:25",
+    "actualizada_en": "2026-11-06 18:46:25",
+    "hash": "19356659b59a713fa9822d81",
+    "categoria": null,
+    "tags": [
+      "git",
+      "zas",
+      "sh",
+      "hooks",
+      "pre-push",
+      "kit-agentes"
+    ]
+  },
+  {
+    "id": 437,
+    "titulo": "[estilo_neutral_cliente] Pre-commit falla: curly_braces tras el formato automático y ARC-009 (500 líneas)",
+    "problema": "git commit rechazado: 'Gate 0' aplica dart format a los archivos del commit y el análisis falla con curly_braces_in_flow_control_structures (if sin llaves reflujados a dos líneas); además ARC-009: cliente_api.dart pasa de 500 líneas (514) al reformatearse.",
+    "solucion": "Causa: el hook formatea con ancho 80 y los archivos antiguos tenían líneas largas. Arreglo: correr 'dart fix --apply --code=curly_braces_in_flow_control_structures <archivo>' sobre los archivos del commit y repetir. Para ARC-009 mover un bloque de métodos a un 'part of' con 'extension ClienteApiAcceso on ClienteApi' (comparte lo privado como _llamar) en vez de subir la línea base. Otro hallazgo de la auditoría: notificaciones abrían cualquier ruta que empezara con '/'; se limitó con Rutas.esDeNotificacion (lista de destinos) y los builds se unifican en scripts/build_release.sh con --obfuscate.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-06 18:55:50",
+    "actualizada_en": "2026-11-06 18:55:50",
+    "hash": "3bd66a23413767af083f4eff",
+    "categoria": null,
+    "tags": [
+      "flutter",
+      "dart-format",
+      "git-hooks",
+      "estilo_neutral_cliente"
+    ]
   }
 ]
