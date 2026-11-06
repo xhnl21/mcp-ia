@@ -10809,5 +10809,58 @@
       "git-hooks",
       "estilo_neutral_cliente"
     ]
+  },
+  {
+    "id": 438,
+    "titulo": "[zas] Push en Android llega sin banner ni ícono aunque la app arma BigPicture",
+    "problema": "Con la app en segundo plano o cerrada, la notificación push en Android sale solo con título y texto, sin el banner (BigPictureStyle) ni el largeIcon que configura flutter_local_notifications. En `adb shell dumpsys notification --noredact` aparece tag=FCM-Notification:..., template BigTextStyle y largeIcon=null. Agregar mutable-content: 1 no lo arregla (es solo de iOS).",
+    "solucion": "Causa: el mensaje FCM trae el bloque `notification`. En segundo plano el SDK de Firebase dibuja la notificación él mismo y el background handler de la app no la muestra. Arreglo (backend): enviar sin `notification`, con title/body en `data` (Android), `android.priority: high`, y para iOS `apns.payload.aps.alert {title, body}` + `sound` + `mutable-content: 1` (un solo mensaje para las dos plataformas). La app muestra la local desde firebaseMessagingBackgroundHandler cuando message.notification == null. Verificación: en dumpsys la notificación ya no lleva tag FCM-Notification. Trampa extra: al reinstalar un debug build hay que usar `--dart-define-from-file .env.test`, o la app falla con «Invalid argument (baseUrl)»; y MIUI rechaza `adb install` (INSTALL_FAILED_USER_RESTRICTED) hasta aceptar el aviso o activar «Instalar vía USB». Documentado en docs/notificaciones_push_backend.md.",
+    "categorias_id": 9,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-06 18:56:35",
+    "actualizada_en": "2026-11-06 18:56:35",
+    "hash": "73d854281f76b5a09e5432cf",
+    "categoria": "plataforma",
+    "tags": [
+      "android",
+      "zas",
+      "fcm",
+      "flutter_local_notifications",
+      "push"
+    ]
+  },
+  {
+    "id": 439,
+    "titulo": "[GameIVP] pre-push rechaza el push: osv-scanner halla 130 vulnerabilidades en package-lock.json",
+    "problema": "git push falla en el pre-push común del kit: 'Hay dependencias con vulnerabilidades conocidas. Push rechazado.' osv-scanner scan source . (130 vulnerabilidades, 4 críticas) en un proyecto Ionic/Vue con vite, vitest, cypress.",
+    "solucion": "Causa: dependencias de desarrollo viejas y un 'overrides: rollup 4.44.0' que fijaba una versión vulnerable. Arreglo: 1) npm audit fix (130->46); 2) npm audit fix --force sube vitest 5, cypress 16, vue-tsc 3, @capacitor/cli 7.6; 3) vitest 5 exige vite >=6.4, así que vite ^6.4.4, @vitejs/plugin-legacy ^6, @vitejs/plugin-vue ^5.2, y se borra el override de rollup; 4) restan glob 10/minimatch 9 bajo @vue/test-utils>js-beautify: overrides {js-beautify:{glob:^14.0.2, editorconfig:{minimatch:^11.0.1}}}. Verificar con osv-scanner scan source . ('No issues found'), vite build y un test mínimo con @vue/test-utils. Nota: npm run build ya fallaba por un error de tipos previo (ModalSkills.vue sin declaración).",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-06 19:17:34",
+    "actualizada_en": "2026-11-06 19:17:34",
+    "hash": "09530490ac51c70fd6c5de96",
+    "categoria": null,
+    "tags": [
+      "osv-scanner",
+      "pre-push",
+      "npm",
+      "vite",
+      "vitest",
+      "gameivp"
+    ]
   }
 ]
