@@ -10681,5 +10681,31 @@
       "parseo",
       "patrones"
     ]
+  },
+  {
+    "id": 433,
+    "titulo": "[herramientas] Probar una app en un Redmi/MIUI por adb: instalación bloqueada, selector de archivos y Atrás",
+    "problema": "adb install -> INSTALL_FAILED_USER_RESTRICTED (o se cuelga sin salida); el selector de archivos (documentsui) no responde a input tap/swipe; KEYCODE_BACK saca de la app; con emulador y teléfono conectados adb actúa sobre el equivocado; un volcado viejo de uiautomator muestra una pantalla que ya no existe.",
+    "solucion": "Causas y arreglos: 1) MIUI exige confirmar la instalación por USB: activar 'Instalar vía USB' en Opciones de desarrollador o hacer adb push del APK a /sdcard/Download y que la persona lo instale desde Archivos. 2) El selector de MIUI ignora los toques inyectados: la persona toca el archivo; el resto se automatiza. 3) Sin teclado abierto, Atrás cierra la actividad: tocar una zona vacía o la tecla ✓ del teclado. 4) Fijar ADB_SERIAL siempre. 5) Borrar el volcado anterior antes de uiautomator dump y fallar si no se genera. 6) Nunca abrir fotos personales en el selector: buscar el archivo de prueba en Descargas. Herramienta resultante: mcp-ia/kit-agentes/herramientas/adb-ui (ui.py con guardia de teléfono bloqueado y de app en primer plano).",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-06 16:22:07",
+    "actualizada_en": "2026-11-06 16:22:07",
+    "hash": "5a88188007bb22a7f2760e6a",
+    "categoria": null,
+    "tags": [
+      "flutter",
+      "miui",
+      "xiaomi",
+      "adb",
+      "pruebas-ui"
+    ]
   }
 ]
