@@ -11190,5 +11190,54 @@
       "phaser",
       "css"
     ]
+  },
+  {
+    "id": 453,
+    "titulo": "[GameIVP] Cypress: 'bad option: --no-sandbox' / 'Cypress failed to start' dentro de Claude Code",
+    "problema": "npx cypress verify/run falla con: Cypress.app/Contents/MacOS/Cypress: bad option: --no-sandbox / --smoke-test / --ping=...",
+    "solucion": "Causa: la variable de entorno ELECTRON_RUN_AS_NODE=1 (la define el entorno de Claude Code/VS Code) hace que Electron arranque como Node. Arreglo: ejecutar con 'env -u ELECTRON_RUN_AS_NODE npx cypress run --browser electron' (con el servidor de vite en el puerto del baseUrl). El binario ya estaba verificado.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-06 20:47:57",
+    "actualizada_en": "2026-11-06 20:47:57",
+    "hash": "9f15ae5c9aa81c90adefcf7d",
+    "categoria": null,
+    "tags": [
+      "gameivp",
+      "cypress",
+      "electron"
+    ]
+  },
+  {
+    "id": 454,
+    "titulo": "[GameIVP] Modal de Habilidades: botones Cerrar/Aceptar fuera de pantalla en el teléfono",
+    "problema": "Al abrir el modal en el Redmi Note 8 solo se ven las estadísticas; Cerrar, Aceptar y Ver Detalles aparecen tras desplazar el modal. Un toque en la posición del footer no hace nada.",
+    "solucion": "Causa: .modal-container tenía max-height:90vh y overflow-y:auto, así que el footer iba al final del contenido desplazable. Arreglo: .modal-container display:flex; flex-direction:column; overflow:hidden; .modal-body flex:1; min-height:0; overflow-y:auto; .modal-footer flex-shrink:0. Verificado con adb screencap y toque en Cerrar.",
+    "categorias_id": 3,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-06 20:47:57",
+    "actualizada_en": "2026-11-06 20:47:57",
+    "hash": "7182f2ccca7cf5b7b7854aa6",
+    "categoria": "widgets",
+    "tags": [
+      "gameivp",
+      "vue",
+      "css",
+      "modal"
+    ]
   }
 ]
