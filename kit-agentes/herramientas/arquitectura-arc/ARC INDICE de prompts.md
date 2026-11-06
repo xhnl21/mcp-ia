@@ -34,5 +34,5 @@
 
 ## No incluidas (específicas de zas)
 
-- **ARC-001 a ARC-008:** capas, `setState`, vistas, `http://`, `!` en el dominio, `catch` vacío y casts; dependen de la estructura de carpetas de zas. Están en `scripts/script_audit_architecture.dart` de zas si se quieren adaptar.
+- **ARC-001 a ARC-008 y ARC-020 a ARC-029** (capas y DDD, `setState`, vistas, `http://`, `!` en el dominio, `catch` vacío, casts, datos sensibles en el Logger, `ignore` sin motivo, diseño agnóstico, accesibilidad, errores y toques auditados): están en el auditor completo de zas, copiado en `../hooks-nivel-ci/referencia-zas/scripts/script_audit_architecture.dart`. La tabla de la sección 3 de `../hooks-nivel-ci/README.md` dice cuáles son generales.
 - **ARC-014:** todo Cubit global de `lib/app/providers.dart` se reinicia al cerrar sesión; depende de `providers.dart` y `logout_helper.dart` de zas.

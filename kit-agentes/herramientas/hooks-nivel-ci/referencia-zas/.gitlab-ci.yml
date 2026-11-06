@@ -1,0 +1,100 @@
+# La versión de Flutter del equipo está fijada en .fvmrc (3.47.7). cirruslabs no
+# publica etiquetas por versión para la serie 3.47, así que se usa `stable` y
+# before_script falla si la versión de la imagen no coincide con .fvmrc.
+image: ghcr.io/cirruslabs/flutter:stable
+
+stages:
+  - test
+  - build
+
+variables:
+  # Desactivar la telemetría de Flutter en CI
+  FLUTTER_WEB: "false"
+
+before_script:
+  # Misma versión de Flutter que el equipo (.fvmrc); si difiere, el job falla.
+  - EXPECTED=$(sed -n 's/.*"flutter"[^"]*"\([^"]*\)".*/\1/p' .fvmrc)
+  - ACTUAL=$(flutter --version --machine | sed -n 's/.*"frameworkVersion"[^"]*"\([^"]*\)".*/\1/p')
+  - 'echo "Flutter esperado (.fvmrc): $EXPECTED · imagen: $ACTUAL"'
+  - '[ "$EXPECTED" = "$ACTUAL" ] || { echo "La versión de Flutter de la imagen no coincide con .fvmrc"; exit 1; }'
+  # Pre-caché de dependencias
+  - flutter pub get
+
+# ---------------------------------------------------------
+# STAGE: TEST (Quality Gates)
+# ---------------------------------------------------------
+# NOTA DE REACTIVACIÓN:
+# Estos jobs se mantienen en `when: never` debido a la cuota agotada de minutos
+# de cómputo en el namespace de GitLab ("No more compute minutes available").
+# Para reactivarlos de inmediato una vez contratados minutos o registrado un runner
+# privado propio, simplemente descomentar la regla bajo cada job y retirar `when: never`.
+
+flutter_analyze:
+  stage: test
+  script:
+    - echo "Ejecutando Linter estricto..."
+    - flutter analyze
+  rules:
+    - when: never
+    # - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "dev"'
+
+flutter_format:
+  stage: test
+  script:
+    - echo "Verificando el formato del código..."
+    - dart format --output=none --set-exit-if-changed .
+  allow_failure: true
+  rules:
+    - when: never
+    # - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "dev"'
+
+arc_audit_gate:
+  stage: test
+  script:
+    - echo "Ejecutando Auditoría Paranoica de Arquitectura (ARC-001 a ARC-005)..."
+    - dart run scripts/script_audit_architecture.dart
+  rules:
+    - when: never
+    # - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "dev"'
+
+design_tokens_gate:
+  stage: test
+  script:
+    - echo "Verificando Quality Gate de Design Tokens (DTCG / ISO 25010)..."
+    - chmod +x scripts/verify_legacy_tokens.sh
+    - ./scripts/verify_legacy_tokens.sh
+  rules:
+    - when: never
+    # - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "dev"'
+
+flutter_test:
+  stage: test
+  script:
+    - echo "Ejecutando suite completa de pruebas unitarias y cobertura..."
+    - flutter test --coverage
+    # Umbral de cobertura de líneas (medida el 15/10/2026: 39,7 %). Subirlo
+    # cuando mejore la cobertura; nunca bajarlo.
+    - sh scripts/check_coverage.sh 39
+  artifacts:
+    paths:
+      - coverage/
+    expire_in: 7 days
+  rules:
+    - when: never
+    # - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "dev"'
+
+# ---------------------------------------------------------
+# STAGE: BUILD (Validación de compilación)
+# ---------------------------------------------------------
+build_android:
+  stage: build
+  script:
+    - echo "Verificando compilación nativa (Android debug)..."
+    - flutter build apk --debug
+  artifacts:
+    paths:
+      - build/app/outputs/flutter-apk/app-debug.apk
+    expire_in: 7 days
+  rules:
+    - when: never
+    # - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "dev"'

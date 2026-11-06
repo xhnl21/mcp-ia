@@ -1,0 +1,17 @@
+# Configuración de gitleaks para zas (la usa .githooks/pre-commit.local).
+# Parte de las reglas por defecto y solo permite lo que no es un secreto.
+title = "zas"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Claves de cliente de Firebase: van dentro de la app por diseño y no dan acceso al servidor."
+paths = [
+  '''android/app/google-services\.json$''',
+  '''ios/Runner/GoogleService-Info\.plist$''',
+]
+
+[[allowlists]]
+description = "Pruebas: tokens, JWT y claves falsas para simular respuestas. Un secreto real nunca va en test/."
+paths = ['''(^|/)test/''']

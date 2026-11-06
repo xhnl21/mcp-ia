@@ -1,0 +1,88 @@
+#!/bin/sh
+# ==============================================================================
+# Pre-push propio de ZAS (lo llama .githooks/pre-push, el hook común del kit).
+# Después de analyze y la suite: auditoría ARC-001 a ARC-029 y cobertura de las
+# líneas cambiadas (scripts/check_diff_coverage.dart).
+# ==============================================================================
+# Usa el SDK que fija el proyecto con fvm (.fvmrc): con otro Dart en el PATH,
+# `dart run` falla con «Can't load Kernel binary: Invalid SDK hash».
+[ -x .fvm/flutter_sdk/bin/dart ] && PATH="$PWD/.fvm/flutter_sdk/bin:$PATH" && export PATH
+# Ramas protegidas: a dev, main y master se llega por merge request en GitLab.
+# Para un caso excepcional autorizado: PERMITIR_PUSH_RAMA_PROTEGIDA=1 git push.
+PROTEGIDAS='^(dev|main|master)$'
+if [ "$PERMITIR_PUSH_RAMA_PROTEGIDA" != "1" ]; then
+  DESTINOS=""
+  # git pasa por stdin «ref-local sha-local ref-remota sha-remoto» por rama.
+  if [ ! -t 0 ]; then
+    while read -r _local _sha remote_ref _rsha; do
+      DESTINOS="$DESTINOS ${remote_ref#refs/heads/}"
+    done
+  fi
+  [ -n "$DESTINOS" ] || DESTINOS=$(git rev-parse --abbrev-ref HEAD)
+  for rama in $DESTINOS; do
+    if echo "$rama" | grep -Eq "$PROTEGIDAS"; then
+      echo "❌ No se sube directo a '$rama': crea un merge request en GitLab."
+      exit 1
+    fi
+  done
+fi
+
+# Flutter del proyecto (.fvmrc).
+sh scripts/check_sdk_version.sh || exit 1
+
+# Dependencias: pubspec.lock coherente con pubspec.yaml.
+echo "Dependencias (pubspec.lock)..."
+if ! flutter pub get --enforce-lockfile >/dev/null 2>&1; then
+  echo "❌ pubspec.lock no corresponde a pubspec.yaml. Ejecuta 'flutter pub get' y súbelo."
+  exit 1
+fi
+echo "✓ pubspec.lock coherente."
+
+# Vulnerabilidades conocidas en las dependencias (osv-scanner, si está).
+if command -v osv-scanner >/dev/null 2>&1; then
+  echo "Vulnerabilidades en dependencias (osv-scanner)..."
+  if ! osv-scanner scan source -L pubspec.lock >/tmp/zas_osv.$$ 2>&1; then
+    if grep -q 'Packages affected\|vulnerabilit' /tmp/zas_osv.$$; then
+      grep -v '^Starting\|^Scanned\|^End status' /tmp/zas_osv.$$ | tail -20
+      rm -f /tmp/zas_osv.$$
+      echo "❌ Hay dependencias con vulnerabilidades conocidas. Actualízalas antes de subir."
+      exit 1
+    fi
+    # Sin red u otro error de la herramienta: avisa y sigue.
+    echo "⚠️ osv-scanner no pudo revisar las dependencias (¿sin conexión?)."
+  else
+    echo "✓ Sin vulnerabilidades conocidas."
+  fi
+  rm -f /tmp/zas_osv.$$
+else
+  echo "⚠️ osv-scanner no está instalado (brew install osv-scanner): se omite."
+fi
+
+echo "Auditoría de Arquitectura (ARC-001 a ARC-029)..."
+if ! dart run scripts/script_audit_architecture.dart; then
+  echo "❌ Error: Se detectaron violaciones de arquitectura en lib/. Push rechazado."
+  exit 1
+fi
+echo "✓ Auditoría de Arquitectura aprobada."
+
+# Cobertura de las líneas cambiadas en lib/ frente a origin/dev (mínimo 80 %).
+# DIFF_COVERAGE_BLOQUEA=1 rechaza el push; 0 solo avisa.
+DIFF_COVERAGE_BLOQUEA=1
+# Cobertura global (coverage/lcov.info ya lo generó la suite). Era 39 % en el
+# CI; al 05/11/2026 es 55 %: súbelo cuando mejore, nunca lo bajes.
+COBERTURA_GLOBAL_MINIMA=54
+echo "Cobertura global (mínimo $COBERTURA_GLOBAL_MINIMA %)..."
+sh scripts/check_coverage.sh "$COBERTURA_GLOBAL_MINIMA" || {
+  echo "❌ La cobertura global bajó del mínimo. Push rechazado."
+  exit 1
+}
+
+echo "Cobertura de las líneas cambiadas (mínimo 80 %)..."
+if ! dart run scripts/check_diff_coverage.dart; then
+  if [ "$DIFF_COVERAGE_BLOQUEA" = "1" ]; then
+    echo "❌ Cobertura de las líneas cambiadas por debajo del mínimo. Push rechazado."
+    exit 1
+  fi
+  echo "⚠️ Cobertura de las líneas cambiadas por debajo del mínimo (solo aviso)."
+fi
+exit 0

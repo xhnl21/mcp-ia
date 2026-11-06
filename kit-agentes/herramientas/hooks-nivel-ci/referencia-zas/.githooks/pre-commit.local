@@ -1,0 +1,220 @@
+#!/bin/sh
+# ==============================================================================
+# Reglas propias de ZAS (Gate 5 del pre-commit común del kit, .githooks/pre-commit).
+#   - Sistema de diseño DTCG: tokens legacy, Color(0x...), ordinales y Colors.X.
+#   - ARC-002: setState() en lib/presentation/screens/.
+#   - scripts/verify_legacy_tokens.sh en todo el repositorio.
+#   - Pruebas espejo en application/infrastructure (scripts/check_layer_tests.dart).
+#   - Toques registrados en las pantallas (scripts/check_audited_screens.dart).
+#   - Auditoría ARC-001 a ARC-029 sobre todo lib/ (scripts/script_audit_architecture.dart),
+#     incluido el flujo DDD por módulo del reporte --modulos (ARC-026).
+#   - Ofuscación en los scripts de build de producción; avisos de assets
+#     pesados y de CircularProgressIndicator en home, cobro y login.
+# Recibe STAGED_FILES, STAGED_DART_FILES y TESTS_EXTRA_FILE del hook común.
+# ==============================================================================
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BOLD='\033[1m'
+NC='\033[0m'
+
+# Usa el SDK que fija el proyecto con fvm (.fvmrc): con otro Dart en el PATH,
+# `dart run` falla con «Can't load Kernel binary: Invalid SDK hash».
+[ -x .fvm/flutter_sdk/bin/dart ] && PATH="$PWD/.fvm/flutter_sdk/bin:$PATH" && export PATH
+
+# Guardianes de la arquitectura: si cambian el auditor, su prueba o los hooks,
+# siempre se ejecutan la auditoría completa y la prueba del detector, para que
+# nadie pueda debilitarlos sin que falle el commit.
+ARCH_GUARD_TEST="test/scripts/script_audit_architecture_test.dart"
+ARCH_REPORT_TEST="test/scripts/arc_modules_report_test.dart"
+ARCH_GUARD_CHANGED=$(echo "$STAGED_FILES" | grep -E '^(scripts/script_audit_architecture\.dart|scripts/arc_modules_report\.dart|scripts/arc_config\.json|\.githooks/(pre-commit|pre-commit\.local|obligatorio\.sh)|test/scripts/(script_audit_architecture|arc_modules_report)_test\.dart)$' || true)
+
+# Flutter del proyecto (.fvmrc): el mismo que usa la app y el CI.
+sh scripts/check_sdk_version.sh || exit 1
+
+# Secretos en lo que se va a subir (gitleaks, si está instalado; el Gate 1
+# del hook común solo mira nombres de archivo y patrones básicos).
+if command -v gitleaks >/dev/null 2>&1; then
+  if ! gitleaks git --pre-commit --staged --no-banner --redact >/tmp/zas_gitleaks.$$ 2>&1; then
+    grep -E 'RuleID|File|Line|Secret' /tmp/zas_gitleaks.$$
+    rm -f /tmp/zas_gitleaks.$$
+    echo "${RED}${BOLD}❌ gitleaks encontró un posible secreto en el commit.${NC}"
+    echo "${YELLOW}👉 Quítalo del código (va en el almacenamiento seguro o en variables de entorno).${NC}"
+    exit 1
+  fi
+  rm -f /tmp/zas_gitleaks.$$
+else
+  echo "${YELLOW}  ⚠️ gitleaks no está instalado (brew install gitleaks): se omite la búsqueda de secretos.${NC}"
+fi
+
+# Dependencias: pubspec.lock coherente con pubspec.yaml.
+if echo "$STAGED_FILES" | grep -Eq '^pubspec\.(yaml|lock)$'; then
+  if ! flutter pub get --enforce-lockfile >/dev/null 2>&1; then
+    echo "${RED}${BOLD}❌ pubspec.lock no corresponde a pubspec.yaml.${NC}"
+    echo "${YELLOW}👉 Ejecuta 'flutter pub get' y agrega pubspec.lock al commit.${NC}"
+    exit 1
+  fi
+fi
+
+# Código generado (textos de l10n y base de datos drift) al día.
+STAGED_FILES="$STAGED_FILES" sh scripts/check_generated_code.sh || exit 1
+
+# La auditoría revisa los archivos del disco: si hay cambios en lib/ sin
+# agregar, lo que se guarda puede no ser lo que se revisó.
+UNSTAGED_LIB=$(git diff --name-only -- lib)
+if [ -n "$UNSTAGED_LIB" ]; then
+  echo "${YELLOW}  ⚠️ Hay cambios en lib/ sin agregar al commit; la auditoría los incluye:${NC}"
+  echo "$UNSTAGED_LIB" | sed 's/^/     /'
+fi
+
+for file in $STAGED_DART_FILES; do
+  [ -f "$file" ] || continue
+
+  # Barrera 1: Anti-Legacy Tokens (error.md / DTCG / ISO 25010)
+  if grep -Eq '\b(septenary|startTest|brigthGreen|unary|quaternary|quinternary|senary|octonary|nonary|denary|secondaryWithOppacity)\b' "$file" 2>/dev/null; then
+    echo "${RED}${BOLD}❌ ERROR DE SISTEMA DE DISEÑO (DTCG): Token legacy/ordinal detectado en $file${NC}"
+    echo "${YELLOW}👉 Los tokens ordinales y legacy fueron erradicados. Usa sus contrapartes semánticas. Ver docs/design_tokens.md.${NC}"
+    exit 1
+  fi
+
+  # Barrera 2: Anti-Hardcoded Colors (Color(0x...) fuera de app_colors.dart y app_theme.dart)
+  case "$file" in
+    lib/config/theme/app_colors.dart|lib/config/theme/app_theme.dart|*.g.dart)
+      ;;
+    *)
+      if grep -Eq 'Color\(0x' "$file" 2>/dev/null; then
+        echo "${RED}${BOLD}❌ ERROR DE SISTEMA DE DISEÑO (DTCG): Color hexadecimal hardcodeado detectado en $file${NC}"
+        echo "${YELLOW}👉 Prohibido usar Color(0x...). Todo color debe provenir de AppColors. Ver docs/design_tokens.md.${NC}"
+        exit 1
+      fi
+      ;;
+  esac
+
+  # Barrera 3: Anti-Ordinales en app_colors.dart
+  if [ "$file" = "lib/config/theme/app_colors.dart" ]; then
+    if grep -Eq 'static const Color \w*(color[0-9]+|primary[0-9]+|secondary[0-9]+|tertiary[0-9]+)\b' "$file" 2>/dev/null; then
+      echo "${RED}${BOLD}❌ ERROR DE SISTEMA DE DISEÑO (DTCG): Nombre ordinal prohibido detectado en $file${NC}"
+      echo "${YELLOW}👉 Usa nombres semánticos (<contexto><elemento><variante>). Ver docs/design_tokens.md.${NC}"
+      exit 1
+    fi
+  fi
+
+  # Barrera 4: Anti-Material Colors.X (Colors.<color> fuera de app_colors.dart y app_theme.dart)
+  case "$file" in
+    lib/config/theme/app_colors.dart|lib/config/theme/app_theme.dart|*.g.dart)
+      ;;
+    lib/*)
+      if grep -Eq '\bColors\.[a-zA-Z_]+' "$file" 2>/dev/null; then
+        echo "${RED}${BOLD}❌ ERROR DE SISTEMA DE DISEÑO (DTCG): Referencia a 'Colors.X' detectada en $file${NC}"
+        echo "${YELLOW}👉 Prohibido usar Colors.X de Material. Usa AppColors.material* o tokens semánticos. Ver docs/design_tokens.md.${NC}"
+        exit 1
+      fi
+      ;;
+  esac
+
+  # Regla ZAS ARC-002: Prohibido setState() en lib/presentation/screens/
+  # Mismas reglas que scripts/script_audit_architecture.dart: se ignoran
+  # las líneas de comentario (//, /* y *) y la excepción documentada del
+  # splash (VideoPlayerController).
+  case "$file" in
+    lib/presentation/screens/splash/splash_screen.dart)
+      ;;
+    lib/presentation/screens/*)
+      SETSTATE_LINES=$(grep -nE '\bsetState\s*\(' "$file" 2>/dev/null \
+        | grep -vE '^[0-9]+:[[:space:]]*(//|/\*|\*)' || true)
+      if [ -n "$SETSTATE_LINES" ]; then
+        echo "${RED}${BOLD}❌ ERROR ARQUITECTÓNICO ZAS (ARC-002):${NC}"
+        echo "${RED}Se detectó 'setState()' en pantalla: $file${NC}"
+        echo "$SETSTATE_LINES" | sed 's/^/     línea /'
+        echo "${YELLOW}👉 Según el estándar del proyecto, usa ValueNotifier o Cubit/BLoC para el estado local.${NC}"
+        exit 1
+      fi
+      ;;
+  esac
+done
+
+# Barreras sobre archivos que no son Dart (plan de remediación S1-06 y
+# optimización de tamaño) y avisos de skeletons (S7-04).
+for file in $STAGED_FILES; do
+  [ -f "$file" ] || continue
+  case "$file" in
+    # Build de producción sin ofuscar: el binario expondría nombres y lógica.
+    scripts/*.sh)
+      if grep -q 'flutter build' "$file" && grep -q 'prod' "$file" \
+        && ! grep -q -- '--obfuscate' "$file"; then
+        echo "${RED}${BOLD}❌ ERROR DE SEGURIDAD (S1-06): $file compila producción sin --obfuscate --split-debug-info.${NC}"
+        exit 1
+      fi
+      ;;
+    # Assets pesados agrandan la app; aviso, no bloqueo.
+    assets/*)
+      if [ "$(wc -c < "$file")" -gt 512000 ]; then
+        echo "${YELLOW}⚠️  Asset de más de 500 KB: $file ($(($(wc -c < "$file") / 1024)) KB). Optimízalo si puedes.${NC}"
+      fi
+      ;;
+    # Texto con la codificación dañada (UTF-8 leído como Latin-1): «Ã©», «Ć³»…
+    *.md)
+      if grep -qE 'Ã[¡©­³º±‘]|Ć[³­¡]|Ā[¿¡]|â€' "$file"; then
+        echo "${YELLOW}⚠️  $file parece tener la codificación dañada (Ã©, Ć³…). Guárdalo en UTF-8.${NC}"
+      fi
+      ;;
+    lib/presentation/screens/home/*|lib/presentation/screens/collection/*|lib/presentation/screens/auth/*)
+      if grep -q 'CircularProgressIndicator' "$file"; then
+        echo "${YELLOW}⚠️  CircularProgressIndicator en $file: en home, cobro y login usa skeletons (S7-04).${NC}"
+      fi
+      ;;
+  esac
+done
+
+if [ -z "$STAGED_DART_FILES" ] && [ -z "$ARCH_GUARD_CHANGED" ]; then
+  echo "${GREEN}  ✓ No hay archivos Dart ni guardianes de arquitectura en este commit.${NC}"
+  exit 0
+fi
+
+# Capas de riesgo: un archivo nuevo de application/infrastructure debe traer su
+# prueba espejo; uno modificado sin prueba solo genera un aviso.
+if echo "$STAGED_DART_FILES" | grep -Eq '^lib/(application|infrastructure)/'; then
+  dart run scripts/check_layer_tests.dart || exit 1
+fi
+
+# Auditoría de movimientos: una pantalla con toques directos (IconButton,
+# InkWell, ListTile, Switch…) debe registrarlos con auditedCallback o
+# AuditableAction. Lo que escribe el usuario nunca se registra.
+if echo "$STAGED_DART_FILES" | grep -Eq '^lib/presentation/screens/'; then
+  dart run scripts/check_audited_screens.dart || exit 1
+fi
+
+# Verificación forense de tokens de diseño y Colors.X en todo el repositorio
+if [ -f "scripts/verify_legacy_tokens.sh" ]; then
+  if ! TOKENS_OUTPUT=$(bash scripts/verify_legacy_tokens.sh 2>&1); then
+    echo "$TOKENS_OUTPUT"
+    echo "${RED}${BOLD}❌ ERROR DE SISTEMA DE DISEÑO: scripts/verify_legacy_tokens.sh detectó violaciones (detalle arriba).${NC}"
+    exit 1
+  fi
+fi
+
+# Auditoría ARC-001 a ARC-029: revisa todo lib/ (no solo el staging); una
+# violación en cualquier archivo bloquea el commit.
+ARCH_OUTPUT=$(dart run scripts/script_audit_architecture.dart 2>&1)
+if [ $? -ne 0 ]; then
+  if ! echo "$ARCH_OUTPUT" | grep -q 'RESUMEN DE AUDITORÍA'; then
+    # El auditor no llegó a correr (SDK, dependencias o error de compilación).
+    echo "$ARCH_OUTPUT" | tail -15
+    echo "${RED}${BOLD}❌ No se pudo ejecutar la auditoría de arquitectura.${NC}"
+    echo "${YELLOW}👉 Prueba 'rm -rf .dart_tool/hooks_runner' y usa el SDK de fvm (.fvm/flutter_sdk/bin).${NC}"
+    exit 1
+  fi
+  echo "$ARCH_OUTPUT" | grep -A3 'VIOLACIÓN' | grep -v '^--$'
+  echo "${RED}${BOLD}❌ ERROR ARQUITECTÓNICO ZAS:${NC}"
+  echo "${RED}$(echo "$ARCH_OUTPUT" | grep 'Total de violaciones')${NC}"
+  echo "${YELLOW}👉 Ejecuta 'dart run scripts/script_audit_architecture.dart' para ver el detalle completo.${NC}"
+  exit 1
+fi
+echo "${GREEN}  ✓ Diseño DTCG y arquitectura sin violaciones (ARC-001 a ARC-029).${NC}"
+
+if [ -n "$ARCH_GUARD_CHANGED" ] && [ -f "$ARCH_GUARD_TEST" ]; then
+  echo "$ARCH_GUARD_TEST" >> "$TESTS_EXTRA_FILE"
+  [ -f "$ARCH_REPORT_TEST" ] && echo "$ARCH_REPORT_TEST" >> "$TESTS_EXTRA_FILE"
+fi
+exit 0
