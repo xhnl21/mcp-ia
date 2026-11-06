@@ -10628,5 +10628,30 @@
       "sheets_sync",
       "token.json"
     ]
+  },
+  {
+    "id": 431,
+    "titulo": "[estilo_neutral] PBKDF2 en Apps Script es lento: ~0.7 ms por iteración, no subir de 2000",
+    "problema": "Decidir cuántas iteraciones de PBKDF2-HMAC-SHA256 usar en Apps Script (_claHash, JS con Utilities.computeHmacSha256). Medido en el editor del proyecto TEST, 3 tandas.",
+    "solucion": "Tiempos (ms, 3 tandas): 500 it = 411-545; 2000 it = 1374-2056; 5000 it = 2641-4088; 10000 it = 5287-8659. Cada iteración cuesta unos 0.7-1 ms, así que ya 2000 tarda ~1.5 s por login. No subir las iteraciones (10000 sería 5-9 s con el lock/timeout de Apps Script); la defensa real es la limitación de intentos por dispositivo, la clave mínima de 10 caracteres y el 2FA. Cómo medir: archivo temporal medicion.gs con una función que cronometre _claHash(clave, sal, n) y Logger.log, ejecutada en el editor; borrarlo después.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-06 13:27:31",
+    "actualizada_en": "2026-11-06 13:27:31",
+    "hash": "a12f5f50b7b5556b847f1884",
+    "categoria": null,
+    "tags": [
+      "seguridad",
+      "estilo_neutral",
+      "apps-script",
+      "pbkdf2"
+    ]
   }
 ]
