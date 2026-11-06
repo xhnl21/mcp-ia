@@ -1,6 +1,7 @@
 #!/bin/sh
 # ==============================================================================
 # Pre-push común del kit de agentes (se comparte entre proyectos vía mcp-ia).
+# Todos los proyectos: vulnerabilidades de dependencias con osv-scanner.
 # Proyectos Dart/Flutter: analyze y la suite completa con --coverage.
 # Reglas propias del proyecto: .githooks/pre-push.local (después de la suite).
 # ==============================================================================
@@ -8,11 +9,39 @@
 HOOKS_DIR=$(dirname "$0")
 RED='\033[0;31m'
 GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 BOLD='\033[1m'
 NC='\033[0m'
 
 echo "\n${BLUE}${BOLD}🚀 Quality Gates de pre-push${NC}"
+
+# Vulnerabilidades conocidas en las dependencias: osv-scanner, si está
+# instalado, sobre los archivos de bloqueo de la raíz (pubspec.lock,
+# package-lock.json, requirements.txt, Cargo.lock…).
+# shortcut: solo la raíz (no -r), para no bloquear por herramientas de docs u
+# otras carpetas; un monorepo con lockfiles en subcarpetas lo agrega en su
+# pre-push.local.
+if command -v osv-scanner >/dev/null 2>&1; then
+  echo "\n${BLUE}Vulnerabilidades en dependencias (osv-scanner)...${NC}"
+  OSV_OUT=$(mktemp)
+  osv-scanner scan source . >"$OSV_OUT" 2>&1
+  OSV_EXIT=$?
+  case $OSV_EXIT in
+    0) echo "${GREEN}✓ Sin vulnerabilidades conocidas.${NC}" ;;
+    1)
+      grep -E '^\|' "$OSV_OUT" | head -20
+      rm -f "$OSV_OUT"
+      echo "${RED}❌ Hay dependencias con vulnerabilidades conocidas. Actualízalas antes de subir. Push rechazado.${NC}"
+      exit 1
+      ;;
+    128) echo "  Sin archivos de bloqueo en la raíz: no hay dependencias que revisar." ;;
+    *) echo "${YELLOW}⚠️ osv-scanner no pudo revisar las dependencias (¿sin conexión?). Repítelo antes del merge.${NC}" ;;
+  esac
+  rm -f "$OSV_OUT"
+else
+  echo "${YELLOW}⚠️ osv-scanner no está instalado (brew install osv-scanner): se omite la revisión de dependencias.${NC}"
+fi
 
 if [ -f pubspec.yaml ]; then
   if grep -Eq '^[[:space:]]+sdk:[[:space:]]*flutter' pubspec.yaml; then TOOL=flutter; COV=--coverage; else TOOL=dart; COV=; fi

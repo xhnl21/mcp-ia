@@ -13,8 +13,8 @@ La implementación de referencia es la de **zas** (Zas! Payments), copiada en [`
 |---|---|---|
 | `docs/devops/configurar_hooks_desde_cero.md` | Guía para una máquina sin nada instalado, con un prompt para IA: instalación, verificación y problemas frecuentes | Adaptar nombres y versiones |
 | `docs/devops/git-hooks.md` | Detalle de cada revisión de los hooks | Adaptar |
-| `.githooks/pre-commit.local` | Gate 5 del pre-commit común del kit: SDK, gitleaks, `pubspec.lock`, código generado, pruebas por capa, toques auditados y auditoría ARC | Adaptar (rutas y scripts del proyecto) |
-| `.githooks/pre-push.local` | Ramas protegidas, SDK, `pubspec.lock`, osv-scanner, ARC, cobertura global y cobertura de las líneas cambiadas | Adaptar (ramas y umbrales) |
+| `.githooks/pre-commit.local` | Gate 5 del pre-commit común del kit: SDK, `pubspec.lock`, código generado, pruebas por capa, toques auditados y auditoría ARC | Adaptar (rutas y scripts del proyecto) |
+| `.githooks/pre-push.local` | Ramas protegidas, SDK, `pubspec.lock`, ARC, cobertura global y cobertura de las líneas cambiadas | Adaptar (ramas y umbrales) |
 | `.githooks/obligatorio.sh` | Lo que se ejecuta incluso con `SKIP_PRE_COMMIT=1` (la auditoría ARC) | Sí |
 | `.gitleaks.toml` | Reglas por defecto de gitleaks más lo permitido (claves de cliente de Firebase, `test/`) | Sí; cada excepción nueva, con revisión |
 | `scripts/check_sdk_version.sh` | Falla si el Flutter en uso no es el de `.fvmrc` | Sí |
@@ -41,10 +41,10 @@ La implementación de referencia es la de **zas** (Zas! Payments), copiada en [`
 
 En Linux, `gitleaks` y `osv-scanner` se instalan desde sus releases de GitHub; en Windows, con Git Bash o WSL.
 
-Cómo los llaman los hooks:
+Los dos vienen en los **hooks comunes del kit** (`kit-agentes/hooks/`), para cualquier lenguaje. No hace falta repetirlos en los `.local`:
 
-- **Pre-commit:** `gitleaks git --pre-commit --staged --no-banner --redact`. Revisa solo lo que se va a subir, no toda la historia.
-- **Pre-push:** `osv-scanner scan source -L pubspec.lock`. Sin conexión, solo avisa.
+- **Pre-commit (Gate 1):** `gitleaks git --pre-commit --staged --no-banner --redact -v`. Revisa solo lo que se va a subir, no toda la historia, con el `.gitleaks.toml` del proyecto si existe.
+- **Pre-push:** `osv-scanner scan source .`. Revisa los archivos de bloqueo de la raíz (`pubspec.lock`, `package-lock.json`, `requirements.txt`…): bloquea si hay vulnerabilidades, y solo avisa si no hay conexión o archivos de bloqueo. No revisa subcarpetas: en zas, `-r` marcaría `docs/requirements.txt`, que es de la documentación. Un monorepo lo agrega en su `pre-push.local`.
 - Hallazgos viejos en la historia (`gitleaks git .`) no bloquean. Se resuelven rotando la clave, no agregándola a `.gitleaks.toml`.
 
 ## 3. El auditor ARC
