@@ -35,7 +35,7 @@ Genera la marca visual de una app desde un archivo `marca.json`, con scripts rep
 
 ## 2. Crear `marca.json` en la raíz del proyecto
 
-Copia `ejemplos/reelkeeper.marca.json` o `ejemplos/monograma.marca.json` y ajústalo. Solo `app` y `organizacion` son obligatorios; el resto tiene valores por defecto. `salida` (por defecto `assets/branding`) es relativa a la carpeta de `marca.json`.
+Copia `ejemplos/reelkeeper.marca.json` o `ejemplos/monograma.marca.json` y ajústalo. Solo `app` es obligatorio; `organizacion` vale «FurionSystem» por defecto (así la escribe el usuario en todas sus apps; no la cambies salvo que lo pida) y el resto también tiene valores por defecto. `salida` (por defecto `assets/branding`) es relativa a la carpeta de `marca.json`.
 
 ## 3. Generar y REVISAR visualmente
 

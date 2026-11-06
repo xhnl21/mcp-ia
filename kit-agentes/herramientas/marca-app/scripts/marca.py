@@ -14,6 +14,8 @@ AQUI = os.path.dirname(os.path.abspath(__file__))
 FUENTES = os.path.join(AQUI, "..", "fonts")
 
 POR_DEFECTO = {
+    # Organización del usuario, tal como la escribe en todas sus apps (walkietalkie/marca.json).
+    "organizacion": "FurionSystem",
     "pie": "desarrollado por",
     "frase": "",
     "simbolo": {"tipo": "carrete", "cinta": True, "girar": True},
