@@ -10653,5 +10653,33 @@
       "apps-script",
       "pbkdf2"
     ]
+  },
+  {
+    "id": 432,
+    "titulo": "[zas] GET billing/payment-accounts ahora agrupa las cuentas por método y la app mostraba una cuenta vacía",
+    "problema": "La respuesta de GET {tenant}/billing/payment-accounts cambió de una lista plana de cuentas a `PaymentAccounts: [{payment_method, accounts: [...]}]`, con todos los métodos (DEBITO_INMEDIATO, PAGO_MOVIL) aunque se pida ?payment_method=PAGO_MOVIL. InstantDebitRepositoryImpl.getBillingPaymentAccounts convertía cada grupo en una PaymentAccount: el pago de la suscripción (NoPayCubit.loadPaymentAccount usa accounts.first) mostraba una cuenta sin banco, número ni RIF y con método DEBITO_INMEDIATO. No había error, solo datos vacíos.",
+    "solucion": "Causa: el parseo suponía la lista plana y no filtraba por el método pedido. Arreglo: nuevo lib/infrastructure/repositories/order/payment_accounts_parser.dart con paymentAccountsOf(items, paymentMethod), que aplana los grupos (switch {'accounts': final List accounts} => accounts, _ => [group]), acepta también la lista plana y se queda solo con `payment_method == paymentMethod` (patrón `case {'payment_method': final m} when m == paymentMethod`; un identificador suelto en un patrón de mapa es una constante y no compila con un parámetro). Se movió _accountOf allí: el repositorio bajó de 575 a 558 líneas y se bajó su línea base de ARC-009. Prueba: 'agrupada por método: solo las cuentas del método pedido' en test/infrastructure/repositories/order/instant_debit_repository_impl_test.dart.",
+    "categorias_id": 6,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-06 13:36:35",
+    "actualizada_en": "2026-11-06 13:36:35",
+    "hash": "bab38227b02d521b3395caa4",
+    "categoria": "red",
+    "tags": [
+      "flutter",
+      "dart",
+      "zas",
+      "billing",
+      "payment-accounts",
+      "parseo",
+      "patrones"
+    ]
   }
 ]
