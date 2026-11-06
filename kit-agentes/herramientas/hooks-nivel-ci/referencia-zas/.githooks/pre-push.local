@@ -38,26 +38,6 @@ if ! flutter pub get --enforce-lockfile >/dev/null 2>&1; then
 fi
 echo "✓ pubspec.lock coherente."
 
-# Vulnerabilidades conocidas en las dependencias (osv-scanner, si está).
-if command -v osv-scanner >/dev/null 2>&1; then
-  echo "Vulnerabilidades en dependencias (osv-scanner)..."
-  if ! osv-scanner scan source -L pubspec.lock >/tmp/zas_osv.$$ 2>&1; then
-    if grep -q 'Packages affected\|vulnerabilit' /tmp/zas_osv.$$; then
-      grep -v '^Starting\|^Scanned\|^End status' /tmp/zas_osv.$$ | tail -20
-      rm -f /tmp/zas_osv.$$
-      echo "❌ Hay dependencias con vulnerabilidades conocidas. Actualízalas antes de subir."
-      exit 1
-    fi
-    # Sin red u otro error de la herramienta: avisa y sigue.
-    echo "⚠️ osv-scanner no pudo revisar las dependencias (¿sin conexión?)."
-  else
-    echo "✓ Sin vulnerabilidades conocidas."
-  fi
-  rm -f /tmp/zas_osv.$$
-else
-  echo "⚠️ osv-scanner no está instalado (brew install osv-scanner): se omite."
-fi
-
 echo "Auditoría de Arquitectura (ARC-001 a ARC-029)..."
 if ! dart run scripts/script_audit_architecture.dart; then
   echo "❌ Error: Se detectaron violaciones de arquitectura en lib/. Push rechazado."

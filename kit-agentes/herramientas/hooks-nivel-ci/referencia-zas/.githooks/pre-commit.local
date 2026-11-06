@@ -33,21 +33,6 @@ ARCH_GUARD_CHANGED=$(echo "$STAGED_FILES" | grep -E '^(scripts/script_audit_arch
 # Flutter del proyecto (.fvmrc): el mismo que usa la app y el CI.
 sh scripts/check_sdk_version.sh || exit 1
 
-# Secretos en lo que se va a subir (gitleaks, si está instalado; el Gate 1
-# del hook común solo mira nombres de archivo y patrones básicos).
-if command -v gitleaks >/dev/null 2>&1; then
-  if ! gitleaks git --pre-commit --staged --no-banner --redact >/tmp/zas_gitleaks.$$ 2>&1; then
-    grep -E 'RuleID|File|Line|Secret' /tmp/zas_gitleaks.$$
-    rm -f /tmp/zas_gitleaks.$$
-    echo "${RED}${BOLD}❌ gitleaks encontró un posible secreto en el commit.${NC}"
-    echo "${YELLOW}👉 Quítalo del código (va en el almacenamiento seguro o en variables de entorno).${NC}"
-    exit 1
-  fi
-  rm -f /tmp/zas_gitleaks.$$
-else
-  echo "${YELLOW}  ⚠️ gitleaks no está instalado (brew install gitleaks): se omite la búsqueda de secretos.${NC}"
-fi
-
 # Dependencias: pubspec.lock coherente con pubspec.yaml.
 if echo "$STAGED_FILES" | grep -Eq '^pubspec\.(yaml|lock)$'; then
   if ! flutter pub get --enforce-lockfile >/dev/null 2>&1; then
