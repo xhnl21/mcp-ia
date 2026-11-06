@@ -10862,5 +10862,30 @@
       "vitest",
       "gameivp"
     ]
+  },
+  {
+    "id": 440,
+    "titulo": "[zas] GitLab muestra la plantilla vieja del merge request aunque la rama trae la nueva",
+    "problema": "Al abrir «New merge request» de opt/arc_auditor hacia dev, la descripción salía con la plantilla vieja de casillas (Design Tokens Checklist, Arquitectura Checklist), aunque la rama ya tenía la nueva .gitlab/merge_request_templates/default.md con el informe ejecutivo. Pegar a mano no funcionaba: al recargar, GitLab volvía a poner la plantilla.",
+    "solucion": "Causa: GitLab toma la plantilla por defecto de la rama DESTINO (dev), no de la rama de origen; la plantilla nueva llega a dev recién con ese merge. Arreglo: abrir el MR con un enlace que trae el título y la descripción ya puestos: https://gitlab.com/<grupo>/<proyecto>/-/merge_requests/new?merge_request[source_branch]=<rama>&merge_request[target_branch]=dev&merge_request[title]=...&merge_request[description]=... (urlencode de build/mr_resumen.md, generado con `dart run scripts/mr_report.dart`; con Python: urllib.parse.urlencode). GitLab respeta la descripción del enlace aunque haya plantilla. No elegir nada en «Choose a template», porque la reemplaza. Revisar también Settings → Merge requests → Default description template: si hay una fija, se impone sobre el archivo. Usado en el MR !242 de zas.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-06 19:48:18",
+    "actualizada_en": "2026-11-06 19:48:18",
+    "hash": "8fa04a36dfb7adc40183d659",
+    "categoria": null,
+    "tags": [
+      "zas",
+      "gitlab",
+      "merge-request",
+      "plantilla"
+    ]
   }
 ]
