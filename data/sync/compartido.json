@@ -12088,5 +12088,29 @@
       "root",
       "masvs-resilience"
     ]
+  },
+  {
+    "id": 488,
+    "titulo": "[ImagineArt] generate_image_batch: con 10 generaciones en curso, el lote se acepta a medias o falla sin avisar",
+    "problema": "Al lanzar un lote de 5 prompts con 8 imágenes aún generándose, solo se aceptó 2 (devuelve 'Generating 2 images') y otro intento falló con 'you already have 10 generation(s) in progress'. Los prompts que sobran se pierden sin error claro.",
+    "solucion": "El límite es de 10 generaciones simultáneas por organización (imágenes, música y video cuentan). Contar las pendientes antes de lanzar otro lote; comprobar que `assets` del resultado tenga tantas entradas como prompts y reenviar los que falten cuando termine algo. Procesado de sprites: descargar de https://asset.imagine.art/processed/<id> (404 hasta que termina), floodfill del blanco desde las esquinas; para planetas con nubes blancas no quitar el blanco global (umbral 256), solo el relleno desde las esquinas.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 19:13:27",
+    "actualizada_en": "2026-11-09 19:13:27",
+    "hash": "80fa23189b1aecb564096dc7",
+    "categoria": null,
+    "tags": [
+      "gameivp",
+      "imagineart",
+      "sprites"
+    ]
   }
 ]
