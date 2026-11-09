@@ -30,6 +30,11 @@ scripts/check_sdk_version.sh
 scripts/mr_report.dart
 test/scripts/script_audit_architecture_test.dart
 test/scripts/arc_modules_report_test.dart
+integration_test/rendimiento_por_modulo_test.dart
+test_driver/integration_test.dart
+scripts/rendimiento_dispositivo.sh
+scripts/rendimiento_informe.dart
+test/scripts/rendimiento_informe_test.dart
 "
 rm -rf "$DEST"
 for f in $ARCHIVOS; do

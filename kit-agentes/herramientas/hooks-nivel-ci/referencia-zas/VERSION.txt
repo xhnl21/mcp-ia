@@ -1,1 +1,1 @@
-Copiado de zas fdb7f282 2026-11-06 (opt/arc_auditor).
+Copiado de zas 97c0e979 2026-11-09 (test/rendimiento_redmi).
