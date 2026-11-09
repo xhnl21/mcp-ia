@@ -11466,5 +11466,59 @@
       "python",
       "pillow"
     ]
+  },
+  {
+    "id": 464,
+    "titulo": "[zas] Auditoría: la vista de las pantallas abiertas con push sale como la de debajo (go_router currentConfiguration.uri)",
+    "problema": "En Soporte técnico (action_logs), los movimientos no coincidían con lo que hacía el usuario: el PUSH a Soporte técnico, a Configuración o a Perfil del comercio salía con «Vista: summary» (la pantalla de debajo), y los toques dentro de Configuración también decían «summary».",
+    "solucion": "Causa 1: AuditNavigatorObserver y currentAuditScreenName (audit_scope.dart) leían `route.routerDelegate.currentConfiguration.uri.path`. Con `context.push`, go_router agrega un ImperativeRouteMatch, pero `uri` sigue siendo la ruta base. Arreglo: `currentRoutePath()` / `routePathOf(router)` en lib/config/routes/routes.dart = `currentConfiguration.lastOrNull?.matchedLocation ?? ''`. Causa 2: 19 pantallas se abrían con `Navigator.push(MaterialPageRoute(...))` sin nombre (Configuración, sus subpantallas, Productos, Grupos, Moneda), y el router no las conoce. Arreglo: `settings: RouteSettings(name: '/config' | '/profile' | ...)` en cada MaterialPageRoute, y `navigatorRouteName(route)` (lib/config/routes/navigator_route_name.dart: nombre de settings que no es Page de go_router, ignorando '/') como primera opción en el observador (push: la ruta nueva; pop: previousRoute; diálogo: la de debajo) y en currentAuditScreenName (ModalRoute.of(context)). Va en config porque presentation no puede importar infrastructure (ARC-001). Pruebas: route_path_test.dart, navigator_route_name_test.dart y audit_navigator_observer_test.dart. Verificado en el emulador.",
+    "categorias_id": 2,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 13:52:09",
+    "actualizada_en": "2026-11-09 13:52:09",
+    "hash": "92bc4fd6149619a1e1e86836",
+    "categoria": "runtime",
+    "tags": [
+      "auditoria",
+      "flutter",
+      "zas",
+      "go_router",
+      "navigator",
+      "soporte-tecnico"
+    ]
+  },
+  {
+    "id": 465,
+    "titulo": "[zas] Soporte técnico: todos los movimientos con la misma hora y 4 horas atrasados",
+    "problema": "En Soporte técnico (GET action_logs), los movimientos hechos entre 09:37:44 y 09:38:09 salían todos a las 05:38:11: el mismo segundo y 4 horas menos.",
+    "solucion": "Causas: (1) el backend guarda en created_at la hora en que recibe el lote (action_logs/register_app), no la del movimiento, y no devuelve el `timestamp` que manda la app; (2) created_at viene en hora de Venezuela marcado con `Z`, y la vista hacía toLocal() y restaba 4 h (la misma convención que el comprobante del débito). Arreglo: AuditSyncService agrega `metadata.timestamp = record.createdAt` (UTC real); actionLogEntryFromJson usa metadata.timestamp y, si no viene (registros viejos), toma created_at como hora local (DateTime con los mismos componentes si isUtc); actionLogPageFromJson ordena la página por esa hora, de la más nueva a la más vieja (shortcut: solo dentro de la página). Lo ideal es que el backend guarde y ordene por `timestamp`. Pruebas en action_log_model_test.dart y audit_sync_service_test.dart.",
+    "categorias_id": 2,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 13:52:09",
+    "actualizada_en": "2026-11-09 13:52:09",
+    "hash": "9bacc2634877118e47133cac",
+    "categoria": "runtime",
+    "tags": [
+      "auditoria",
+      "flutter",
+      "zas",
+      "action_logs",
+      "zona-horaria",
+      "soporte-tecnico"
+    ]
   }
 ]
