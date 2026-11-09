@@ -11697,5 +11697,100 @@
       "phaser",
       "vue"
     ]
+  },
+  {
+    "id": 473,
+    "titulo": "[GameIVP] Phaser: las bombas quedaban congeladas arriba y el jefe subía (setGravityY reemplaza, no suma)",
+    "problema": "En el mundo/nivel 1 las bombas se quedaban en y=0 sin moverse (velocity 0, gravity 0); el jefe salía disparado hacia arriba (y=-1046). Aparece en Generadores.ts.",
+    "solucion": "Causa: `physics.add.group({ gravityY: 900 })` pone gravedad al crear, pero `sprite.setGravityY(x)` REEMPLAZA body.gravity.y (no se suma). El código hacía `setGravityY(gravedadBomba(nivel) - 900)` (=0 en nivel 1) y `setGravityY(-900)` en el jefe (sube). Arreglo: `bomb.setGravityY(gravedadBomba(nivel))` y `jefe.setGravityY(0)` con velocityY constante. Se detectó con una prueba Cypress que mide y/velocity tras 0,5 s (`window.__juego.escena.bombs`).",
+    "categorias_id": 2,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 17:31:46",
+    "actualizada_en": "2026-11-09 17:31:46",
+    "hash": "18e2f97f20289f28a1ee2489",
+    "categoria": "runtime",
+    "tags": [
+      "gameivp",
+      "phaser",
+      "fisica"
+    ]
+  },
+  {
+    "id": 474,
+    "titulo": "[GameIVP] Nombre repetido MAX_NIVEL: ya existía para el nivel máximo de un item",
+    "problema": "Al agregar el nivel máximo del héroe (100) en un archivo nuevo, el nombre MAX_NIVEL ya existía en data/items.ts (nivel máx. de item = 5). En TS un import repetido da error, pero en JS/GAS pisaría en silencio.",
+    "solucion": "Antes de declarar una constante, `grep -rn \"export const NOMBRE\" src`. Se usó MAX_NIVEL_HEROE en data/mundos.ts. Aplica la regla global de nombres duplicados.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 17:31:47",
+    "actualizada_en": "2026-11-09 17:31:47",
+    "hash": "991d23cf4cf083a8da848c53",
+    "categoria": null,
+    "tags": [
+      "gameivp",
+      "typescript"
+    ]
+  },
+  {
+    "id": 475,
+    "titulo": "[GameIVP] Cypress: el opening en video bloquea el arranque; saltarlo con un clic en [data-test=video]",
+    "problema": "Tras agregar un opening en video al pulsar Start, las pruebas e2e fallaban (no aparece el canvas ni window.__juego) porque el juego arranca al terminar el video.",
+    "solucion": "Las pruebas deben pulsar Start y luego `cy.get('[data-test=\"video\"]').click()` (el toque salta el video). Incluir también tras cada `cy.reload()`. El juego se lanza en `iniciarJuego()` al terminar o saltar el opening.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 17:31:47",
+    "actualizada_en": "2026-11-09 17:31:47",
+    "hash": "b999aaca98431d2f327b8bc4",
+    "categoria": null,
+    "tags": [
+      "gameivp",
+      "vue",
+      "cypress"
+    ]
+  },
+  {
+    "id": 476,
+    "titulo": "[ImagineArt] Costos reales: música ~270 créditos (10 s) y ~500 (45 s); imagen v5-pro 30; video 6 s ~215; efecto de sonido ~3",
+    "problema": "Al planear un tope de créditos para 10 músicas se subestimó el costo: 2 pistas de 45 s gastaron ~1.000 créditos.",
+    "solucion": "Medir el costo de UNA llamada con get_balance antes de lanzar lotes. En la org personal: generate_image_batch seedream-v5-pro 30/imagen (8 por lote, 9:16 → 1440x2560); generate_sound_effect ~3; generate_music ~270 a 10 s y ~500 a 45 s (costo fijo alto); generate_video ltx-2.3 6 s 9:16 ~215. Las descargas salen de https://asset.imagine.art/processed/<id> (404 mientras se genera: reintentar). Con tope limitado, repartir pocas pistas entre los temas.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 17:31:47",
+    "actualizada_en": "2026-11-09 17:31:47",
+    "hash": "7f90a51d55c7b3d309ee14ff",
+    "categoria": null,
+    "tags": [
+      "gameivp",
+      "imagineart",
+      "creditos"
+    ]
   }
 ]
