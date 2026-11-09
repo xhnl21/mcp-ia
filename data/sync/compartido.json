@@ -11673,5 +11673,29 @@
       "flutter-drive",
       "watchperformance"
     ]
+  },
+  {
+    "id": 472,
+    "titulo": "[GameIVP] Texto del HUD borroso: dibujado en el lienzo de Phaser",
+    "problema": "Las barras Vida/Escudo/Exp. y Score/Nivel/Monedas se veían borrosas y con otra fuente que los botones.",
+    "solucion": "El texto del lienzo se rasteriza a baja resolución y se amplía. Se movió el HUD a un componente HTML (HudJuego.vue) alimentado por game.events.emit('hud', datos) desde PlayScene.actualizarHud; el HUD viejo fue a trash/.",
+    "categorias_id": 3,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 15:56:29",
+    "actualizada_en": "2026-11-09 15:56:29",
+    "hash": "eed8bb13d2c233060b6c5a61",
+    "categoria": "widgets",
+    "tags": [
+      "gameivp",
+      "phaser",
+      "vue"
+    ]
   }
 ]
