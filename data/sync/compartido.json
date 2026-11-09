@@ -12161,5 +12161,52 @@
       "imagineart",
       "sprites"
     ]
+  },
+  {
+    "id": 491,
+    "titulo": "[Cypress] cy.screenshot() hace que la app avance más despacio: las capturas de una animación salen desfasadas",
+    "problema": "Al capturar una cinemática de Phaser con varias cy.screenshot() seguidas, la barra de progreso salía al 65 % cuando el reloj de la escena marcaba 7 %, y varias capturas pillaban solo el fundido de entrada.",
+    "solucion": "Cada cy.screenshot() y cada cy.wait consumen tiempo real mientras la app corre a su ritmo, así que las capturas NO corresponden a los tiempos nominales. Para ver una animación fiable: ralentizar la propia escena (en GameIVP, `__estacion.k = 0.25` hace 4 veces más largos los tween de la cinemática), esperar una fase con `cy.window().its('__estacion.fase').should('eq','embarca')` y capturar entonces. Para comprobar un reloj, leer el valor (`scene.time.now - t0`) en la misma pasada que la captura en vez de fiarse de los waits.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 20:05:30",
+    "actualizada_en": "2026-11-09 20:05:30",
+    "hash": "eefc6452a33df5fe07f398c1",
+    "categoria": null,
+    "tags": [
+      "gameivp",
+      "phaser",
+      "cypress"
+    ]
+  },
+  {
+    "id": 492,
+    "titulo": "[ImagineArt] «sign-in expired» al consultar el estado pero la generación sigue; y una generación puede fallar con 'Generation error' sin cobrar",
+    "problema": "fetch_status con sync devolvió 'your ImagineArt sign-in expired… the generation keeps running'; otras dos imágenes quedaron en 'Generation error. Try again…' y mi descarga esperó 6 minutos un 404 que nunca se resolvía.",
+    "solucion": "La descarga de https://asset.imagine.art/processed/<id> no necesita sesión: si la generación terminó, se baja aunque el MCP pida reautenticar. Si no aparece tras ~1 min, consultar fetch_status SIN sync (una sola vez): si dice status:error, reintentar (no cobra: el saldo no cambió). No dejar bucles de descarga de minutos; limitar a ~10 intentos y comprobar el estado. Para variar una imagen ya generada (misma nave pero vacía), pasar la anterior en image_url con 'Same exact … but …': mantiene el estilo.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 20:05:30",
+    "actualizada_en": "2026-11-09 20:05:30",
+    "hash": "016ed57e567cc0dcd46a9fea",
+    "categoria": null,
+    "tags": [
+      "gameivp",
+      "imagineart"
+    ]
   }
 ]
