@@ -29,6 +29,7 @@ La implementación de referencia es la de **zas** (Zas! Payments), copiada en [`
 | `scripts/arc_config.json` | Excepciones con vencimiento y línea base de zas | **No**: en un proyecto nuevo se genera con `--generar-linea-base` |
 | `test/scripts/*_test.dart` | Pruebas del detector y del reporte | Sí, junto con el auditor |
 | `scripts/mr_report.dart` + `.gitlab/merge_request_templates/default.md` | Descripción del MR como informe ejecutivo (resumen, tabla de cambios, verificación) | Opcional |
+| `integration_test/rendimiento_por_modulo_test.dart` + `scripts/rendimiento_dispositivo.sh` + `scripts/rendimiento_informe.dart` | Prueba de rendimiento por módulo en un dispositivo real: apertura y fotogramas (build/raster) de cada módulo con `watchPerformance`, vigía de la sesión, log con horas e informe en Markdown en `build/rendimiento/`. Uso: `sh scripts/rendimiento_dispositivo.sh <dispositivo> [segundos]`. Trampas: `--no-dds`, `--keep-app-running`, la APK que deja drive ignora los toques, `ensureVisible` + `hitTestWarningShouldBeFatal` (en pantallas bajas un toque caía en «Cerrar Sesión») y el raster del emulador no sirve | Adaptar la navegación a los módulos del proyecto |
 | `.gitlab-ci.yml` | El CI de GitLab de zas: está apagado (`when: never`) por falta de minutos y atrasado respecto de los hooks | Solo como punto de partida |
 
 ## 2. Herramientas que hay que instalar
