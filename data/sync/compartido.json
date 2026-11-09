@@ -11417,5 +11417,54 @@
       "soporte",
       "estado"
     ]
+  },
+  {
+    "id": 462,
+    "titulo": "[GameIVP] Items comprados no mejoran la jugabilidad (bonos pequeños y segundo item de la misma casilla sin equipar)",
+    "problema": "Un jugador compró 2 items y no notó mejora. Causas: HeroStats.comprar solo equipa si la casilla está vacía (el 2º item de la misma casilla queda guardado sin equipar y la interfaz solo decía 'Comprado'); y los bonos de velocidad, balas y cadencia eran +10 sobre 100 (o 200 ms sobre 3000), imperceptibles.",
+    "solucion": "Mostrar en tienda 'Comprado · equípalo en el Inventario' y en el inventario 'sin equipar: no mejora al personaje'; duplicar base y porNivel de velocidad, balas y cadencia en data/items.ts; cada item pasa a tener varios atributos (extras) para que se note. Prueba en tests/unit/Items.spec.ts ('comprar dos items...').",
+    "categorias_id": 4,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 13:49:47",
+    "actualizada_en": "2026-11-09 13:49:47",
+    "hash": "49b0328c2eddbdff4968953e",
+    "categoria": "estado",
+    "tags": [
+      "gameivp",
+      "phaser",
+      "vue",
+      "balance"
+    ]
+  },
+  {
+    "id": 463,
+    "titulo": "[herramientas] python3 -I no encuentra Pillow (ModuleNotFoundError: No module named 'PIL')",
+    "problema": "Al procesar imágenes descargadas con 'python3 -I -' sale ModuleNotFoundError: No module named 'PIL', aunque 'python3 -c \"import PIL\"' funciona.",
+    "solucion": "El modo aislado -I ignora los site-packages de usuario donde está instalado Pillow. Ejecutar con 'python3' normal desde un directorio distinto al de lo descargado (por ejemplo el del proyecto), pasando las rutas como argumentos.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 13:49:47",
+    "actualizada_en": "2026-11-09 13:49:47",
+    "hash": "df883e7bc2d0ea69640a4b78",
+    "categoria": null,
+    "tags": [
+      "macos",
+      "python",
+      "pillow"
+    ]
   }
 ]
