@@ -11569,5 +11569,54 @@
       "ionic",
       "vue"
     ]
+  },
+  {
+    "id": 468,
+    "titulo": "[GameIVP] Botón dibujado en Phaser se ve borroso, sin esquinas redondeadas y con otra fuente que los botones HTML",
+    "problema": "El botón 'Habilidades' (Phaser: rectángulo + texto en el lienzo) se veía borroso en el móvil, con esquinas rectas y distinta tipografía que los botones HTML del panel (Modal, Tienda...).",
+    "solucion": "El texto del lienzo se rasteriza a la resolución del canvas y se reescala; un Rectangle de Phaser no tiene esquinas redondeadas. Se convirtió en un botón HTML más del panel .panel-botones (PhaserContainer.vue, abrir('habilidades') llama a showModal) y el botón de Phaser se movió a trash/. Para texto que sí debe ir en el lienzo, tomar la fuente del navegador con un <button> temporal (getComputedStyle(...).fontFamily).",
+    "categorias_id": 3,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 15:34:21",
+    "actualizada_en": "2026-11-09 15:34:21",
+    "hash": "d5f64a1f31eb8b0d8401ff2a",
+    "categoria": "widgets",
+    "tags": [
+      "gameivp",
+      "ionic",
+      "phaser",
+      "ui"
+    ]
+  },
+  {
+    "id": 469,
+    "titulo": "[GameIVP] Tienda: al comprar, el botón 'Comprado · equípalo...' ensancha y aprieta la descripción",
+    "problema": "En la tienda, tras comprar un item la etiqueta larga del botón ('Comprado · equípalo en el Inventario') ocupaba media tarjeta y la descripción quedaba en una columna angosta de una palabra por línea.",
+    "solucion": "Etiquetas cortas ('Comprado'/'Equipado'), pista 'Equípalo en el Inventario' como línea aparte en .ui-info, y en ui-modal.css .ui-acciones con flex-shrink:0 y min-width fijo y .ui-btn con white-space:nowrap, para que el botón mida lo mismo comprado o no.",
+    "categorias_id": 3,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 15:34:21",
+    "actualizada_en": "2026-11-09 15:34:21",
+    "hash": "1591657ee44daa413ab3ed63",
+    "categoria": "widgets",
+    "tags": [
+      "gameivp",
+      "vue",
+      "css"
+    ]
   }
 ]
