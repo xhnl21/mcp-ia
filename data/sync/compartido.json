@@ -12005,5 +12005,88 @@
       "phaser",
       "rendimiento"
     ]
+  },
+  {
+    "id": 485,
+    "titulo": "[zas] Huella de la contraseña sin sal (sha256 de email|rif|contraseña) en el almacenamiento seguro",
+    "problema": "Auditoría de seguridad (FLT-007, MASVS-CRYPTO-2, CWE-759): LoginBiometricHandler guardaba sha256('email|rif|contraseña') en 'bio_saved_password_hash' para detectar si la contraseña cambió. Si se extrae el almacenamiento seguro (teléfono rooteado), la contraseña se puede atacar sin conexión con diccionarios a velocidad de GPU, porque la huella no tiene sal ni costo.",
+    "solucion": "Arreglo: nueva clase de dominio PasswordFingerprint (lib/domain/services/password_fingerprint.dart, Dart puro): PBKDF2-HMAC-SHA256 con sal aleatoria de 16 bytes (Random.secure) y 20.000 iteraciones, formato 'v2:<sal base64>:<hash hex>', comparación en tiempo constante. matches() también acepta el formato anterior y isLegacy() permite migrarlo: en el siguiente login con contraseña el handler la reescribe en v2. pbkdf2Hex se verificó con los vectores conocidos ('password'/'salt', c=1 y c=2). Va en domain porque presentation no puede importar infrastructure (ARC-001). Limitación: es una huella para detectar cambios, no para autenticar; la protección real sigue siendo el Keystore.",
+    "categorias_id": 2,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 18:50:51",
+    "actualizada_en": "2026-11-09 18:50:51",
+    "hash": "1ac269079e8130499308ce13",
+    "categoria": "runtime",
+    "tags": [
+      "dart",
+      "zas",
+      "seguridad",
+      "pbkdf2",
+      "crypto",
+      "hash",
+      "masvs-crypto"
+    ]
+  },
+  {
+    "id": 486,
+    "titulo": "[zas] iOS declaraba NSLocationAlwaysAndWhenInUseUsageDescription sin usar la ubicación en segundo plano",
+    "problema": "Auditoría de seguridad (FLT-011, MASVS-PRIVACY): ios/Runner/Info.plist tenía NSLocationAlwaysAndWhenInUseUsageDescription además de NSLocationWhenInUseUsageDescription. La app solo usa la ubicación con la app abierta; declarar «siempre» amplía lo que se le puede pedir al usuario y lo que revisa Apple.",
+    "solucion": "Arreglo: se quitó la clave de «siempre». geolocator_apple (PermissionHandler.m) pide requestWhenInUseAuthorization si existe NSLocationWhenInUseUsageDescription y solo usa requestAlwaysAuthorization si falta, así que el comportamiento no cambia. Prueba de regresión test/platform/ios_info_plist_test.dart: solo la descripción de «mientras se usa» y ATS sin NSAllowsArbitraryLoads=true. Validar el plist con plutil -lint.",
+    "categorias_id": 9,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 18:51:57",
+    "actualizada_en": "2026-11-09 18:51:57",
+    "hash": "2584933d484c97236d59d625",
+    "categoria": "plataforma",
+    "tags": [
+      "zas",
+      "ios",
+      "privacidad",
+      "seguridad",
+      "geolocator",
+      "info.plist"
+    ]
+  },
+  {
+    "id": 487,
+    "titulo": "[zas] Chequeo de integridad (RASP) que daba el dispositivo por sano si fallaba",
+    "problema": "Auditoría de seguridad (FLT-005, MASVS-RESILIENCE): DeviceIntegrityServiceImpl.checkIntegrityIssues envolvía todos los chequeos (device_info, rutas de root/jailbreak, socket de Frida) en un try/catch que solo registraba el error y devolvía la lista vacía, es decir, «dispositivo sano». Un atacante que hiciera fallar el chequeo (hook que lance una excepción) evitaba la mitigación.",
+    "solucion": "Arreglo: DeviceIntegrityServiceImpl.runChecks(issues, checks, failClosed: kReleaseMode). Corre los chequeos con una lista propia por intento; si fallan, reintenta una vez tras 300 ms (un fallo pasajero no debe borrar la sesión, porque la reacción ante un compromiso es deleteAll del almacenamiento seguro y salir); si vuelve a fallar en release, agrega unverifiedIssue ('No se pudo verificar la integridad del dispositivo'). Fuera de release no bloquea. Pruebas en device_integrity_service_test.dart (éxito, error pasajero sin duplicados, dos errores en release, error fuera de release). Limitación: sigue siendo RASP del lado del cliente; la solución definitiva es Play Integrity / App Attest verificado en el backend. La verificación de la firma de la APK no se hizo porque con Play App Signing hace falta el SHA-256 de la clave de firma de la Play Console.",
+    "categorias_id": 2,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 18:53:34",
+    "actualizada_en": "2026-11-09 18:53:34",
+    "hash": "961ec9906d3edcc8df918f65",
+    "categoria": "runtime",
+    "tags": [
+      "flutter",
+      "zas",
+      "seguridad",
+      "frida",
+      "rasp",
+      "root",
+      "masvs-resilience"
+    ]
   }
 ]
