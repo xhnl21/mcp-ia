@@ -12208,5 +12208,55 @@
       "gameivp",
       "imagineart"
     ]
+  },
+  {
+    "id": 493,
+    "titulo": "[Phaser] scene.time.now cuenta desde que arrancó el juego, no desde que empezó la escena: un cronómetro basado en él se adelanta",
+    "problema": "En ViajeScene el progreso (t = this.time.now - t0 con t0 = time.now en create) llegaba al 100 % en ~3 s en el teléfono en vez de 17,5 s; en Cypress parecía bien porque el juego llevaba poco encendido.",
+    "solucion": "Clock.now de una escena es el tiempo del bucle del juego desde el arranque (en create() vale 0 porque aún no hubo preUpdate, y luego salta al tiempo global). Para medir tiempo propio de la escena, acumular el delta en update(): `transcurrido += delta`. Las comparaciones relativas (`invulnerableHasta = time.now + 1200` y `time.now < invulnerableHasta`) sí son válidas; `delayedCall` también. Añadir una prueba que compruebe que el progreso recién empezado es pequeño, y probar en el dispositivo.",
+    "categorias_id": 2,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 20:28:19",
+    "actualizada_en": "2026-11-09 20:28:19",
+    "hash": "3ccdf951dfda1db963f01f66",
+    "categoria": "runtime",
+    "tags": [
+      "gameivp",
+      "phaser",
+      "tiempo"
+    ]
+  },
+  {
+    "id": 494,
+    "titulo": "[ImagineArt] Ciclo de caminata de un personaje: una sola imagen con 6 fotogramas y cortarla con Pillow",
+    "problema": "Un personaje que solo se movía con un balanceo (recorte de perfil estático) no parecía caminar: no se movían piernas ni brazos.",
+    "solucion": "Con la hoja de referencia en image_url, pedir UNA imagen 16:9: 'WALK CYCLE sprite sheet: 6 frames in a single horizontal row, side view facing right, same size and ground line, legs stepping and arms swinging opposite (contact, down, passing…), plain solid white background, no borders, no text' (30 créditos, salió consistente). Procesado: floodfill del blanco desde las esquinas (thresh 70, NO quitar blancos internos: son los dientes), perfil de columnas con alfa para hallar los 6 tramos (fusionar huecos <40 px), alinear cada fotograma por el centro de la cabeza (bbox del 45 % superior) y por la línea del suelo común, celda ancha fija (420 px), reducir a 256 px de alto y pegar en una tira. En Phaser: load.spritesheet + anims.create (10 fps, repeat -1); hacia la izquierda setFlipX(true). Un recorte estático de la hoja de personaje con un tween de balanceo NO se lee como caminata.",
+    "categorias_id": 3,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 20:28:19",
+    "actualizada_en": "2026-11-09 20:28:19",
+    "hash": "2eeb76aa12e380b26f509380",
+    "categoria": "widgets",
+    "tags": [
+      "gameivp",
+      "phaser",
+      "imagineart",
+      "sprites",
+      "animacion"
+    ]
   }
 ]
