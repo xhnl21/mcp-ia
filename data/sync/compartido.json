@@ -11545,5 +11545,29 @@
       "adb",
       "gameivp"
     ]
+  },
+  {
+    "id": 467,
+    "titulo": "[GameIVP] Botón 'Start' invisible: texto negro sobre fondo oscuro (ion-button sin registrar)",
+    "problema": "En la pantalla de inicio de GameIVP solo se veía la palabra Start en negro sobre #201726, sin botón ni borde; el color=\"light\" y fill=\"outline\" no tenían efecto.",
+    "solucion": "PhaserContainer.vue usaba <ion-button> sin importar IonButton de @ionic/vue ni registrarlo en components, así que era un elemento desconocido sin estilos de Ionic. Se importa y registra IonButton y se estiliza con --background/--color propios y un fondo con degradado morado del juego. Cypress sigue encontrando cy.contains('ion-button','Start').",
+    "categorias_id": 3,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 15:10:32",
+    "actualizada_en": "2026-11-09 15:10:32",
+    "hash": "265e2f34fa9432e7ad32bd9d",
+    "categoria": "widgets",
+    "tags": [
+      "gameivp",
+      "ionic",
+      "vue"
+    ]
   }
 ]
