@@ -11618,5 +11618,60 @@
       "vue",
       "css"
     ]
+  },
+  {
+    "id": 470,
+    "titulo": "[zas] Soporte técnico tarda 6 s en abrir: la auditoría guardaba la respuesta de action_logs y la reenviaba anidada",
+    "problema": "En la prueba de rendimiento por módulo (integration_test/rendimiento_por_modulo_test.dart, modo profile), Soporte técnico tardaba 6,16 s en abrir, con un fotograma de build de 112 ms. Medido en el emulador: unos 3 s para enviar los movimientos pendientes (sendPendingLogs antes de consultar) y 2,4 s de GET action_logs (duration_ms 2388). El detalle del registro api_request de action_logs mostraba un response_body con los 20 registros completos.",
+    "solucion": "Causa: AuditApiInterceptor guardaba la respuesta entera de cada petición (encodeForAudit sin límite). La de GET action_logs son los propios registros de auditoría: cada apertura de Soporte técnico guardaba un registro enorme, se reenviaba en el lote siguiente (action_logs/register_app) y la próxima consulta lo devolvía anidado. Así crecían el envío, la respuesta y su decodificación. Arreglo: AuditApiInterceptor.auditedResponseBody(uri, data) devuelve null si el path termina en /action_logs y recorta las demás respuestas a maxAuditedResponseLength (8000) con «… [recortado: N caracteres]». Pruebas en audit_api_interceptor_test.dart. Los registros grandes que ya están en el servidor siguen pesando en las consultas de esos días.",
+    "categorias_id": 2,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 15:40:39",
+    "actualizada_en": "2026-11-09 15:40:39",
+    "hash": "0537994f0d39666e799a3d7d",
+    "categoria": "runtime",
+    "tags": [
+      "auditoria",
+      "flutter",
+      "dio",
+      "zas",
+      "rendimiento",
+      "soporte-tecnico",
+      "interceptor"
+    ]
+  },
+  {
+    "id": 471,
+    "titulo": "[zas] flutter drive de rendimiento: watchPerformance no conecta, la app se desinstala y los toques reales se ignoran",
+    "problema": "Al medir rendimiento con integration_test y `flutter drive --profile`: (1) `watchPerformance` falló con «Bad state: Failed to connect to VM Service… This may happen if DDS is enabled»; (2) al terminar, flutter drive desinstaló la app y se perdió la sesión, y la siguiente corrida se quedó en el onboarding; (3) la APK app-dev-profile.apk que deja drive no responde a toques reales (es la de la prueba); (4) volver con tester.binding.handlePopRoute() en el dashboard cerró la app; (5) la app instala su propio manejador de errores y la prueba decía «All tests passed» aunque fallaba.",
+    "solucion": "(1) Agregar `--no-dds`. (2) Agregar `--keep-app-running`: evita que drive detenga y desinstale la app. (3) Para iniciar sesión a mano, instalar la APK de la app (app-dev-debug.apk o un build normal); la de drive tiene la prueba como punto de entrada y el binding de pruebas ignora los toques del dispositivo. Al volver a correr drive, `install -r` conserva los datos. (4) Volver con `tester.state<NavigatorState>(find.byType(Navigator).first).maybePop()`, que nunca cierra la app. (5) Aislar cada módulo en try/catch, anotar el error en reportData['errores'] y hacer expect(errores, isEmpty) al final; poner un timeout en testWidgets y un debugPrint por módulo para seguir el avance. Comando: flutter drive --profile --no-dds --keep-app-running --driver=test_driver/integration_test.dart --target=integration_test/rendimiento_por_modulo_test.dart -d <dispositivo> --flavor dev --dart-define-from-file .env.dev. En el emulador, el tiempo de raster (30-60 ms por fotograma) no representa un teléfono: solo son confiables el build y la apertura.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 15:40:39",
+    "actualizada_en": "2026-11-09 15:40:39",
+    "hash": "fbd648d05b1dae2b3c565135",
+    "categoria": null,
+    "tags": [
+      "flutter",
+      "zas",
+      "rendimiento",
+      "integration_test",
+      "flutter-drive",
+      "watchperformance"
+    ]
   }
 ]
