@@ -11820,5 +11820,54 @@
       "hittest",
       "redmi"
     ]
+  },
+  {
+    "id": 478,
+    "titulo": "[GameIVP] Phaser: scene.resume() no se procesa si la interfaz duerme el bucle (game.loop.sleep)",
+    "problema": "Tras terminar una escena lanzada con scene.launch + scene.pause en la principal, un test e2e veía la principal aún pausada justo después de abrirse el mapa (isPaused() true).",
+    "solucion": "Las operaciones de ScenePlugin (stop/resume) se encolan y las aplica el SceneManager en el siguiente fotograma; si Vue hizo `game.loop.sleep()` para mostrar un modal, no hay fotogramas hasta `loop.wake()`. No es un bug: comprobar el estado después de cerrar el modal. Para escenas apiladas: PlayScene.salirCaverna() hace stop('CavernaScene') + resume() y es idempotente.",
+    "categorias_id": 2,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 18:28:24",
+    "actualizada_en": "2026-11-09 18:28:24",
+    "hash": "ba2bd82a648e30795be05953",
+    "categoria": "runtime",
+    "tags": [
+      "gameivp",
+      "phaser",
+      "vue",
+      "cypress"
+    ]
+  },
+  {
+    "id": 479,
+    "titulo": "[ImagineArt] user_upload en base64 falla si se transcribe a mano más de ~4 KB (JPEG corrupto: SOS before SOF)",
+    "problema": "Subir un archivo local de 10 KB en base64 a user_upload devolvió 'VipsJpeg: Corrupt JPEG data'; request_image_upload no sirve en sesión no interactiva (solo devuelve orgId).",
+    "solucion": "El agente tiene que reescribir el base64 en la llamada y se corrompe con cadenas largas. Reducir la imagen a un PNG cuantizado de ~1,4 KB (64x105 px, 8 colores, PIL quantize + optimize; ~1,9k caracteres base64) y subir eso. Para fidelidad de un personaje, usarlo como image_url en generate_image (fotograma fijo, 30 créditos), revisar el resultado y animar ESE fotograma con generate_video (ltx-2.3, 9:16, 6 s). Los videos solo con texto no se parecen al personaje.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 18:28:24",
+    "actualizada_en": "2026-11-09 18:28:24",
+    "hash": "7aa0655b4736e1e3715b3972",
+    "categoria": null,
+    "tags": [
+      "gameivp",
+      "imagineart",
+      "video"
+    ]
   }
 ]
