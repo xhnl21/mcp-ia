@@ -11520,5 +11520,30 @@
       "zona-horaria",
       "soporte-tecnico"
     ]
+  },
+  {
+    "id": 466,
+    "titulo": "[adb-ui] Pruebas automáticas gastan monedas del jugador por tocar con coordenadas viejas",
+    "problema": "En GameIVP, al probar en el Redmi con 'input swipe' largo y 'xy', dos toques cayeron sobre botones 'Mejorar' del inventario y gastaron 120 monedas del guardado real (log: '[tienda] mejorar anillo-memento: ok'). Además un swipe falló con 'SecurityException: Injecting to another application requires INJECT_EVENTS' cuando apareció una notificación de otra app encima.",
+    "solucion": "Antes de cada xy volver a leer con 'ui.py list' (las coordenadas cambian al desplazar los modales y los elementos tapados por la cabecera aparecen con y=80); revisar el log '[tienda]' con 'adb logcat -d | grep Capacitor/Console' tras la prueba; no mantener pulsado el botón de disparo mientras se abren modales; si falla la inyección, esperar a que desaparezca la notificación y reintentar.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 15:04:47",
+    "actualizada_en": "2026-11-09 15:04:47",
+    "hash": "f36e05067e5fa1f218464aa4",
+    "categoria": null,
+    "tags": [
+      "android",
+      "miui",
+      "adb",
+      "gameivp"
+    ]
   }
 ]
