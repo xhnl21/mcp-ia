@@ -11792,5 +11792,33 @@
       "imagineart",
       "creditos"
     ]
+  },
+  {
+    "id": 477,
+    "titulo": "[zas] Prueba de rendimiento en el Redmi Note 8: la sesión se cerraba sola (el toque caía en «Cerrar Sesión»)",
+    "problema": "Al correr integration_test/rendimiento_por_modulo_test.dart con flutter drive en un Redmi Note 8 (pantalla más baja que el emulador Pixel 9), la sesión se cerraba al llegar a Configuración → Seguridad, y los módulos siguientes fallaban con «Found 0 widgets with icon». Con la app normal, el mismo recorrido a mano no cerraba la sesión. En profile no había logs (.env.dev tiene ACTIVE_LOG=false).",
+    "solucion": "Causa: en el Redmi, la opción «Seguridad» de Configuración queda debajo del botón «Cerrar Sesión» (bottomNavigationBar). tester.tap(find.text('Seguridad')) solo avisa «derived an Offset that would not hit test… another widget is obscuring it» y toca igual en ese punto: el toque cayó en «Cerrar Sesión» y la app hizo POST auth/logout. Arreglo en la prueba: (1) tester.ensureVisible(destino) antes de tocar; (2) WidgetController.hitTestWarningShouldBeFatal = true, para que un toque mal ubicado falle en vez de tocar lo que haya encima; (3) desplazar solo find.byType(Scrollable).hitTestable(), porque la primera lista del árbol puede ser la de la pantalla de abajo. Herramientas para diagnosticar: un vigía que escucha LoginCubit.stream y anota cada cambio de sesión con el paso de la prueba (reportData['sesion']); scripts/rendimiento_dispositivo.sh <dispositivo> [segundos] corre la prueba con --dart-define=ACTIVE_LOG=true, guarda el logcat con horas y arma el informe con scripts/rendimiento_informe.dart en build/rendimiento/.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 18:14:30",
+    "actualizada_en": "2026-11-09 18:14:30",
+    "hash": "07175d08c25ef0a08c2bf4bb",
+    "categoria": null,
+    "tags": [
+      "flutter",
+      "flutter_test",
+      "zas",
+      "rendimiento",
+      "integration_test",
+      "hittest",
+      "redmi"
+    ]
   }
 ]
