@@ -12258,5 +12258,54 @@
       "sprites",
       "animacion"
     ]
+  },
+  {
+    "id": 495,
+    "titulo": "[Phaser] physics.add.overlap(grupo, sprite) invierte el orden de los argumentos: un helper que recibe «el segundo» recibe la bala",
+    "problema": "Tras refactorizar el callback de un overlap bala-vs-bicho a `matarBicho(s)`, el bicho se destruía pero seguía en la lista `enemigos` (el contador no bajaba) y el bucle de patrulla usaba sprites muertos.",
+    "solucion": "Con `overlap(grupo, sprite, (a, b) => …)` Phaser entrega (sprite, miembro del grupo): el primer argumento es el sprite. Un callback `(d, s) => { d.destroy(); matar(s) }` destruye al bicho pero llama al helper con la bala. Arreglo: no depender del orden; usar la referencia de la clausura (`(x, y) => { (x === b.sprite ? y : x).destroy(); matarBicho(b.sprite) }`). Además: en bucles que recorren sprites, `if (!sprite.active) continue`. Lo atrapó una prueba e2e que comprobaba que la lista bajaba (`enemigos.length < antes`), no el lint ni tsc.",
+    "categorias_id": 2,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 21:06:21",
+    "actualizada_en": "2026-11-09 21:06:21",
+    "hash": "332dfc90916aa28c9db82b27",
+    "categoria": "runtime",
+    "tags": [
+      "gameivp",
+      "phaser",
+      "overlap"
+    ]
+  },
+  {
+    "id": 496,
+    "titulo": "[Phaser] Mapa de tiles más alto que la pantalla: límites de física, cámara y scrollFactor(0) (si no, el héroe no puede subir)",
+    "problema": "Al pasar las cavernas de 15 a 39 filas el héroe no podía subir más allá de la altura de la pantalla y los botones táctiles y el fondo se movían con la cámara.",
+    "solucion": "Phaser limita por defecto la física al tamaño del juego. Con un mapa alto: `physics.world.setBounds(0, 0, W, altoMundo)`, `cameras.main.setBounds(...)`, `centerOn(player)` y `startFollow(player, true, 0.12, 0.12)`; fondo y botones con `setScrollFactor(0)`; la reserva del HUD HTML arriba (y0 = 190) y de los botones abajo (2,6 tiles) dentro de los límites. Regla de decisión: tile = ancho/columnas; si `filas * tile > 0,8 * alto` el mapa se desplaza, si no se centra como antes. Para la muerte animada con un cuerpo dinámico: `body.enable = false` mientras el sprite cae por tween (si no, el cuerpo sobrescribe la posición) y `body.reset(...)` al reaparecer.",
+    "categorias_id": 2,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-09 21:06:21",
+    "actualizada_en": "2026-11-09 21:06:21",
+    "hash": "b8e6b1c34f87afab8e7c1b62",
+    "categoria": "runtime",
+    "tags": [
+      "camara",
+      "gameivp",
+      "phaser",
+      "tilemap"
+    ]
   }
 ]
