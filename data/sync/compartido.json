@@ -12404,5 +12404,31 @@
       "vue",
       "video"
     ]
+  },
+  {
+    "id": 501,
+    "titulo": "[estilo_neutral] Desacoplar pantallas de un servicio gigante (SheetsDataService) hacia DDD sin reescribir los cubits",
+    "problema": "120 archivos de presentation importaban SheetsDataService (ARC-001/022); migrar cada operación a un caso de uso a mano era inviable.",
+    "solucion": "Agrupar los módulos en contextos (ventas, clientes, inventario, organizaciones…) y generar por contexto, con un script que usa package:analyzer para leer las firmas reales del servicio (parseString sobre la clase, sus mixins y extensiones), la interfaz XRepository (domain), XRepositoryImpl (infrastructure) y XCasos (application) con SOLO los miembros que usan sus archivos (regex que admite saltos de línea antes del punto). Renombrar el campo dataService->casos y SheetsDataService->XCasos en los archivos del contexto; en rutas, shell y pruebas envolver con una función xCasos(ds) del locator. Trampas: tipos definidos dentro del servicio (enum ResultadoAbono, StateError subclase) y constantes estáticas hay que moverlos a domain; un widget compartido entre contextos (FotoSelector) necesita una interfaz común (FotoCasos) que implementen ambos; pasar un XCasos a una pantalla de otro contexto no compila: fusionar contextos. dart format del hook infla ARC-009 al tocar archivos heredados: regenerar la línea base y decirlo. Los casos son pasarelas; la lógica sigue en el cubit hasta migrarla con casos con nombre.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-10 12:54:17",
+    "actualizada_en": "2026-11-10 12:54:17",
+    "hash": "039ec1d91a037d17d1f181e7",
+    "categoria": null,
+    "tags": [
+      "flutter",
+      "analyzer",
+      "estilo_neutral",
+      "ddd",
+      "refactor"
+    ]
   }
 ]
