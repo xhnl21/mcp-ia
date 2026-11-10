@@ -12307,5 +12307,102 @@
       "phaser",
       "tilemap"
     ]
+  },
+  {
+    "id": 497,
+    "titulo": "[Phaser] El sonido es global: al cambiar de escena la música anterior sigue sonando y se superpone con la nueva",
+    "problema": "Al pasar de un mundo a otro (escenas de despegue, viaje y aterrizaje) y empezar el mundo siguiente se oían dos músicas a la vez.",
+    "solucion": "`scene.sound.add()` crea sonidos en el SoundManager GLOBAL: no se detienen al cerrar la escena que los creó. Arreglo: en el handler de SHUTDOWN de la escena con música hacer `this.sound.stopAll()` y también al empezar la escena siguiente (`create`). Prueba e2e: con `localStorage gameivp.sonido=1` comprobar `escena.sound.getAllPlaying()` filtrado por /^musica/ en cada tramo (mundo → viaje → mundo): ['musica1'], ['musicaJefe'], ['musica1']; el audio sí suena en Electron de Cypress. Verificado que la prueba falla sin el `stopAll`.",
+    "categorias_id": 2,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-10 12:20:19",
+    "actualizada_en": "2026-11-10 12:20:19",
+    "hash": "94f527c1c5dd3389f07af2e9",
+    "categoria": "runtime",
+    "tags": [
+      "audio",
+      "gameivp",
+      "phaser"
+    ]
+  },
+  {
+    "id": 498,
+    "titulo": "[Phaser] Tubería que teletransporta al rozarla: usar pulsación (flanco) y bloquear el salto, o rebota, salta y se sale del mapa",
+    "problema": "Al usar tuberías (overlap) el héroe aparecía fuera del mapa, volvía a teletransportarse y, al pulsar ▲ sobre el tubo, saltaba al llegar.",
+    "solucion": "Un `overlap` dispara cada fotograma: rebota entre las dos tuberías y deja al héroe donde cae. Diseño correcto: encontrar la tubería bajo los pies en `update` (|x - tubo.x| < 0,45 tile, |body.bottom - tubo.y| < 0,8 tile) y teletransportar solo en el FLANCO de ▲/▼ (`vertical && !prevVertical`), con una pausa corta; colocar la salida con los pies sobre el suelo (`reset(x, tubo.y - displayHeight/2 - 1)`) y poner `bloqueaSalto = true` hasta que se suelte la flecha, porque la misma ▲ mantenida disparaba el salto al llegar. Guardia general: si el héroe queda fuera del mapa (y < y0), volver al inicio. Lo destapó una prueba que medía la posición tras 250 ms.",
+    "categorias_id": 2,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-10 12:20:19",
+    "actualizada_en": "2026-11-10 12:20:19",
+    "hash": "0be38c314591bd645473c592",
+    "categoria": "runtime",
+    "tags": [
+      "gameivp",
+      "phaser",
+      "controles"
+    ]
+  },
+  {
+    "id": 499,
+    "titulo": "[GameIVP] El jefe se autodestruía al tocar el suelo o al héroe y no peleaba: un overlap que hace destroy() sirve para bombas, no para jefes",
+    "problema": "El jefe final (una bomba grande) al tocar el suelo o al héroe se destruía, el mundo no terminaba y no ofrecía resistencia.",
+    "solucion": "El jefe vivía en el grupo de bombas y compartía sus colisiones, que destruyen al objeto. Arreglo: en ambos callbacks (suelo y héroe) comprobar `getData('jefe')` y NO destruirlo: el héroe recibe daño con un respiro de 1 s. Comportamiento propio en `update`: baja a su altura de combate y se queda (si lo empujan abajo, vuelve a subir), patrulla con un objetivo senoidal (`setVelocityX((objetivo - x) * 3,5)`), suelta bombas sobre sí mismo con un intervalo que baja con el mundo y tiene barra de vida dibujada con Graphics. Solo muere a balazos. Prueba e2e que lo coloca sobre el héroe y sobre el suelo y comprueba que sigue activo.",
+    "categorias_id": 2,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-10 12:20:19",
+    "actualizada_en": "2026-11-10 12:20:19",
+    "hash": "bf2c16ad21437e10c6e9f138",
+    "categoria": "runtime",
+    "tags": [
+      "gameivp",
+      "phaser",
+      "jefe"
+    ]
+  },
+  {
+    "id": 500,
+    "titulo": "[Android WebView] <video autoplay> muestra un icono de «play» negro y gris antes de empezar: ocultarlo hasta el evento playing",
+    "problema": "Tras pulsar Start, antes de que comenzara el video de apertura se veía el icono de reproducción (negro y gris) del WebView.",
+    "solucion": "Es el póster/overlay por defecto del reproductor mientras carga. No se puede quitar con atributos: se oculta el elemento con `opacity: 0` y se muestra al recibir `@playing` (`e.target.classList.add('listo')`); como el elemento se crea con v-if, cada video vuelve a empezar oculto. Para un splash no hace falta video: una imagen con animación CSS evita el problema y los píxeles.",
+    "categorias_id": 9,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-10 12:20:19",
+    "actualizada_en": "2026-11-10 12:20:19",
+    "hash": "6b88f51298f88d75d208b9be",
+    "categoria": "plataforma",
+    "tags": [
+      "android",
+      "gameivp",
+      "vue",
+      "video"
+    ]
   }
 ]
