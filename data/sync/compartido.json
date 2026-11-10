@@ -12430,5 +12430,53 @@
       "ddd",
       "refactor"
     ]
+  },
+  {
+    "id": 502,
+    "titulo": "[Phaser] Personaje más alto que una fila de tiles se queda pegado al techo en un pasillo de una fila (mapas de tiles)",
+    "problema": "Tras teletransportarse por una tubería al piso de arriba el héroe no avanzaba: quedaba clavado contra el techo.",
+    "solucion": "El piso superior del mapa tenía una sola fila libre (1 tile = 90 px) pero el cuerpo del héroe mide ~1,2 tiles: al aparecer con los pies sobre el suelo la cabeza queda dentro del muro y no se puede mover. Regla: todo pasillo transitable necesita ≥ ceil(altura del cuerpo / tile) + 0 filas libres (aquí 2). Arreglo en el generador: insertar una fila libre extra arriba (`filas.splice(1, 0, ...)`) y ajustar `filas = 3·pisos + 1`; el mapa hecho a mano igual. Prueba e2e: tras el tubo, `body.height < suelo - techo` y `body.top >= techo` y que camina hasta la llave; verificado que falla sin la fila.",
+    "categorias_id": 2,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-10 13:03:32",
+    "actualizada_en": "2026-11-10 13:03:32",
+    "hash": "c572b6c85260afe33ba7ddef",
+    "categoria": "runtime",
+    "tags": [
+      "gameivp",
+      "phaser",
+      "tilemap"
+    ]
+  },
+  {
+    "id": 503,
+    "titulo": "[Phaser] Escalera: agarrar con ▼ en el último peldaño y soltar al pisar el suelo parpadea y deja al héroe pegado",
+    "problema": "Al bajar por una escalera el héroe llegaba abajo y se quedaba 'agarrado' (gravedad apagada, animación de trepar) hasta pulsar un lado.",
+    "solucion": "Dos defectos juntos: (1) el modo escalera solo se soltaba pulsando ◀/▶ o al salir de la columna de la escalera, y el centro del héroe sigue dentro del último peldaño aunque pise el suelo; (2) al añadir la salida automática (`body.blocked.down && !arriba` → soltar y `setAllowGravity(true)`) con ▼ aún pulsada, la condición de agarre `centro && (arriba||abajo)` lo volvía a agarrar cada fotograma. Arreglo: soltar al tocar el suelo bajando y que ▼ solo agarre si hay escalera bajo los pies (`abajo && escaleraEn(x, body.bottom + 4)`), ▲ agarra con la escalera en el centro. La prueba debe MANTENER ▼ pulsada y muestrear `subiendo` varias veces: una sola comprobación a los 2,6 s a veces cae en el instante 'suelto' y no ve el parpadeo.",
+    "categorias_id": 2,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-10 13:03:32",
+    "actualizada_en": "2026-11-10 13:03:32",
+    "hash": "0dc8029cddab92c15661dfb2",
+    "categoria": "runtime",
+    "tags": [
+      "gameivp",
+      "phaser",
+      "escaleras"
+    ]
   }
 ]
