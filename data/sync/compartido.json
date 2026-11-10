@@ -12478,5 +12478,29 @@
       "phaser",
       "escaleras"
     ]
+  },
+  {
+    "id": 504,
+    "titulo": "[GameIVP] Generador de mapas por semilla que nunca termina: colocar primero los elementos que ocupan más ancho",
+    "problema": "«no se pudo generar el nivel 3 de la caverna 1»: 800 semillas devolvían null. Marcando cada `return null` con su número de línea, todas salían del mismo punto (no cabían la plataforma móvil y los huecos).",
+    "solucion": "En 8 columnas útiles no caben a la vez una ventana de 5 (plataforma de 3 + margen), la exclusión de ±1 alrededor de la escalera y otra ventana de 3 para un hueco. Arreglo: colocar la pieza ancha ANTES que puerta, amigo y llaves, y hacer obligatoria solo la imprescindible (la plataforma); los extras (huecos de salto) se ponen si caben. Para depurar un generador con muchos `return null`: copiar el archivo, sustituir cada `return null` por `return ((globalThis as any).__r = <línea>, null)`, contar las razones en 200 semillas desde un spec temporal de vitest y restaurar el archivo.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-10 13:38:57",
+    "actualizada_en": "2026-11-10 13:38:57",
+    "hash": "c7928d3e435f9bf25deca0e8",
+    "categoria": null,
+    "tags": [
+      "gameivp",
+      "generador",
+      "procedural"
+    ]
   }
 ]
