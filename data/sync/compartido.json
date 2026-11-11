@@ -13696,5 +13696,54 @@
       "rich-text",
       "html"
     ]
+  },
+  {
+    "id": 553,
+    "titulo": "[GameIVP] APK de Capacitor de 71 MB: música a 400 kbps, assets sin uso y paquete legacy",
+    "problema": "La APK de debug de una app Ionic/Vue/Phaser con Capacitor pesaba 71 MB (unzip -l: .ogg de 5-6 MB cada uno, zips y .fla en public/, FolderPage-legacy-*.js duplicado).",
+    "solucion": "Causa: todo public/ se copia a la APK aunque el código no lo use; las pistas .ogg venían a ~400 kbps; @vitejs/plugin-legacy genera un segundo paquete JS. Arreglo: (1) listar lo no referenciado con tools/archivos_sin_uso.py (busca rutas literales, nombres y plantillas ${...}) y moverlo a trash/; (2) recodificar música a MP3 80 kbps con el ffmpeg de imageio-ffmpeg (tools/comprimir_musica.sh); (3) quitar plugin-legacy de vite.config.ts (el WebView de Android entiende módulos ES). Resultado: 71 MB -> 23 MB (AAB 21 MB). Revisar a mano la lista antes de mover: rutas armadas de otra forma no se detectan.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-11 21:44:32",
+    "actualizada_en": "2026-11-11 21:44:32",
+    "hash": "3d3b886ed7bd4c68af672393",
+    "categoria": null,
+    "tags": [
+      "android",
+      "vite",
+      "gameivp",
+      "capacitor",
+      "tamaño"
+    ]
+  },
+  {
+    "id": 554,
+    "titulo": "[mkdocs] mkdocs-material 9.7 imprime un aviso grande sobre MkDocs 2.0 en cada build",
+    "problema": "Al construir con mkdocs-material 9.7.x aparece un bloque de aviso sobre MkDocs 2.0 en cada mkdocs build/serve.",
+    "solucion": "Causa: lo imprime el tema por su cuenta; no es una advertencia de MkDocs y no rompe --strict. Arreglo: exportar NO_MKDOCS_2_WARNING=1 en el script que lanza mkdocs (GameIVP: tools/docs.sh).",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-11 21:44:32",
+    "actualizada_en": "2026-11-11 21:44:32",
+    "hash": "0062d1022b543ba9b4684b96",
+    "categoria": null,
+    "tags": [
+      "documentacion",
+      "mkdocs"
+    ]
   }
 ]
