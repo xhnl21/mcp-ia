@@ -14270,5 +14270,30 @@
       "gameivp",
       "phaser"
     ]
+  },
+  {
+    "id": 577,
+    "titulo": "[GameIVP] Bono «por asteroide» sumado en cada golpe (módulo recolector)",
+    "problema": "La simulación de equilibrio (tools/simular_economia.ts) mostró que el módulo recolector daba +40 % de material y se pagaba en 1 viaje; la descripción dice «+1 material por cada asteroide». En ViajeScene.alcanzar el +1 se sumaba en cada impacto que soltaba material (un asteroide de hierro recibe 3 golpes).",
+    "solucion": "Causa: el bono se sumaba al `cantidad` de cada golpe. Arreglo: sumar conModulo('modulo_recolector') solo si impactos === 0 (primer golpe). Lección: un bono «por objeto» en un callback de impacto debe condicionarse al primer impacto; pasarlo por la simulación con efectoDisparo/planViaje lo detecta (test en tests/unit/simulacionEconomia.spec.ts: recolector ≤ +30 %).",
+    "categorias_id": 2,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-12 17:45:35",
+    "actualizada_en": "2026-11-12 17:45:35",
+    "hash": "bb737a81efcdcaff5ae27a69",
+    "categoria": "runtime",
+    "tags": [
+      "gameivp",
+      "phaser",
+      "economia",
+      "equilibrio"
+    ]
   }
 ]
