@@ -1,0 +1,13 @@
+{
+  "modulo": "codigos_telefono", "paquete": "estilo_neutral", "etiqueta": "Códigos de teléfono", "articulo_nuevo": "un código de teléfono nuevo",
+  "entidad": "CodigoTelefono", "entidad_archivo": "lib/domain/entities/codigos_telefono/codigo_telefono.dart", "singular": "CodigoTelefono",
+  "servicio": {"lista": "codigosTelefono", "activos": "codigosTelefonoActivos", "en_uso": "codigosTelefonoEnUso", "agregar": "addCodigoTelefono", "actualizar": "updateCodigoTelefono", "estado": "toggleCodigoTelefonoStatus", "eliminar": "deleteCodigoTelefono", "es_en_uso": "isCodigoTelefonoEnUso"},
+  "agregar_params": [["codigo", "String"]],
+  "actualizar_params": [["id", "String"], ["nuevoCodigo", "String"]],
+  "en_uso_param": "codigo", "clave": "x.codigo.trim()",
+  "cubit": "lib/presentation/cubits/codigos_telefono/codigos_telefono_cubit.dart",
+  "pagina": "lib/presentation/screens/codigos_telefono/codigos_telefono_page.dart", "pagina_clase": "CodigosTelefonoPage",
+  "armado": ["lib/presentation/shell/main_shell.dart", "lib/presentation/routes/audit/audit_routes.dart"],
+  "duplicado_regex": "final duplicado = widget\\.casos\\.codigosTelefono\\.any\\(\\s*\\(c\\) =>\\s*c\\.codigo\\.trim\\(\\) == input &&\\s*\\(isEditing \\? c\\.id != codigoToEdit\\.id : true\\),\\s*\\);",
+  "duplicado_reemplazo": "final duplicado = widget.casos.existe(input, excluirId: isEditing ? codigoToEdit.id : null);"
+}

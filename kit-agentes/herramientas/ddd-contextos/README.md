@@ -37,3 +37,7 @@ Requiere `analyzer` entre las dependencias del proyecto (lo trae el auditor ARC)
 ## Etapa B (mitad): sacar el estado en memoria a un almacén
 
 `python3 tool/ddd_extraer_almacen.py <clase.dart> <Almacen> <almacen.dart> [--aplicar]` mueve las `List<T> _x = …;` a una clase almacén y deja accesores privados `_x` con el mismo nombre (los métodos no cambian). Faltan los flags escalares y el gateway de red.
+
+## Etapa C para «catálogos simples»: `ddd_catalogo_simple.py`
+
+Genera, para un módulo con lista + activos + en uso + agregar/editar/estado/borrar, el repositorio (domain+infrastructure), los casos de uso con nombre, el locator y reescribe cubit y pantalla (la regla de duplicados sale de la pantalla a un caso `Existe…`). Config por módulo en `catalogos/*.json` (ejemplos: `tipos_documento`, `codigos_telefono`). Patrón completo hecho a mano: `metodos_pago` y `tasas` de estilo_neutral.
