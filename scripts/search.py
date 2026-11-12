@@ -86,13 +86,14 @@ def search(query: str, limit: int = 10, category: Optional[str] = None,
             # bm25 más negativo = mejor match; lo invertimos a scoring 0..1
             fts_hits[r["id"]] = 1.0 / (1.0 + abs(r["rank"]))
 
-    # Recuperar candidatos (con filtros de categoría/tag).
+    # Recuperar candidatos (con filtros de categoría/tag). Sin LIMIT: con uno,
+    # las soluciones de id mayor (las más nuevas) nunca llegaban a rankearse.
+    # shortcut: puntúa todas las filas con fuzzy; si la base pasa de ~20k, limitar a FTS hits + muestra.
     sql = """
         SELECT s.* FROM soluciones s
         {join_tag}
         WHERE {where}
         {group}
-        LIMIT 500
     """
     join_tag = ""
     where = ["1=1"]

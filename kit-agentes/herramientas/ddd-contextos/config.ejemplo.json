@@ -1,0 +1,24 @@
+{
+  "paquete": "estilo_neutral",
+  "servicio": "SheetsDataService",
+  "servicio_archivos": [
+    "lib/infrastructure/datasources/google_sheets/sheets_data_service.dart",
+    "lib/infrastructure/datasources/google_sheets/sheets_data_service_cierres.dart"
+  ],
+  "servicio_import": "lib/infrastructure/datasources/google_sheets/sheets_data_service.dart",
+  "barril_servicio": "lib/infrastructure/datasources/google_sheets/google_sheets.dart",
+  "contextos": {
+    "ventas": ["ventas", "abono", "nueva_venta", "cuotas", "factura_detalle", "pedidos", "pagos_reportados", "eliminaciones"],
+    "clientes": ["clientes", "cliente_form", "registros_clientes", "invitaciones"],
+    "inventario": ["inventario", "inventario_lote", "foto_producto", "dividir_collage"],
+    "organizaciones": ["organizaciones", "usuarios", "usuario_form", "roles", "permisos", "miembros_organizacion", "perfil_organizacion", "perfil_usuario", "seguridad", "terminos", "terminos_admin", "auth", "clientes_organizacion", "config_factura"],
+    "catalogos": ["metodos_pago", "tipos_documento", "codigos_telefono", "datos_bancarios"],
+    "comunicacion": ["notificaciones", "soporte"],
+    "creditos": ["credits"],
+    "auditoria": ["audit_log", "checklist_iso", "cuarentena", "reporte_migracion", "reporting", "treasury", "actualizacion_app"]
+  },
+  "simbolos_de_dominio": {
+    "ResultadoAbono": "lib/domain/entities/ventas/resultado_abono.dart",
+    "SegundoFactorRequerido": "lib/domain/entities/organizaciones/segundo_factor_requerido.dart"
+  }
+}
