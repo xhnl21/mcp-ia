@@ -1,0 +1,68 @@
+{
+ "modulo": "cuarentena",
+ "Clase": "Cuarentena",
+ "entidad": "RegistroCuarentena",
+ "entidad_archivo": "lib/domain/entities/cuarentena/registro_cuarentena.dart",
+ "etiqueta": "la bandeja de cuarentena",
+ "funcion": "cuarentenaCasos",
+ "cubit": "lib/presentation/cubits/cuarentena/cuarentena_cubit.dart",
+ "casos_viejo": "AuditoriaCasos",
+ "casos_viejo_import": "auditoria/auditoria_casos.dart",
+ "pagina": "CuarentenaPage",
+ "pagina_archivo": "lib/presentation/screens/cuarentena/cuarentena_page.dart",
+ "usos": [
+  "lib/presentation/shell/main_shell.dart",
+  "lib/presentation/routes/audit/audit_routes.dart",
+  "test/presentation/skeletons_test.dart"
+ ],
+ "lista": {
+  "nombre": "items",
+  "servicio": "cuarentenas",
+  "tipo": "List<RegistroCuarentena>"
+ },
+ "recargar": "fetchAllSheets",
+ "ops": [
+  {
+   "caso": "AgregarCuarentena",
+   "campo": "agregar",
+   "metodo": "agregar",
+   "servicio": "addCuarentena",
+   "params": "RegistroCuarentena item",
+   "args": "item",
+   "ret": "Future<void>",
+   "doc": "reporta una anomalía a cuarentena."
+  },
+  {
+   "caso": "ActualizarCuarentena",
+   "campo": "actualizar",
+   "metodo": "actualizar",
+   "servicio": "updateCuarentena",
+   "params": "RegistroCuarentena item",
+   "args": "item",
+   "ret": "Future<void>",
+   "doc": "actualiza un registro de cuarentena."
+  },
+  {
+   "caso": "EliminarCuarentena",
+   "campo": "eliminar",
+   "metodo": "eliminar",
+   "servicio": "deleteCuarentena",
+   "params": "String id",
+   "args": "id",
+   "ret": "Future<void>",
+   "doc": "retira un registro de cuarentena."
+  }
+ ],
+ "resumen": {
+  "campos": [
+   [
+    "List<RegistroCuarentena>",
+    "items"
+   ]
+  ],
+  "ctor": {
+   "items": "List<RegistroCuarentena>.from(_repo.items)"
+  }
+ },
+ "cubit_sync": "  void _syncFromService() {\n    final r = casos.obtenerResumen();\n    safeEmit(state.copyWith(\n      status: r.cargando ? CuarentenaStatus.loading : CuarentenaStatus.success,\n      items: r.items,\n      errorMessage: r.error,\n    ));\n  }\n"
+}

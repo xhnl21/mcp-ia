@@ -1,0 +1,68 @@
+{
+ "modulo": "reporte_migracion",
+ "Clase": "ReporteMigracion",
+ "entidad": "ReporteMigracion",
+ "entidad_archivo": "lib/domain/entities/reporte_migracion/reporte_migracion.dart",
+ "etiqueta": "el reporte de migración",
+ "funcion": "reporteMigracionCasos",
+ "cubit": "lib/presentation/cubits/reporte_migracion/reporte_migracion_cubit.dart",
+ "casos_viejo": "AuditoriaCasos",
+ "casos_viejo_import": "auditoria/auditoria_casos.dart",
+ "pagina": "ReporteMigracionPage",
+ "pagina_archivo": "lib/presentation/screens/reporte_migracion/reporte_migracion_page.dart",
+ "usos": [
+  "lib/presentation/shell/main_shell.dart",
+  "lib/presentation/routes/audit/audit_routes.dart",
+  "test/presentation/skeletons_test.dart"
+ ],
+ "lista": {
+  "nombre": "reportes",
+  "servicio": "reportesMigracion",
+  "tipo": "List<ReporteMigracion>"
+ },
+ "recargar": "fetchAllSheets",
+ "ops": [
+  {
+   "caso": "AgregarReporteMigracion",
+   "campo": "agregar",
+   "metodo": "agregar",
+   "servicio": "addReporteMigracion",
+   "params": "ReporteMigracion rep",
+   "args": "rep",
+   "ret": "Future<void>",
+   "doc": "registra un control de migración."
+  },
+  {
+   "caso": "ActualizarReporteMigracion",
+   "campo": "actualizar",
+   "metodo": "actualizar",
+   "servicio": "updateReporteMigracion",
+   "params": "ReporteMigracion rep",
+   "args": "rep",
+   "ret": "Future<void>",
+   "doc": "actualiza un control de migración."
+  },
+  {
+   "caso": "EliminarReporteMigracion",
+   "campo": "eliminar",
+   "metodo": "eliminar",
+   "servicio": "deleteReporteMigracion",
+   "params": "String id",
+   "args": "id",
+   "ret": "Future<void>",
+   "doc": "revoca un control de migración."
+  }
+ ],
+ "resumen": {
+  "campos": [
+   [
+    "List<ReporteMigracion>",
+    "reportes"
+   ]
+  ],
+  "ctor": {
+   "reportes": "List<ReporteMigracion>.from(_repo.reportes)"
+  }
+ },
+ "cubit_sync": "  void _syncFromService() {\n    final r = casos.obtenerResumen();\n    safeEmit(state.copyWith(\n      status: r.cargando\n          ? ReporteMigracionStatus.loading\n          : ReporteMigracionStatus.success,\n      reportes: r.reportes,\n      errorMessage: r.error,\n    ));\n  }\n"
+}

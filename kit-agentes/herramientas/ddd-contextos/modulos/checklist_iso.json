@@ -1,0 +1,104 @@
+{
+ "modulo": "checklist_iso",
+ "Clase": "ChecklistIso",
+ "entidad": "ChecklistISO",
+ "entidad_archivo": "lib/domain/entities/checklist_iso/checklist_iso.dart",
+ "etiqueta": "la matriz de cumplimiento ISO",
+ "funcion": "checklistIsoCasos",
+ "cubit": "lib/presentation/cubits/checklist_iso/checklist_iso_cubit.dart",
+ "casos_viejo": "AuditoriaCasos",
+ "casos_viejo_import": "auditoria/auditoria_casos.dart",
+ "pagina": "ChecklistIsoPage",
+ "pagina_archivo": "lib/presentation/screens/checklist_iso/checklist_iso_page.dart",
+ "usos": [
+  "lib/presentation/shell/main_shell.dart",
+  "lib/presentation/routes/audit/audit_routes.dart",
+  "test/presentation/skeletons_test.dart"
+ ],
+ "lista": {
+  "nombre": "items",
+  "servicio": "checklistIsos",
+  "tipo": "List<ChecklistISO>"
+ },
+ "recargar": "fetchAllSheets",
+ "ops": [
+  {
+   "caso": "AgregarChecklistIso",
+   "campo": "agregar",
+   "metodo": "agregar",
+   "servicio": "addChecklistIso",
+   "params": "ChecklistISO check",
+   "args": "check",
+   "ret": "Future<void>",
+   "doc": "agrega un control normativo."
+  },
+  {
+   "caso": "ActualizarChecklistIso",
+   "campo": "actualizar",
+   "metodo": "actualizar",
+   "servicio": "updateChecklistIso",
+   "params": "ChecklistISO check",
+   "args": "check",
+   "ret": "Future<void>",
+   "doc": "actualiza un control normativo."
+  },
+  {
+   "caso": "CambiarEstadoChecklistIso",
+   "campo": "cambiarEstado",
+   "metodo": "cambiarEstado",
+   "servicio": "toggleChecklistEstado",
+   "params": "String id",
+   "args": "id",
+   "ret": "Future<void>",
+   "doc": "alterna el estado (conforme o no) de un control."
+  },
+  {
+   "caso": "EliminarChecklistIso",
+   "campo": "eliminar",
+   "metodo": "eliminar",
+   "servicio": "deleteChecklistIso",
+   "params": "String id",
+   "args": "id",
+   "ret": "Future<void>",
+   "doc": "revoca un control normativo."
+  },
+  {
+   "caso": "ObtenerSiguienteNroChecklistIso",
+   "campo": "siguienteNro",
+   "metodo": "siguienteNro",
+   "servicio": "nextChecklistNro",
+   "ret": "int",
+   "getter": true,
+   "doc": "número provisional para un control nuevo (el servidor asigna el definitivo)."
+  }
+ ],
+ "resumen": {
+  "campos": [
+   [
+    "List<ChecklistISO>",
+    "items"
+   ],
+   [
+    "int",
+    "totalConformes"
+   ],
+   [
+    "int",
+    "porcentaje"
+   ]
+  ],
+  "pre": "    final items = List<ChecklistISO>.from(_repo.items);\n    final conformes = items.where((i) => i.estado == '☑').length;\n",
+  "ctor": {
+   "items": "items",
+   "totalConformes": "conformes",
+   "porcentaje": "items.isEmpty ? 0 : (conformes / items.length * 100).round()"
+  }
+ },
+ "cubit_sync": "  void _syncFromService() {\n    final r = casos.obtenerResumen();\n    safeEmit(state.copyWith(\n      status:\n          r.cargando ? ChecklistIsoStatus.loading : ChecklistIsoStatus.success,\n      items: r.items,\n      totalConformes: r.totalConformes,\n      porcentaje: r.porcentaje,\n      errorMessage: r.error,\n    ));\n  }\n",
+ "cubit_reemplazos": [
+  [
+   "casos.siguienteNro()",
+   "casos.siguienteNro()"
+  ]
+ ]
+}
