@@ -14494,5 +14494,31 @@
       "estilo_neutral",
       "ddd"
     ]
+  },
+  {
+    "id": 586,
+    "titulo": "[herramientas] Conector Google Drive: «Nothing was uploaded… can't be sent by reference» con archivos ocultos o .jks",
+    "problema": "Al subir a Drive con create_file y base64Content='sha256:<hash>:<ruta>' falla «Nothing was uploaded: <ruta> either does not exist or can't be sent by reference from here» para archivos en carpetas ocultas (~/.android-keystores/…), dotfiles (.env.local) y la clave binaria .jks aunque se copie a una ruta normal.",
+    "solucion": "Copiar los ocultos a una carpeta normal (scratchpad, chmod 700) y subirlos por referencia; para la .jks binaria, convertirla a texto (base64 -i x.jks -o x.jks.b64.txt), subir el .txt por referencia con contentMimeType text/plain y dejar un LEEME con 'base64 -d -i … -o …' y el sha256. Así el secreto no pasa por la conversación. Borrar las copias al terminar. Además: tras 'firebase deploy --only hosting' el primer curl puede devolver la versión vieja o 404 por la caché del CDN; repetir con ?v=<azar>.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-12 18:06:33",
+    "actualizada_en": "2026-11-12 18:06:33",
+    "hash": "e4e799647bfeb5c7a3a0b9b3",
+    "categoria": null,
+    "tags": [
+      "mcp",
+      "gameivp",
+      "google-drive",
+      "firebase-hosting",
+      "credenciales"
+    ]
   }
 ]
