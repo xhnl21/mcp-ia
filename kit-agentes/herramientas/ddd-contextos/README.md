@@ -25,3 +25,11 @@ Requiere `analyzer` entre las dependencias del proyecto (lo trae el auditor ARC)
 - Pasar un `XCasos` a una pantalla de otro contexto no compila: fusionar los contextos o armar el otro con `otroCasos(ServiceLocator().servicio)`.
 - Barriles (`casos.dart`) para no subir los imports (ARC-010) y regenerar la línea base: el `dart format` del hook infla ARC-009 en archivos heredados.
 - Referencia: mcp-ia, solución «[estilo_neutral] Desacoplar pantallas de un servicio gigante (SheetsDataService) hacia DDD…».
+
+## Etapa A: partir el servicio gigante en archivos `part` (hecha en estilo_neutral)
+
+1. `dart run tool/ddd_partir_servicio.dart <archivo.dart> <Clase> <carpeta/datos> --conservar=<miembros que sobrescriben las pruebas> [--aplicar]` (sin `--aplicar` imprime el plan por secciones `// ====`).
+2. `python3 tool/ddd_calificar_estaticos.py <Clase>` (repetir hasta que no queden `unqualified_reference_to_static_member`).
+3. `python3 tool/ddd_importar_extensiones.py <Clase> <ruta/clase.dart> <paquete>`: las extensiones solo se ven donde se importa la librería.
+4. `notifyListeners()` en las extensiones: cambiar por un `_notificar()` de la clase (es `@protected`). Un helper de test que devuelva `dynamic` no ve extensiones: tiparlo.
+5. `flutter analyze`, `flutter test`, regenerar la línea base.
