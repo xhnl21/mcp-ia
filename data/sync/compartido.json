@@ -14295,5 +14295,29 @@
       "economia",
       "equilibrio"
     ]
+  },
+  {
+    "id": 578,
+    "titulo": "[estilo_neutral] Pasar un módulo de cubit con lógica a casos de uso con nombre (datos_bancarios)",
+    "problema": "El cubit y la pantalla de datos bancarios llevaban orden del listado, opciones del formulario y validación (cuenta de 20 dígitos con prefijo del banco), y pedían todo a una pasarela CatalogosCasos; ARC-009 falla si la pantalla crece una línea.",
+    "solucion": "Patrón por módulo: repositorio en domain (con Stream<void> cambios), RepositoryImpl sobre SheetsDataService, un caso por operación (Observar, ObtenerResumen, ObtenerOpciones, Recargar, Guardar, CambiarEstado, Eliminar, Validar sin repositorio), localizador cuentasBancariasCasos(ds). Enums de formulario (CampoCuenta) a domain y reexportados desde el cubit para no sumar imports a pantallas que ya superan 500 líneas. Quitar de la pasarela vieja los miembros que ya nadie usa. Prueba de la validación sin servidor.",
+    "categorias_id": 4,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-12 17:55:29",
+    "actualizada_en": "2026-11-12 17:55:29",
+    "hash": "5e0564a48a9a45db0ff9a2bf",
+    "categoria": "estado",
+    "tags": [
+      "flutter",
+      "estilo_neutral",
+      "ddd"
+    ]
   }
 ]
