@@ -13745,5 +13745,125 @@
       "documentacion",
       "mkdocs"
     ]
+  },
+  {
+    "id": 555,
+    "titulo": "[GameIVP] Phaser: setTint(0xffffff) como destello de golpe no se ve (y clearTint borra el tinte propio)",
+    "problema": "Al recibir daño, bombas y jefe no mostraban ningún destello; el láser parecía no hacer daño. Además el jefe perdía su color tras el primer golpe.",
+    "solucion": "Causa: en Phaser setTint(0xffffff) es el tinte neutro (no cambia nada) y clearTint() quita también el tinte propio del sprite. Arreglo: destello con un color (setTint(0xff5050)) o setTintFill; guardar el tinte original en setData('tinte') y restaurarlo tras el destello en vez de clearTint (PlayScene.danar, Generadores.crearJefe).",
+    "categorias_id": 3,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-12 12:06:11",
+    "actualizada_en": "2026-11-12 12:06:11",
+    "hash": "9aa05593bae58dc609c93552",
+    "categoria": "widgets",
+    "tags": [
+      "gameivp",
+      "phaser"
+    ]
+  },
+  {
+    "id": 556,
+    "titulo": "[GameIVP] Láser continuo casi sin daño: ticks atados a la cadencia base de 2,4 s",
+    "problema": "El arma láser se veía encendida sobre el jefe pero en 4 s le quitaba 6 de 500 de vida (medido en Cypress).",
+    "solucion": "Causa: el daño por tick era dano*1,4/4 y el periodo se repartía en 4 ticks de la cadencia (2400 ms): <2 DPS. Arreglo: ticks fijos de 100 ms y 0,2×daño por tick (2×daño por segundo), en src/game/data/armas.ts (TICK_LASER_MS, danoTickLaser). Medir con una prueba e2e temporal antes de ajustar.",
+    "categorias_id": 2,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-12 12:06:11",
+    "actualizada_en": "2026-11-12 12:06:11",
+    "hash": "bdbde83c5967e68a0cf62c16",
+    "categoria": "runtime",
+    "tags": [
+      "gameivp",
+      "phaser",
+      "balance"
+    ]
+  },
+  {
+    "id": 557,
+    "titulo": "[GameIVP] Teletransporte: escalar el sprite físico deja a Dude bajo la plataforma; con tween de respirar se agranda y encoge",
+    "problema": "Al materializarse en el planeta Dude quedaba por debajo de la plataforma; al llegar a la estación se agrandaba y encogía.",
+    "solucion": "Causa: tween de scaleX/scaleY sobre un sprite Arcade cambia también el tamaño del cuerpo (se separa de la plataforma hacia abajo); en la estación el tween de escala chocaba con el tween de respirar. Arreglo: animar solo alpha/tinte y dibujar una columna de luz aparte (rayoTeletransporte en PlayScene, usada también por EstacionScene).",
+    "categorias_id": 3,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-12 12:06:11",
+    "actualizada_en": "2026-11-12 12:06:11",
+    "hash": "065657c864d0a97d490ca1ed",
+    "categoria": "widgets",
+    "tags": [
+      "gameivp",
+      "phaser"
+    ]
+  },
+  {
+    "id": 558,
+    "titulo": "[GameIVP] <select> ilegible en WebView de Android: texto claro sobre fondo blanco",
+    "problema": "En el diálogo de teletransporte, el recuadro «Planeta de destino» se veía blanco sin texto en el Redmi.",
+    "solucion": "Causa: el tema oscuro heredado pinta el texto del select en color claro y el WebView dibuja el fondo blanco nativo. Arreglo: dar color y fondo explícitos al select y a sus option (color #1a1a2e, background claro) en el componente.",
+    "categorias_id": 3,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-12 12:06:11",
+    "actualizada_en": "2026-11-12 12:06:11",
+    "hash": "3d440980d126229f669c001e",
+    "categoria": "widgets",
+    "tags": [
+      "android",
+      "gameivp",
+      "css",
+      "webview"
+    ]
+  },
+  {
+    "id": 559,
+    "titulo": "[GameIVP] Capacitor: al girar el teléfono el escenario Phaser se descuadra",
+    "problema": "Al cambiar la orientación el juego (diseñado vertical) quedaba descuadrado.",
+    "solucion": "Arreglo: fijar android:screenOrientation=\"portrait\" en la activity de AndroidManifest.xml (juego solo vertical).",
+    "categorias_id": 9,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-12 12:06:11",
+    "actualizada_en": "2026-11-12 12:06:11",
+    "hash": "a3d265d262f49bcf41f136a3",
+    "categoria": "plataforma",
+    "tags": [
+      "android",
+      "gameivp",
+      "capacitor",
+      "phaser"
+    ]
   }
 ]
