@@ -14544,5 +14544,56 @@
       "estilo_neutral",
       "ddd"
     ]
+  },
+  {
+    "id": 588,
+    "titulo": "[GameIVP] Botón peligroso se ve activo estando disabled (CSS scoped de Vue tapa :disabled global)",
+    "problema": "En el teléfono, el botón rojo «Borrar mi cuenta y mis partidas» se veía activo con el campo de confirmación vacío, aunque tenía :disabled. Además «Escribe <b>BORRAR</b> para confirmar:» salía en 3 líneas.",
+    "solucion": "Causa: en <style scoped> de ModalPausa.vue se redefinió .ui-btn.peligro { background }; el selector scoped lleva [data-v-x] y gana en especificidad a .ui-btn:disabled de ui-modal.css. Arreglo: quitar la copia scoped (la clase ya existe en ui-modal.css, donde :disabled va después y gana). Si hace falta un color propio, agregar también :disabled en el mismo bloque. El texto partido: label con display:flex column convierte cada nodo (texto, <b>) en un ítem; envolver el texto en un <span>.",
+    "categorias_id": 3,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-12 18:43:07",
+    "actualizada_en": "2026-11-12 18:43:07",
+    "hash": "bfe596376bb14efe18b9ce3d",
+    "categoria": "widgets",
+    "tags": [
+      "gameivp",
+      "vue",
+      "css",
+      "scoped",
+      "disabled"
+    ]
+  },
+  {
+    "id": 589,
+    "titulo": "[herramientas] adb-ui: «ui.py abrir» aborta si la app no está en primer plano",
+    "problema": "python3 ui.py abrir → «ABORTADO: en primer plano hay «com.miui.home», no <PKG>», aunque el teléfono está libre en el escritorio: la guardia de abrir exige que la app ya esté delante.",
+    "solucion": "Lanzar la app con adb directamente cuando el escritorio (com.miui.home) está delante: adb -s $ADB_SERIAL shell monkey -p <PKG> -c android.intent.category.LAUNCHER 1; luego seguir con ui.py (estado, list, tap). Mejora pendiente en kit-agentes/herramientas/adb-ui/scripts/ui.py: permitir abrir cuando el primer plano es el launcher.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-12 18:43:07",
+    "actualizada_en": "2026-11-12 18:43:07",
+    "hash": "95396bd97d646cdaf6358602",
+    "categoria": null,
+    "tags": [
+      "android",
+      "miui",
+      "adb",
+      "adb-ui"
+    ]
   }
 ]
