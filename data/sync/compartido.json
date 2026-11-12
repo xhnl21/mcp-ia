@@ -14621,5 +14621,83 @@
       "css",
       "webview"
     ]
+  },
+  {
+    "id": 591,
+    "titulo": "[GameIVP] <select> nativo en WebView Android abre un diálogo blanco del sistema que no pega con el juego",
+    "problema": "En el Redmi, el selector de módulos del Hangar abría el diálogo nativo blanco de Android (radio buttons verdes), sin relación con el estilo del juego; el usuario pidió mejorar el diseño.",
+    "solucion": "Causa: un <select> en el WebView siempre usa el selector del sistema; el CSS solo cambia el recuadro cerrado. Arreglo (PanelNave.vue): reemplazarlo por un grupo de botones (role=radiogroup, cada uno role=radio con aria-checked), con ícono del módulo, nombre y existencias (×n / «puesto»), disabled sin existencias, y una línea con el efecto del elegido. En juegos, preferir botones o tarjetas propias antes que <select>.",
+    "categorias_id": 3,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-12 19:22:08",
+    "actualizada_en": "2026-11-12 19:22:08",
+    "hash": "ce7bfd53ff7e3f9156639dbc",
+    "categoria": "widgets",
+    "tags": [
+      "android",
+      "gameivp",
+      "vue",
+      "webview",
+      "select",
+      "diseño"
+    ]
+  },
+  {
+    "id": 592,
+    "titulo": "[GameIVP] Tarjetas de venta del mercader sin ícono (las de compra sí lo tenían)",
+    "problema": "En la pestaña Mercader, «5 hierro → +8 cr», silicio y plasma salían sin ícono, a diferencia de las ofertas de compra.",
+    "solucion": "Causa: la plantilla de venta (data-vender) no tenía el <span class=\"est-mision-icono\">. Arreglo (PanelEstacion.vue): agregar el span con RECURSOS[v.material].emoji (data/recursos.ts).",
+    "categorias_id": 3,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-12 19:22:08",
+    "actualizada_en": "2026-11-12 19:22:08",
+    "hash": "ffb3e22ddcf395bbd28eaa18",
+    "categoria": "widgets",
+    "tags": [
+      "gameivp",
+      "vue",
+      "mercader"
+    ]
+  },
+  {
+    "id": 593,
+    "titulo": "[herramientas] Preparar datos de prueba en una app Capacitor del teléfono por CDP (sin horas de juego)",
+    "problema": "Para probar en el teléfono una función que necesita objetos que se fabrican en horas reales (módulos del Taller mecánico), no había forma de dárselos al jugador desde la interfaz; window.__estacion solo existe en DEV.",
+    "solucion": "En el APK debug el WebView es depurable: adb shell cat /proc/net/unix → webview_devtools_remote_<pid>; adb forward tcp:9333 localabstract:<socket>; GET http://127.0.0.1:9333/json → webSocketDebuggerUrl; Runtime.evaluate con el WebSocket global de Node 22+. Herramienta: GameIVP/tools/webview_eval.mjs \"<JS>\". Trampa: editar localStorage con la partida ABIERTA no sirve (el siguiente guardado lo pisa): recargar con location.reload() tras editar, o editar con la partida cerrada. Otra trampa: la lista de partidas se ordena por la última jugada, así que «Jugar 1» abre la más reciente, no la «Partida 1»: elegir por posición tras leer la lista.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-12 19:22:08",
+    "actualizada_en": "2026-11-12 19:22:08",
+    "hash": "e37b32b622a6dfc18676cfe5",
+    "categoria": null,
+    "tags": [
+      "android",
+      "adb",
+      "pruebas",
+      "capacitor",
+      "webview",
+      "cdp"
+    ]
   }
 ]
