@@ -1,0 +1,48 @@
+{
+ "modulo": "audit_log",
+ "Clase": "AuditLog",
+ "entidad": "AuditLog",
+ "entidad_archivo": "lib/domain/entities/audit_log/audit_log.dart",
+ "etiqueta": "la bitácora de auditoría",
+ "funcion": "auditLogCasos",
+ "cubit": "lib/presentation/cubits/audit_log/audit_log_cubit.dart",
+ "casos_viejo": "AuditoriaCasos",
+ "casos_viejo_import": "auditoria/auditoria_casos.dart",
+ "pagina": "AuditLogPage",
+ "pagina_archivo": "lib/presentation/screens/audit_log/audit_log_page.dart",
+ "usos": [
+  "lib/presentation/shell/main_shell.dart",
+  "lib/presentation/routes/audit/audit_routes.dart",
+  "test/presentation/skeletons_test.dart"
+ ],
+ "lista": {
+  "nombre": "logs",
+  "servicio": "auditLogs",
+  "tipo": "List<AuditLog>"
+ },
+ "recargar": "releerAuditLog",
+ "ops": [
+  {
+   "caso": "RegistrarAuditLogManual",
+   "campo": "registrar",
+   "metodo": "registrar",
+   "servicio": "addAuditLogManual",
+   "params": "AuditLog log",
+   "args": "log",
+   "ret": "Future<void>",
+   "doc": "registra un checkpoint manual (la bitácora solo admite altas)."
+  }
+ ],
+ "resumen": {
+  "campos": [
+   [
+    "List<AuditLog>",
+    "logs"
+   ]
+  ],
+  "ctor": {
+   "logs": "List<AuditLog>.from(_repo.logs)"
+  }
+ },
+ "cubit_sync": "  void _syncFromService() {\n    final r = casos.obtenerResumen();\n    safeEmit(state.copyWith(\n      status: r.cargando ? AuditLogStatus.loading : AuditLogStatus.success,\n      logs: r.logs,\n      filteredLogs: _filter(r.logs, state.selectedHoja),\n      errorMessage: r.error,\n    ));\n  }\n"
+}
