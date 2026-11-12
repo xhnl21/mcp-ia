@@ -14826,5 +14826,31 @@
       "e2e",
       "hmr"
     ]
+  },
+  {
+    "id": 599,
+    "titulo": "[GameIVP] Pantalla negra al volver a la app (y en cada arranque) tras retomar la partida automáticamente",
+    "problema": "En el Redmi, después de dejar la app en segundo plano, al volver se ve todo negro; cerrarla y abrirla de nuevo sigue en negro. El canvas de Phaser mide 0×0 y localStorage tiene gameivp.sesionAbierta=1.",
+    "solucion": "Causa: el arreglo de «retomar la partida al volver» llamaba a iniciarJuego() en mounted() de PhaserContainer, antes de que #game tuviera tamaño (antes el video de apertura daba tiempo); Phaser mide el contenedor al arrancar y el lienzo quedó en 0×0. La marca de sesión hacía repetir lo mismo en cada arranque. Arreglo: reanudarPartida() espera con requestAnimationFrame a que #game mida > 0; si en 3 s no, borra la marca y muestra el inicio (nunca queda atrapado). Lección: no arrancar Phaser (Scale manager) desde mounted sin comprobar el tamaño del contenedor, y toda marca persistente que cambie el arranque necesita una salida si falla.",
+    "categorias_id": 9,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-12 21:18:28",
+    "actualizada_en": "2026-11-12 21:18:28",
+    "hash": "107d71b8cb67fca3a2f444b9",
+    "categoria": "plataforma",
+    "tags": [
+      "android",
+      "gameivp",
+      "capacitor",
+      "phaser",
+      "webview"
+    ]
   }
 ]
