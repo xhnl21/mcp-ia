@@ -33,3 +33,7 @@ Requiere `analyzer` entre las dependencias del proyecto (lo trae el auditor ARC)
 3. `python3 tool/ddd_importar_extensiones.py <Clase> <ruta/clase.dart> <paquete>`: las extensiones solo se ven donde se importa la librería.
 4. `notifyListeners()` en las extensiones: cambiar por un `_notificar()` de la clase (es `@protected`). Un helper de test que devuelva `dynamic` no ve extensiones: tiparlo.
 5. `flutter analyze`, `flutter test`, regenerar la línea base.
+
+## Etapa B (mitad): sacar el estado en memoria a un almacén
+
+`python3 tool/ddd_extraer_almacen.py <clase.dart> <Almacen> <almacen.dart> [--aplicar]` mueve las `List<T> _x = …;` a una clase almacén y deja accesores privados `_x` con el mismo nombre (los métodos no cambian). Faltan los flags escalares y el gateway de red.
