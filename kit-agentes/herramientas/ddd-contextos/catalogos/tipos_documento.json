@@ -1,0 +1,13 @@
+{
+  "modulo": "tipos_documento", "paquete": "estilo_neutral", "etiqueta": "Tipos de documento", "articulo_nuevo": "un tipo de documento nuevo",
+  "entidad": "TipoDocumento", "entidad_archivo": "lib/domain/entities/tipos_documento/tipo_documento.dart", "singular": "TipoDocumento",
+  "servicio": {"lista": "tiposDocumento", "activos": "tiposDocumentoActivos", "en_uso": "tiposDocumentoEnUso", "agregar": "addTipoDocumento", "actualizar": "updateTipoDocumento", "estado": "toggleTipoDocumentoStatus", "eliminar": "deleteTipoDocumento", "es_en_uso": "isTipoDocumentoEnUso"},
+  "agregar_params": [["tipo", "String"], ["descripcion", "String"]],
+  "actualizar_params": [["id", "String"], ["nuevoTipo", "String"], ["nuevaDescripcion", "String"]],
+  "en_uso_param": "tipo", "clave": "x.tipo.trim().toUpperCase()",
+  "cubit": "lib/presentation/cubits/tipos_documento/tipos_documento_cubit.dart",
+  "pagina": "lib/presentation/screens/tipos_documento/tipos_documento_page.dart", "pagina_clase": "TiposDocumentoPage",
+  "armado": ["lib/presentation/shell/main_shell.dart", "lib/presentation/routes/audit/audit_routes.dart"],
+  "duplicado_regex": "final duplicado = widget\\.casos\\.tiposDocumento\\.any\\(\\s*\\(t\\) =>\\s*t\\.tipo\\.trim\\(\\)\\.toUpperCase\\(\\) == tipoInput &&\\s*\\(isEditing \\? t\\.id != tipoToEdit\\.id : true\\),\\s*\\);",
+  "duplicado_reemplazo": "final duplicado = widget.casos.existe(tipoInput, excluirId: isEditing ? tipoToEdit.id : null);"
+}
