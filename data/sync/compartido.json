@@ -14520,5 +14520,29 @@
       "firebase-hosting",
       "credenciales"
     ]
+  },
+  {
+    "id": 587,
+    "titulo": "[estilo_neutral] Generar casos de uso de módulos «lista + operaciones» con una spec JSON (ddd_modulo_lista.py)",
+    "problema": "checklist_iso, audit_log, cuarentena y reporte_migracion compartían cubits CRUD que pedían todo a una pasarela AuditoriaCasos; reescribirlos a mano es repetitivo.",
+    "solucion": "tool/ddd_modulo_lista.py + tool/modulos/<m>.json genera repositorio (domain+impl con Stream cambios), Observar/Recargar/ObtenerResumen y un caso por operación, locator y reescribe el cubit (suscripción en vez de addListener). Trampas: importar la entidad en ObtenerResumen cuando el ctor la nombra; un `!` movido a application cae en ARC-019 (reescribir con variable local); un nombre más largo en main_shell hace que el formato agregue línea y falle ARC-009 (usar nombre corto). Un caso de uso puede depender de la interfaz de otro contexto (InvitacionesCasos usa ClientesRepository) para no duplicar repositorio. No lanzar edits durante un git push: el hook de pre-push corre los tests sobre el árbol de trabajo y falla.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-12 18:14:26",
+    "actualizada_en": "2026-11-12 18:14:26",
+    "hash": "578ce6903581e745f852001f",
+    "categoria": null,
+    "tags": [
+      "flutter",
+      "estilo_neutral",
+      "ddd"
+    ]
   }
 ]
