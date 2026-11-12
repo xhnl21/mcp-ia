@@ -14852,5 +14852,79 @@
       "phaser",
       "webview"
     ]
+  },
+  {
+    "id": 600,
+    "titulo": "[GameIVP] Panel con .hud-panel + .hud-rejilla sale transparente (la rejilla pisa el degradado del fondo)",
+    "problema": "El diálogo del sistema solar (y otros paneles con rejilla) dejaba ver la consola detrás: el panel no tenía fondo.",
+    "solucion": "Causa: .hud-panel pone su fondo con background (capas de degradado) y .hud-rejilla redefinía background-image solo con las líneas de la rejilla, reemplazando todas las capas. Arreglo (src/theme/hud.css): .hud-rejilla incluye también la capa del degradado del panel y background-size para las tres capas. Regla: una clase utilitaria que toca background-image debe repetir las capas que necesita, o usar un pseudo-elemento.",
+    "categorias_id": 3,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-12 21:52:54",
+    "actualizada_en": "2026-11-12 21:52:54",
+    "hash": "f7564b1f21054c9cb6bd79d1",
+    "categoria": "widgets",
+    "tags": [
+      "gameivp",
+      "css",
+      "background"
+    ]
+  },
+  {
+    "id": 601,
+    "titulo": "[GameIVP] Vista recortada por reusar un nombre de clase ya usado por el contenedor (scoped en el mismo componente)",
+    "problema": "El mapa orbital del sistema solar se veía cortado: solo asomaba su parte de arriba dentro de la consola.",
+    "solucion": "Causa: la nueva vista usaba la clase .est-mapa, que ya era la del contenedor del mapa estelar en el mismo PanelEstacion.vue; las reglas nuevas (height 290px; overflow hidden) se aplicaron también al contenedor y lo recortaron. Arreglo: renombrar a .est-orbital. Antes de crear una clase en un componente grande, grep del nombre (igual que con funciones).",
+    "categorias_id": 3,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-12 21:52:54",
+    "actualizada_en": "2026-11-12 21:52:54",
+    "hash": "72280c09c5f878ed7ade283e",
+    "categoria": "widgets",
+    "tags": [
+      "gameivp",
+      "vue",
+      "css",
+      "scoped"
+    ]
+  },
+  {
+    "id": 602,
+    "titulo": "[GameIVP] Botón tapado por una cabecera sticky al desplazarse hasta él (Cypress: «center of this element is hidden from view»)",
+    "problema": "Cypress no pudo pulsar «Reparar» en el Hangar: el centro del botón quedaba bajo el plano de la nave, que es position: sticky arriba del contenido desplazable; a un usuario le pasa lo mismo al saltar con el foco.",
+    "solucion": "Causa: al llevar un elemento a la vista (scrollIntoView), queda arriba del contenedor y lo cubre la cabecera sticky (más alta tras el rediseño). Arreglo: scroll-margin-top con la altura de la cabecera en las tarjetas y botones (.pieza, .pieza-btn { scroll-margin-top: 270px }). scrollIntoView lo respeta, Cypress también.",
+    "categorias_id": 3,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-12 21:52:54",
+    "actualizada_en": "2026-11-12 21:52:54",
+    "hash": "57a82a2761e3c052980908d4",
+    "categoria": "widgets",
+    "tags": [
+      "gameivp",
+      "css",
+      "cypress",
+      "sticky"
+    ]
   }
 ]
