@@ -179,9 +179,12 @@ for file in $STAGED_JS_FILES; do
     echo "${YELLOW}👉 Renombra una o reutiliza la existente (gana la última declarada).${NC}"
     exit 1
   fi
-  if command -v node >/dev/null 2>&1 && ! node --check < "$file" >/dev/null 2>&1; then
+  # Un .js con import/export es un módulo ES (Vue, Vite): por stdin node lo leería como CommonJS y daría un falso error.
+  TIPO_JS=commonjs
+  grep -qE '^[[:space:]]*(import|export)[[:space:]{*]' "$file" && TIPO_JS=module
+  if command -v node >/dev/null 2>&1 && ! node --input-type=$TIPO_JS --check < "$file" >/dev/null 2>&1; then
     echo "${RED}${BOLD}❌ ERROR DE SINTAXIS en $file${NC} ${RED}(node --check):${NC}"
-    node --check < "$file" 2>&1 | grep -vE '^\s*at |^Node\.js' | head -8
+    node --input-type=$TIPO_JS --check < "$file" 2>&1 | grep -vE '^\s*at |^Node\.js' | head -8
     exit 1
   fi
 done
