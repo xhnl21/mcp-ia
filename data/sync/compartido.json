@@ -14926,5 +14926,102 @@
       "cypress",
       "sticky"
     ]
+  },
+  {
+    "id": 603,
+    "titulo": "[GameIVP] Sonido: apagarlo no calla la música y encenderlo tarda (solo arrancaba en la siguiente escena)",
+    "problema": "En Ajustes, apagar el sonido dejaba sonando la música de la estación/viaje; al encenderlo no sonaba nada hasta cambiar de pantalla.",
+    "solucion": "Causa: cada escena creaba su música solo si localStorage 'gameivp.sonido'='1' al arrancar, y el interruptor solo paraba la música de PlayScene. Arreglo: la música suena siempre y el interruptor usa el silencio global de Phaser (scene.sound.mute = !on, que es del SoundManager del juego): instantáneo en todas las escenas. Cada escena fija sound.mute al crearse; PhaserContainer lo fija al alternar fuera de PlayScene.",
+    "categorias_id": 2,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-13 12:02:32",
+    "actualizada_en": "2026-11-13 12:02:32",
+    "hash": "e772bbe2cc25ff90ed962448",
+    "categoria": "runtime",
+    "tags": [
+      "audio",
+      "gameivp",
+      "phaser"
+    ]
+  },
+  {
+    "id": 604,
+    "titulo": "[GameIVP] Botón del pie de un modal desaparece (Siguiente del puzle) por flex sin wrap y overflow hidden",
+    "problema": "En el resultado del puzle no aparecía «Siguiente ▶» en el teléfono; Repetir y Volver al taller ocupaban el ancho.",
+    "solucion": "Causa: .ui-foot es flex sin flex-wrap y .ui-box tiene overflow hidden: el tercer botón quedaba fuera, cortado. Arreglo: flex-wrap: wrap en .ui-foot (ui-modal.css), que arregla todos los pies de ventana.",
+    "categorias_id": 3,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-13 12:02:32",
+    "actualizada_en": "2026-11-13 12:02:32",
+    "hash": "4a23cd598e1104c43f25da3b",
+    "categoria": "widgets",
+    "tags": [
+      "gameivp",
+      "css",
+      "flex"
+    ]
+  },
+  {
+    "id": 605,
+    "titulo": "[GameIVP] Personaje tapado por el panel de detalle (parecía que no llegaba) y un toque fuera del panel lo sacaba",
+    "problema": "Al visitar un espacio de la Base, Dude «no terminaba de llegar» (quedaba bajo el panel inferior) y tocar fuera del panel lo devolvía a la consola sin querer.",
+    "solucion": "Causa: el punto final de la caminata (SALA.dude) queda en la mitad de abajo, que tapa PanelEspacio; y EstacionScene tenía «un toque en el espacio vuelve a la consola». Arreglo: al llegar, cameras.main.pan(dude.x, dude.y + 0.22·H) para dejarlo encima del panel (y pan al centro al volver); quitar el toque para salir: solo el botón «Volver a la consola».",
+    "categorias_id": 3,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-13 12:02:32",
+    "actualizada_en": "2026-11-13 12:02:32",
+    "hash": "f45fa53cbf727627c005f3bd",
+    "categoria": "widgets",
+    "tags": [
+      "camara",
+      "gameivp",
+      "phaser"
+    ]
+  },
+  {
+    "id": 606,
+    "titulo": "[Vue 3] Separar un SFC en .vue (HTML), .ts (lógica) y .css: <script setup> no admite src",
+    "problema": "Se pidió separar HTML, CSS y TS de cada componente Vue. <style scoped src> y <script src> funcionan, pero <script setup src=...> da error en @vue/compiler-sfc («<script setup> cannot use the src attribute»).",
+    "solucion": "Para <script setup>: mover la lógica a Nombre.ts como export function useNombre(props, emit) { …; return { lo que usa la plantilla } } y dejar en el .vue solo imports de componentes, defineProps<PropsNombre>() / defineEmits<EmitsNombre>() (tipos exportados desde el .ts; Vue 3.3+ resuelve tipos importados) y const { … } = useNombre(props, emit). El tipo del emit: UnionToIntersection de (evento: K, ...args: T[K]) => void. Componentes de opciones: <script lang=\"ts\" src=\"./Nombre.ts\"> (si era JS sin tipos, dejarlo .js). Trampas: componentes de librería usados como etiqueta (IonButton, IonPage) deben importarse en el .vue; imports dinámicos del router y alias @/ no se reescriben solos; nombres que solo aparecen como texto/atributo en la plantilla no deben destructurarse (lint). Herramienta automática: GameIVP tools/separar_componentes.mjs (compiler-sfc + TypeScript API) y prueba de convención tests/unit/estructuraComponentes.spec.ts.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-13 12:24:06",
+    "actualizada_en": "2026-11-13 12:24:06",
+    "hash": "ab460685face945594798207",
+    "categoria": null,
+    "tags": [
+      "vue",
+      "typescript",
+      "refactor",
+      "sfc"
+    ]
   }
 ]
