@@ -15357,5 +15357,54 @@
       "gameivp",
       "cypress"
     ]
+  },
+  {
+    "id": 621,
+    "titulo": "[GameIVP] Firestore: failed-precondition justo después de desplegar un índice compuesto",
+    "problema": "Tras firebase deploy --only firestore (índice compuesto nuevo), la consulta sigue fallando con failed-precondition: «The query requires an index. That index is currently building and cannot be used yet».",
+    "solucion": "No es un error de configuración: el índice tarda minutos en construirse (en gameivp-furion, unos 5). Mostrar e.message completo (no solo e.code) para distinguir «currently building» de «falta el índice», y reintentar cada pocos minutos. Mientras se construye, la app debe mostrar el error sin romperse (TablaRanking muestra ranking-error).",
+    "categorias_id": 9,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-13 13:06:55",
+    "actualizada_en": "2026-11-13 13:06:55",
+    "hash": "599eddaec1d8c82730d3316b",
+    "categoria": "plataforma",
+    "tags": [
+      "gameivp",
+      "firestore",
+      "indices"
+    ]
+  },
+  {
+    "id": 622,
+    "titulo": "[kit-agentes] pre-commit: falso «ERROR DE SINTAXIS» en .js con import (node --check por stdin)",
+    "problema": "El gate 2 del pre-commit del kit falla en un .js de Vue/Vite: «ERROR DE SINTAXIS en src/components/X/X.js (node --check): SyntaxError: Cannot use import statement outside a module».",
+    "solucion": "Causa: node --check < archivo lee stdin como CommonJS. Arreglo en kit-agentes/hooks/pre-commit (y la copia .githooks/pre-commit de cada proyecto): si el archivo tiene import/export al inicio de línea, usar node --input-type=module --check; si no, --input-type=commonjs. Los errores reales en módulos se siguen detectando. No se arregla con --no-verify ni renombrando el archivo.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-13 13:10:05",
+    "actualizada_en": "2026-11-13 13:10:05",
+    "hash": "f63734c8b6fd475948fd1d7b",
+    "categoria": null,
+    "tags": [
+      "git",
+      "node",
+      "hooks",
+      "kit-agentes"
+    ]
   }
 ]
