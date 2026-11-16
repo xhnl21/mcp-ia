@@ -17070,5 +17070,28 @@
       "vue",
       "economia"
     ]
+  },
+  {
+    "id": 689,
+    "titulo": "[GameIVP] Tras el jefe final de un sistema por teletransporte no se puede ir al planeta siguiente",
+    "problema": "Llegado por teletransporte a Kepler-020 y vencido el jefe, la pregunta «¿Cómo sigues?» solo ofrece Océano y Jungla: no aparece Kepler-021 (Pradera) y Dude, sin nave, no puede seguir.",
+    "solucion": "Causa: destinosTeletransporte solo lista los sistemas al alcance (sistemas completos en el taller × nivel del módulo). Arreglo: parámetro siguiente en destinosTeletransporte (data/teletransporte.ts) que agrega el mundo recién desbloqueado aunque su sistema no esté al alcance (si <= maxMundo y no es el actual); PlayScene.preguntarTeletransporte lo pasa. La pregunta ya lo marca por defecto. Pruebas: teletransporte.spec.ts y novedades.cy.ts.",
+    "categorias_id": 4,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-16 20:48:10",
+    "actualizada_en": "2026-11-16 20:48:10",
+    "hash": "42f5c58ddfa073517ce48386",
+    "categoria": "estado",
+    "tags": [
+      "gameivp",
+      "teletransporte"
+    ]
   }
 ]
