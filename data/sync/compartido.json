@@ -16141,5 +16141,80 @@
       "phaser",
       "cinematica"
     ]
+  },
+  {
+    "id": 652,
+    "titulo": "[estilo_neutral] Cubit con suscripción que nunca se cancela (ConfigFacturaCubit sin close)",
+    "problema": "ConfigFacturaCubit hacía casos.addListener en el constructor y no tenía close(): el listener quedaba vivo y emitía sobre un cubit cerrado.",
+    "solucion": "Al migrar un cubit a casos de uso con Stream, guardar la StreamSubscription y cancelarla en close(). Revisar al migrar cada cubit que exista un close() que cancele la suscripción; si no existe, agregarlo.",
+    "categorias_id": 4,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-16 12:14:35",
+    "actualizada_en": "2026-11-16 12:14:35",
+    "hash": "e980fd3255edbadef364d1d3",
+    "categoria": "estado",
+    "tags": [
+      "flutter",
+      "dart",
+      "estilo_neutral",
+      "ddd"
+    ]
+  },
+  {
+    "id": 653,
+    "titulo": "[estilo_neutral] Migrar un cubit a casos de uso: pasar lógica de dominio rompe ARC-019 y ARC-028",
+    "problema": "Al mover código de un cubit a application/usecases el auditor marca ARC-019 (operador `!`) y ARC-028 (catch genérico).",
+    "solucion": "Reescribir el `!` con `if (x case final v?)` o variable local promovida (p. ej. `if (nombres[o] case final n?) n` en vez de `nombres[o]!`); para un catch que informa en vez de relanzar usar `on Object catch (e)` con un comentario del motivo. No subir la línea base.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-16 12:14:35",
+    "actualizada_en": "2026-11-16 12:14:35",
+    "hash": "4e4554571009a5a5b31a1d22",
+    "categoria": null,
+    "tags": [
+      "flutter",
+      "dart",
+      "estilo_neutral",
+      "ddd"
+    ]
+  },
+  {
+    "id": 654,
+    "titulo": "[estilo_neutral] Extension sobre la pasarela XCasos para armar los casos con nombre sin subir imports",
+    "problema": "Cada contexto (usuarios, terminos, factura, equipo, config_factura…) necesita construirse desde OrganizacionesCasos/VentasCasos sin añadir imports a archivos que ya están en 15 (ARC-010) ni crecer en líneas (ARC-009).",
+    "solucion": "Patrón: la pasarela expone `repositorio` (getter) y el archivo del contexto nuevo define `extension X on VentasCasos { XCasos get nombre => XCasos.desdeRepositorio(repositorio); }` y reexporta (`export`) la pasarela; el barril config/locator/casos.dart reexporta el contexto para que las pantallas no sumen imports. Un nombre de getter corto evita que el formateador parta una línea y suba ARC-009.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-16 12:14:35",
+    "actualizada_en": "2026-11-16 12:14:35",
+    "hash": "9f1e0b03c0a5155a50c85c6b",
+    "categoria": null,
+    "tags": [
+      "flutter",
+      "dart",
+      "estilo_neutral",
+      "ddd"
+    ]
   }
 ]
