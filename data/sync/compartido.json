@@ -16216,5 +16216,54 @@
       "estilo_neutral",
       "ddd"
     ]
+  },
+  {
+    "id": 655,
+    "titulo": "[GameIVP] Atributos de Dude sin tope real: «Nivel Máximo» con el «+» activo y puntos de Ráfaga desperdiciados",
+    "problema": "En la ventana Habilidades, Ráfaga y Velocidad B. llegaban a 100 y mostraban «Nivel Máximo», pero el «+» seguía subiendo sin límite (ModalSkills solo pintaba el texto si valor === 100). Además la Ráfaga (−30 ms por punto desde 3000) chocaba con el mínimo de 150 ms de PlayScene en el punto 96: los puntos 96 a 100 no hacían nada.",
+    "solucion": "HeroStats: MAX_PUNTOS_ATRIBUTO = 100, PASO_RAFAGA = 29, CADENCIA_MINIMA = 100 y cadenciaDePuntos(p). ModalSkills: updatePoint no sube en el tope y la plantilla muestra solo «Nivel Máximo» (sin botones) salvo para deshacer lo de esa vez. HeroStats.cargar → topePuntos(): lo que pasaba de 100 vuelve como skillPoints quitando lo que daba (5 por punto), y la Ráfaga se recalcula con el paso nuevo. Pruebas: HeroStats.spec.ts y ModalSkills.spec.ts. Regla: si un tope existe en la interfaz, debe existir también en la lógica, y el paso de cada punto debe llegar al tope sin chocar antes con otro mínimo.",
+    "categorias_id": 4,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-16 12:32:25",
+    "actualizada_en": "2026-11-16 12:32:25",
+    "hash": "20b6d023b171672b2ea16369",
+    "categoria": "estado",
+    "tags": [
+      "gameivp",
+      "vue",
+      "equilibrio"
+    ]
+  },
+  {
+    "id": 656,
+    "titulo": "[estilo_neutral] Migrar el login a casos de uso sin cambiar el comportamiento (VerificarAccesoDeCuenta)",
+    "problema": "LoginCubit mezclaba la decisión de acceso (esperar carga inicial, releer hojas de acceso antes de rechazar, distinguir «no se pudo leer» de «rechazado») con la orquestación de pantalla; ControlAccesoSesion leía el repositorio directo.",
+    "solucion": "Un caso de uso VerificarAccesoDeCuenta devuelve un ResultadoAcceso(organizacionId, motivo, noSePudoLeer, motivoLectura, sesionRechazada) y el cubit solo decide qué mostrar. Otros: IniciarContextoDeSesion (fija org/usuario y devuelve el método de bloqueo), CerrarContextoDeSesion, ObservarAcceso (stream síncrono), ResolverAccesoDeSesion. SheetsAuth (infraestructura) sigue en el cubit: falta un puerto de sesión (ARC-001). Los 38 tests de test/features/auth son la red; falta probar en el teléfono. Un bundle con más de 15 imports (ARC-010) se parte en dos (AccesoCasos y RecuperacionCasos).",
+    "categorias_id": 4,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-16 12:55:39",
+    "actualizada_en": "2026-11-16 12:55:39",
+    "hash": "136fe6968cc48cdb78812043",
+    "categoria": "estado",
+    "tags": [
+      "flutter",
+      "estilo_neutral",
+      "ddd",
+      "auth"
+    ]
   }
 ]
