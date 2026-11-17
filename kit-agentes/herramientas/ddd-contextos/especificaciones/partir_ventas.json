@@ -1,0 +1,3 @@
+{"extension": "VentasDatos", "resto": "ventas",
+ "titulos": {"ventas": "CRUD 3: ventas (hoja ventas)", "abonos": "Abonos de una venta (registrarAbono)"},
+ "archivos": {"abonos": ["registrarAbono"]}}

@@ -1,0 +1,8 @@
+{"extension": "NucleoDatos", "resto": "lecturas",
+ "titulos": {"nucleo": "Núcleo: arranque y carga inicial", "acceso": "Acceso, sesión y roles", "tasas_de_venta": "Tasas con las que se vende y se muestra una factura", "carga": "Carga de todas las hojas", "lectura_de_hojas": "Lectura de una hoja (Apps Script o gviz)", "lecturas": "Colecciones expuestas por el servicio"},
+ "archivos": {
+  "nucleo": ["appsScriptUrl","_dio","setAppsScriptUrl","errorMessage","lastSync","motivoUltimoFalloUsuario","initialize","esperarCargaInicial"],
+  "acceso": ["setCurrentOrganizacion","currentUsuarioEmail","setCurrentUsuario","accesoCargado","ultimoErrorLectura","sesionRechazadaEnLectura","accesoRevocadoEnServidor","releerAcceso","schemaMultiOrgListo","organizacionIdForUsuario","_matchesCurrentOrg","usuarios","organizaciones","usuarioOrganizaciones","organizacionActual","roles","rolPorId","rolesDe","rolAdministradorDe","puedeAsignarRol","usuariosConRol","rolDeUsuario","seguridad"],
+  "tasas_de_venta": ["tasas","tasaPorId","tasasParaPruebas","tasaManualOrganizacion","monedasOrganizacion","monedaOrganizacion","tasaVigenteEnMonedaBase","cambioPctTasa","tasaParaVenta","tasaBcvDeFactura","tasaAplicadaDeFactura","ventaConTasaAplicada","_resolverTasaAplicada"],
+  "carga": ["_fetchAllSheets"],
+  "lectura_de_hojas": ["_tokenDeAcceso","_filasDelServidor","_enviarLoteLectura","_fetchSheet","_filasPorGviz","_procesarFilas"]}}
