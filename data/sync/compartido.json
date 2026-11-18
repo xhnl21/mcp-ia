@@ -17997,5 +17997,56 @@
       "accesibilidad",
       "texto-grande"
     ]
+  },
+  {
+    "id": 725,
+    "titulo": "[estilo_neutral] CLI-003: sesión del cliente (cs1.) sin revocación; cerrar sesión no la anulaba en el servidor",
+    "problema": "Auditoría CLI-003: el token cs1. valía 30 días y solo se invalidaba si la cuenta pasaba a inactivo. «Cerrar sesión» solo borraba el token del teléfono y restablecer la contraseña no anulaba sesiones emitidas: un token robado servía hasta 30 días.",
+    "solucion": "google_apps_script.js: versión de sesión por cliente en ScriptProperties (CLISV_<org>_<cliente>), _cliVersionSesion/_cliCerrarSesiones; _cliFirmarSesion mete v en el token y _cliLeerSesion la compara (sin v cuenta como 0, así los tokens viejos siguen valiendo hasta la primera revocación). Acción cliente_cerrar_sesion (en CLIENTE_ACCIONES_SIN_TERMINOS) y _cliClaveRestablecer sube la versión de todas las organizaciones del correo. CLIENTE_SESION_DIAS 30→14. Tests en tools/apps_script/tests/cliente_clave.test.js (node). App de clientes: caso de uso CerrarSesionEnServidor, SesionCubit lo llama antes de borrar el token con timeout de 8 s y mejor esfuerzo. Pendiente: desplegar el script y publicar la app.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-18 13:46:33",
+    "actualizada_en": "2026-11-18 13:46:33",
+    "hash": "b7e1c3d21e05b5919f1749d9",
+    "categoria": null,
+    "tags": [
+      "estilo_neutral",
+      "apps-script",
+      "sesion",
+      "cliente",
+      "cli-003"
+    ]
+  },
+  {
+    "id": 726,
+    "titulo": "[herramientas] dart format sobre carpetas reformatea decenas de archivos ajenos (estilo_neutral_cliente)",
+    "problema": "Correr `dart format lib test` en estilo_neutral_cliente cambió 136 archivos (126 ajenos): el proyecto no está formateado con el estilo por defecto de la versión instalada, y el commit quedaría con ruido enorme. Además `git checkout -- .` para deshacerlo es bloqueado por el clasificador de seguridad aunque el usuario lo autorice.",
+    "solucion": "Formatear siempre solo los archivos cambiados (`dart format <archivo>`), nunca carpetas. Antes de cualquier formato masivo, `git status` limpio para poder deshacer. Si ya pasó: restaurar con `git checkout -- <archivo>` lo ajeno (lo hace la persona si el clasificador bloquea) y reaplicar los cambios propios.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-18 13:46:33",
+    "actualizada_en": "2026-11-18 13:46:33",
+    "hash": "e626f8e358c37d9fe3a7439e",
+    "categoria": null,
+    "tags": [
+      "dart",
+      "git",
+      "estilo_neutral_cliente",
+      "format"
+    ]
   }
 ]
