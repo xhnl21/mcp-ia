@@ -16,6 +16,28 @@ NC='\033[0m'
 
 echo "\n${BLUE}${BOLD}🚀 Quality Gates de pre-push${NC}"
 
+# Reintento sin repetir las revisiones. git abre la sesión con el remoto antes
+# del hook y GitLab la corta si el hook tarda varios minutos (git termina con
+# 141 aunque todo aprobó). Si este mismo commit ya aprobó hacia la misma rama
+# y no hay cambios sin commit en lo que se revisa, no se vuelve a revisar.
+# git pasa por stdin «ref-local sha-local ref-remota sha-remoto» por rama; se
+# guarda para la marca y para pre-push.local.
+APROBADO="$(git rev-parse --git-dir)/pre-push-aprobado"
+ENTRADA=""
+[ -t 0 ] || ENTRADA=$(cat)
+FIRMA=$(printf '%s\n' "$ENTRADA" | awk 'NF { print $2, $3 }')
+LIMPIO=no
+if git diff --quiet HEAD 2>/dev/null &&
+  [ -z "$(git ls-files --others --exclude-standard -- lib test src 2>/dev/null)" ]; then
+  LIMPIO=si
+fi
+if [ -n "$FIRMA" ] && [ "$LIMPIO" = si ] && [ -f "$APROBADO" ] &&
+  [ "$(cat "$APROBADO")" = "$FIRMA" ]; then
+  echo "${GREEN}✓ Este commit ya pasó todos los Quality Gates hacia la misma rama: se sube sin repetirlos.${NC}"
+  exit 0
+fi
+rm -f "$APROBADO"
+
 # Vulnerabilidades conocidas en las dependencias: osv-scanner, si está
 # instalado, sobre los archivos de bloqueo de la raíz (pubspec.lock,
 # package-lock.json, requirements.txt, Cargo.lock…).
@@ -58,7 +80,12 @@ fi
 # Reglas del proyecto: corren después de la suite, con coverage/lcov.info ya generado.
 if [ -f "$HOOKS_DIR/pre-push.local" ]; then
   echo "\n${BLUE}Reglas del proyecto (.githooks/pre-push.local)...${NC}"
-  sh "$HOOKS_DIR/pre-push.local" "$@" || { echo "${RED}❌ Push rechazado por las reglas del proyecto.${NC}"; exit 1; }
+  printf '%s\n' "$ENTRADA" | sh "$HOOKS_DIR/pre-push.local" "$@" || { echo "${RED}❌ Push rechazado por las reglas del proyecto.${NC}"; exit 1; }
+fi
+
+# Marca de aprobado: un reintento del mismo commit hacia la misma rama no repite nada.
+if [ -n "$FIRMA" ] && [ "$LIMPIO" = si ]; then
+  printf '%s\n' "$FIRMA" >"$APROBADO"
 fi
 
 echo "\n${GREEN}${BOLD}🎉 ¡Todos los Quality Gates de pre-push pasaron! Procediendo con el push...${NC}\n"
