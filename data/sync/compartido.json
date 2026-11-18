@@ -17738,5 +17738,57 @@
       "estilo_neutral",
       "ddd"
     ]
+  },
+  {
+    "id": 715,
+    "titulo": "[GameIVP] Phaser 3: reemplazar scene.update en caliente no tiene efecto (simular errores en una escena)",
+    "problema": "Al parchear scene.update desde la consola del WebView para simular un error en una escena Phaser 3.90, el parche nunca se ejecuta (0 llamadas) y el juego sigue igual.",
+    "solucion": "Causa: Phaser guarda al iniciar la escena una referencia propia, scene.sys.sceneUpdate, y es esa la que llama Systems.step en cada fotograma; scene.update ya no se vuelve a leer. Arreglo: parchear scene.sys.sceneUpdate (guardar la original y restaurarla al terminar). Ejemplo en GameIVP: const o=s.sys.sceneUpdate; s.sys.sceneUpdate=function(...a){ throw new Error(\"simulado\") }; ... s.sys.sceneUpdate=o. Sirve para probar en el teléfono o el emulador el guardián del bucle (log.protegerBucle) junto con tools/webview_eval.mjs y tools/leer_errores.mjs (ADB_SERIAL=emulator-5554).",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-18 12:02:36",
+    "actualizada_en": "2026-11-18 12:02:36",
+    "hash": "909d33bff179c734121ed9b5",
+    "categoria": null,
+    "tags": [
+      "android",
+      "emulador",
+      "pruebas",
+      "gameivp",
+      "phaser"
+    ]
+  },
+  {
+    "id": 716,
+    "titulo": "[GameIVP] osv-scanner bloquea el push por picomatch GHSA-fc5q-39xc-vjpf sin versión corregida",
+    "problema": "El hook pre-push rechaza el push: \"Hay dependencias con vulnerabilidades conocidas\" GHSA-fc5q-39xc-vjpf (picomatch ReDoS con extglobs, 8.7) en picomatch 2.3.2 y 4.0.7 (dev), columna de versión corregida vacía. Viene de vite, vitest y @typescript-eslint, no del cambio propio.",
+    "solucion": "Comprobar que no hay arreglo: curl -s https://api.osv.dev/v1/vulns/GHSA-fc5q-39xc-vjpf → last_affected 4.0.7. Si la dependencia es solo de desarrollo y no va en la app, con permiso del usuario crear osv-scanner.toml en la raíz: [[IgnoredVulns]] id=\"GHSA-fc5q-39xc-vjpf\" ignoreUntil=<fecha> reason=\"...\". Siempre con vencimiento, para que el hook vuelva a bloquear y se revise. Verificar con osv-scanner scan source . (\"Filtered 2 vulnerabilities\"). Nunca usar --no-verify.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-18 12:10:35",
+    "actualizada_en": "2026-11-18 12:10:35",
+    "hash": "4c96035ab18ea2c8eaf8c616",
+    "categoria": null,
+    "tags": [
+      "seguridad",
+      "osv-scanner",
+      "hooks",
+      "npm",
+      "gameivp"
+    ]
   }
 ]
