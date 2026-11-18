@@ -18048,5 +18048,108 @@
       "estilo_neutral_cliente",
       "format"
     ]
+  },
+  {
+    "id": 727,
+    "titulo": "[zas] Registro de comercio: rutas create_password y photo_rif dan 404 y la contraseña se manda de más",
+    "problema": "POST {API_URL}/create_password y POST {API_URL}/photo_rif responden 404 {\"error\":\"route not found\"}; la app aún tenía su código (TradeDataCreatePasswordUseCase, TradeSendPhotoRif/DniUseCase, ITradeTakePhotoRifRepository) aunque ninguna pantalla lo llamaba. Además POST /account-requests enviaba rep_password y rep_password_confirm, que backend ignora. Se detectó al cruzar las rutas de lib/ con los contratos (scripts/contratos_api/rutas.json).",
+    "solucion": "Causa: backend reemplazó el registro viejo por POST /account-requests (multipart con X-API-Key; fotos en merchant_rif_path y rep_id_photo_path, opcionales commercial_registry_path y latest_meeting_minutes_path; jpg/png/webp/pdf) y quitó la contraseña: el comercio la define después de aprobada la solicitud. Arreglo: borrar el código muerto (repositorio, interfaz, datasource y casos de uso de fotos, createPassword del repositorio/fachada/handler/cubit, locator, simulador QA y sus pruebas), sacar rep_password/rep_password_confirm del FormData de sendDataPostMultipart y de la ruta solicitud_crear del contrato. Prueba de regresión: test/infrastructure/repositories/application/account_request_sin_clave_test.dart (captura el FormData). Para encontrar rutas sin contrato: usar rutasDeLineas/cubre de scripts/check_rutas_con_error.dart sobre lib y comparar con rutas.json; probar con curl y comparar contra una ruta conocida (data-form 200) para descartar la base.",
+    "categorias_id": 2,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-18 13:59:14",
+    "actualizada_en": "2026-11-18 13:59:14",
+    "hash": "e22ce67ceff3d6a8f56664d4",
+    "categoria": "runtime",
+    "tags": [
+      "flutter",
+      "zas",
+      "api",
+      "registro",
+      "codigo-muerto",
+      "contratos"
+    ]
+  },
+  {
+    "id": 728,
+    "titulo": "[zas] Pantalla de contraseña del registro inalcanzable: la solicitud siempre mandaba la clave vacía",
+    "problema": "En la solicitud de afiliación, la navegación a /application/trade-data-pass estaba comentada en trade_data_phone_otp_screen (el flujo va de OTP del teléfono a trade-data-app-send), así que TradeDataPassScreen nunca se mostraba y account-requests recibía rep_password vacío. Además el simulador QA (qa_mock_responses.dart) conservaba 10 rutas del registro viejo (registro, send_email, enviar_otp, validar_otp, send_phone, send_sms_otp, validate_sms_otp, create_trade_registry, create_category, user/profile) que la app ya no llama.",
+    "solucion": "Cómo detectarlo: para cada path de lib/config/routes/*_routes.dart contar sus usos en context.go/push fuera del archivo de rutas e ignorando comentarios; 0 usos = pantalla huérfana. Arreglo (backend confirmó que account-requests no recibe contraseña): borrar TradeDataPassScreen, su GoRoute y exports, validateAndCreateTradeRegistry (cubit y handler), passwordInput/confirmPasswordInput/showPassword/showConfirmPassword e isPasswordValid de TradeDateEmailAndOtpState, setPassword/setConfirmPassword/toggles del cubit, los parámetros repPassword/repPasswordConfirm en interfaz, datasource, repositorio y caso de uso, y las rutas falsas del simulador QA con sus handlers. Ajustar pruebas (application_views_test, trade_data_email_usecases_test con 18 argumentos, account_request_sin_clave_test). Verificar: grep sin restos, analyze, ARC, check_audited_screens.",
+    "categorias_id": 3,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-18 14:18:59",
+    "actualizada_en": "2026-11-18 14:18:59",
+    "hash": "c93a09f5d0f7b6f5c8bebe3e",
+    "categoria": "widgets",
+    "tags": [
+      "flutter",
+      "zas",
+      "go_router",
+      "registro",
+      "codigo-muerto"
+    ]
+  },
+  {
+    "id": 729,
+    "titulo": "[estilo_neutral] Apps Script: guardar una venta tarda 13 s porque cada operación del lote relee membresías, organizaciones y roles",
+    "problema": "Guardar una venta desde la app tardaba 16-45 s. Medido en el servidor de TEST (copia temporal con cronómetros que escribe una fila por pedido en una hoja perfil_tiempos y una acción perfil_leer para leerla con curl): lote de venta = 13,2 s; _verificarAutorizacionEscritura 6,3 s y _verificarPermisoDeLote 2,6 s (5 llamadas c/u) = 67 %; escribir las filas solo 1 s. Cada operación relee usuario_organizacion, organizaciones y roles enteras.",
+    "solucion": "google_apps_script.js: caché de lecturas de acceso solo durante un lote: var _memoLote (null fuera de lote), _memoLoteUsar(clave, calcular), HOJAS_DE_ACCESO; _organizacionesDelUsuario, _mapaAcceso, _asegurarRolesDeOrganizacion y _membresiasDe son envoltorios y la lectura real quedó en <nombre>Leyendo. _handleBatch pone _memoLote = {} al empezar, lo vacía si la operación anterior escribió en una hoja de acceso y lo apaga en finally. Resultado en TEST: 13,2 s -> 10,1 s, lecturas de usuario_organizacion 7 -> 3. Prueba en tools/apps_script/tests/lote_venta.test.js. Queda ~2,8 s en permisos (llamadas a getSheetByName/getRange por operación) y ~2,5 s fuera del lote: el siguiente paso sería una instantánea de cada hoja por pedido. Técnica para medir: envolver funciones al final de una copia en tools/apps_script_test, desplegar con clasp a TEST y volver a desplegar con tools/apps_script_test/deploy.sh.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-18 14:29:35",
+    "actualizada_en": "2026-11-18 14:29:35",
+    "hash": "d4ab63a154b97cb0ad708d83",
+    "categoria": null,
+    "tags": [
+      "estilo_neutral",
+      "apps-script",
+      "clasp",
+      "rendimiento"
+    ]
+  },
+  {
+    "id": 730,
+    "titulo": "[estilo_neutral] test intermitente: PermisosCubit con Future.delayed fijo falla con la suite completa",
+    "problema": "test/presentation/roles_test.dart 'PermisosCubit consulta al iniciar sesión...' fallaba a veces solo en el pre-push (suite completa) y pasaba 5/5 aislada: _esperar() era un Future.delayed de 150 ms.",
+    "solucion": "Esperar la condición en vez de un tiempo fijo: helper _hasta(cumple) que sondea cada 20 ms con tope de 5 s; la prueba usa _hasta(() => cubit.state.status == success), etc. Mismo patrón que el arreglo de PushCubit. Si aparece otra prueba intermitente con esperas fijas, aplicar lo mismo.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-18 14:29:35",
+    "actualizada_en": "2026-11-18 14:29:35",
+    "hash": "f953b5d5fa2d19751740969b",
+    "categoria": null,
+    "tags": [
+      "test",
+      "flutter",
+      "estilo_neutral",
+      "intermitente"
+    ]
   }
 ]
