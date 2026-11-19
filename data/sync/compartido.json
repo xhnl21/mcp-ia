@@ -13189,32 +13189,6 @@
     ]
   },
   {
-    "id": 533,
-    "titulo": "[bank-notification] R4notifica guarda la cédula de las transferencias a teléfono como teléfono del cliente",
-    "problema": "En transferencias a número de teléfono, R4 envía la cédula del emisor en TelefonoEmisor (\"V12345678\"); banks.R4.ParseNotification la copiaba a ClientPhone, quedando en bank_notification.telefono_cliente y en el aviso a la empresa como ClientPhone. Encontrado en revisión de código (auditoría R4).",
-    "solucion": "Causa: el parser trataba igual pago móvil y transferencia a teléfono (mismo webhook, R4 Conecta V3.1 §2.1). Arreglo en internal/notification/domain/banks/r4.go: r4DocumentRegex `^[VEJPG]\\d{5,9}$`; si TelefonoEmisor coincide, se deja ClientPhone vacío y se pone DebtorID (columna deudor_id VARCHAR(20)). tipo_pago sigue P2P. El dispatch a la empresa ahora trae DebtorID en vez de ClientPhone en esos casos (avisar a las empresas). Pruebas: banks_test.go TestR4_ParseNotification_TransferCarriesCedula y r4_endpoint_test.go TestR4Notify_TransferStoresCedulaAsDebtorID.",
-    "categorias_id": 2,
-    "url": null,
-    "fuente": "manual",
-    "lenguaje": "dart",
-    "framework": "flutter",
-    "veces_usada": 0,
-    "veces_buscada": 0,
-    "veces_resuelta": 0,
-    "last_used": null,
-    "creada_en": "2026-11-11 16:35:14",
-    "actualizada_en": "2026-11-11 16:35:14",
-    "hash": "f027826abb5c953d18c228a7",
-    "categoria": "runtime",
-    "tags": [
-      "notificaciones",
-      "go",
-      "bank-notification",
-      "r4",
-      "webhook"
-    ]
-  },
-  {
     "id": 534,
     "titulo": "[bank-notification] La API acepta Concept de 100 y DebtorName sin límite para R4, que exige 30 y 20",
     "problema": "POST /api/v1/instant-debit/beginner?bankCode=0169 con Concept > 30 o DebtorName > 20 caracteres responde 202 y el job falla después en R4 (BE20 en Nombre), ya con la OTP enviada. Encontrado en revisión de código (auditoría R4).",
@@ -18895,6 +18869,32 @@
       "estilo_neutral_cliente",
       "drive",
       "pdf"
+    ]
+  },
+  {
+    "id": 761,
+    "titulo": "[bank-notification] R4notifica guarda la cédula de las transferencias a teléfono como teléfono del cliente",
+    "problema": "En transferencias a número de teléfono, R4 envía la cédula del emisor en TelefonoEmisor (\"V12345678\"); banks.R4.ParseNotification la copiaba a ClientPhone, quedando en bank_notification.telefono_cliente y en el aviso a la empresa como ClientPhone. Encontrado en revisión de código (auditoría R4).",
+    "solucion": "Causa: el parser trataba igual pago móvil y transferencia a teléfono (mismo webhook, R4 Conecta V3.1 §2.1). Arreglo en internal/notification/domain/banks/r4.go: r4DocumentRegex `^[VEJPG]\\d{5,9}$`; si TelefonoEmisor coincide, se deja ClientPhone vacío y se pone DebtorID (columna deudor_id VARCHAR(20)). tipo_pago sigue P2P. El dispatch a la empresa ahora trae DebtorID en vez de ClientPhone en esos casos (avisar a las empresas). Pruebas: banks_test.go TestR4_ParseNotification_TransferCarriesCedula y r4_endpoint_test.go TestR4Notify_TransferStoresCedulaAsDebtorID.",
+    "categorias_id": 2,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-19 18:49:47",
+    "actualizada_en": "2026-11-19 18:49:47",
+    "hash": "fa2cffebda454c7f85e21e5b",
+    "categoria": "runtime",
+    "tags": [
+      "notificaciones",
+      "go",
+      "bank-notification",
+      "r4",
+      "webhook"
     ]
   }
 ]
