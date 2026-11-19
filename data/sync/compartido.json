@@ -18695,5 +18695,30 @@
       "estilo_neutral_cliente",
       "arc-028"
     ]
+  },
+  {
+    "id": 752,
+    "titulo": "[estilo_neutral_cliente] pre-commit rechaza: el dart format automático parte un if sin llaves (curly_braces_in_flow_control_structures)",
+    "problema": "git commit falla en el gate de análisis: 'Statements in an if should be enclosed in a block' en verificador_biometrico_real.dart:16, aunque flutter analyze a secas salía limpio. Además el commit reformatea archivos enteros (factura_pdf.dart +255 líneas).",
+    "solucion": "Causa: el Gate 0 del pre-commit aplica dart format a los archivos del commit; un `if (x) return y;` largo queda en dos líneas sin llaves y el análisis del hook (con infos fatales) lo rechaza. Arreglo: poner llaves al if y volver a hacer commit; comprobar antes con `flutter analyze --fatal-infos`. El churn de formato en archivos sin formatear es inevitable porque el hook lo exige; no se evita con dart format manual.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-19 12:52:46",
+    "actualizada_en": "2026-11-19 12:52:46",
+    "hash": "5a3c03aea3d3cf9f96fef9f9",
+    "categoria": null,
+    "tags": [
+      "flutter",
+      "dart-format",
+      "estilo_neutral_cliente",
+      "hooks"
+    ]
   }
 ]
