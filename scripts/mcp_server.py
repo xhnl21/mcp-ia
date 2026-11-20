@@ -76,6 +76,19 @@ def handle_add_solution(args: dict) -> dict:
     )
     return {"content": [{"type": "text", "text": f"Solución añadida exitosamente con ID #{sid}."}]}
 
+def handle_edit_solution(args: dict) -> dict:
+    sid = args.get("solution_id")
+    if sid is None:
+        return {"content": [{"type": "text", "text": "Error: 'solution_id' es un parámetro obligatorio."}], "isError": True}
+    campos = {"titulo": args.get("title"), "problema": args.get("problem"), "solucion": args.get("solution"),
+              "categoria": args.get("category"), "tags": args.get("tags"), "url": args.get("url")}
+    if all(v is None for v in campos.values()):
+        return {"content": [{"type": "text", "text": "Error: indica al menos un campo para cambiar."}], "isError": True}
+    motivo = manager.edit_solution(int(sid), **campos)
+    if motivo:
+        return {"content": [{"type": "text", "text": f"Error: {motivo}"}], "isError": True}
+    return {"content": [{"type": "text", "text": f"Solución #{sid} actualizada. Al sincronizar, las otras máquinas cambian su copia vieja por esta."}]}
+
 def handle_record_usage(args: dict) -> dict:
     sid = args.get("solution_id")
     resolved = args.get("resolved", True)
@@ -145,6 +158,23 @@ TOOLS = [
                 }
             },
             "required": ["title", "problem", "solution"]
+        }
+    },
+    {
+        "name": "edit_solution",
+        "description": "Corrige una solución existente por su ID (texto equivocado, un dato que no debía estar, una causa que cambió). Solo cambia los campos que se pasan; conserva el ID y las estadísticas, y la sincronización reemplaza la versión vieja en las otras máquinas.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "solution_id": {"type": "integer", "description": "El ID numérico de la solución a corregir."},
+                "title": {"type": "string", "description": "Título nuevo."},
+                "problem": {"type": "string", "description": "Descripción nueva del problema."},
+                "solution": {"type": "string", "description": "Solución nueva."},
+                "category": {"type": "string", "description": "Categoría nueva (tiene que existir)."},
+                "tags": {"type": "array", "items": {"type": "string"}, "description": "Etiquetas nuevas: reemplazan todas las anteriores."},
+                "url": {"type": "string", "description": "URL de referencia nueva."}
+            },
+            "required": ["solution_id"]
         }
     },
     {
@@ -225,6 +255,8 @@ def main() -> None:
                     res = handle_search_solutions(tool_args)
                 elif tool_name == "add_solution":
                     res = handle_add_solution(tool_args)
+                elif tool_name == "edit_solution":
+                    res = handle_edit_solution(tool_args)
                 elif tool_name == "record_usage":
                     res = handle_record_usage(tool_args)
                 elif tool_name == "get_report":

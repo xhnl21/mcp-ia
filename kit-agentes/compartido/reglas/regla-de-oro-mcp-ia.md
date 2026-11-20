@@ -32,7 +32,7 @@ Cada máquina tiene su propia base y numera sus soluciones por su cuenta: lo que
    - `category` (`compilacion`, `runtime`, `widgets`, `estado`, `plataforma`, `herramientas`…) y `tags` (tecnología y proyecto).
 4. Cuenta como «problema resuelto»: errores de compilación o de ejecución, fallos de pruebas, configuraciones de herramientas (Gradle, R8, permisos, hooks, CI), trampas de dispositivos (MIUI, emulador) y decisiones de una biblioteca que no estaban documentadas. Si te costó más de un intento, se registra. **También lo que encuentras al revisar código** (una auditoría, un code review, una prueba manual), aunque todavía no haya fallado al ejecutar: si lo corriges, es un problema resuelto.
    - Varios errores con la misma causa se pueden agrupar en una solución; cada **causa** distinta, en la suya.
-5. Si cambia una solución que ya existía, agrega una nueva que la mencione (o actualízala si la herramienta lo permite). No dejes la vieja como si siguiera vigente.
+5. Si una solución que ya existía está mal o cambió, corrígela con `edit_solution` (su ID y los campos que cambian): conserva sus usos y la sincronización reemplaza la versión vieja en las otras máquinas. No agregues otra que la contradiga ni dejes la vieja como si siguiera vigente.
 
 ## Antes de cada commit que contenga correcciones
 

@@ -8,6 +8,11 @@ if [ -n "$AGREGADO" ]; then
   printf '%s\n' "$AGREGADO" | sh scripts/revisar_datos_privados.sh || exit 1
 fi
 
+# La edición de soluciones y su sincronización tienen su prueba: si cambian la base, el gestor o el sync, se corre.
+if echo "$STAGED_FILES" | grep -Eq '^scripts/(db|manager|sync|test_editar_solucion)\.py$'; then
+  python3 scripts/test_editar_solucion.py >/dev/null || { echo "❌ Falló la prueba de edición de soluciones: python3 scripts/test_editar_solucion.py"; exit 1; }
+fi
+
 # El detector de datos personales tiene su prueba: si cambia, se corre.
 if echo "$STAGED_FILES" | grep -Eq '^scripts/(revisar_datos_privados|test_datos_privados)\.sh$'; then
   sh scripts/test_datos_privados.sh || { echo "❌ Falló la prueba del detector de datos personales."; exit 1; }

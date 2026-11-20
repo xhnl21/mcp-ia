@@ -85,12 +85,13 @@ El servidor ejecuta la búsqueda SQLite localmente y devuelve la respuesta al ag
 
 ## 🧰 Herramientas Expuestas
 
-El servidor expone cuatro herramientas fundamentales:
+El servidor expone cinco herramientas fundamentales:
 
 | Herramienta | Argumentos | Descripción |
 | :--- | :--- | :--- |
 | `search_solutions` | `query` (str), `category` (str), `tag` (str) | Realiza la consulta FTS5 local + fuzzy matching y devuelve las mejores soluciones. |
 | `add_solution` | `title` (str), `problem` (str), `solution` (str), `category` (str), `tags` (list), `url` (str) | Añade una solución nueva calculando su hash SHA-256 para evitar duplicados. |
+| `edit_solution` | `solution_id` (int) y lo que cambia: `title`, `problem`, `solution`, `category`, `tags` (reemplazan las anteriores), `url` | Corrige una solución sin cambiar su ID ni sus usos. Guarda el hash de la versión vieja en `reemplaza`: al sincronizar, las otras máquinas corrigen su copia y una copia vieja que llegue no se vuelve a importar. Prueba: `python3 scripts/test_editar_solucion.py`. |
 | `record_usage` | `solution_id` (int), `resolved` (bool) | Incrementa las estadísticas de uso de una solución para subir su relevancia en el ranking. |
 | `get_report` | *ninguno* | Genera el reporte del CLI con estadísticas de errores comunes y tags. |
 

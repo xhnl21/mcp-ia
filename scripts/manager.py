@@ -50,28 +50,82 @@ def add_solution(titulo: str, problema: str, solucion: str,
         (titulo, problema, solucion, cat_id, url, fuente, h),
     )
     sid = cur.lastrowid
-
-    if tags:
-        for t in tags:
-            t = t.strip().lower()
-            tag_id = conn.execute(
-                "SELECT id FROM tags WHERE nombre = ?", (t,)
-            ).fetchone()
-            if tag_id:
-                conn.execute(
-                    "UPDATE tags SET usos = usos + 1 WHERE id = ?", (tag_id["id"],)
-                )
-                tid = tag_id["id"]
-            else:
-                cur2 = conn.execute("INSERT INTO tags(nombre) VALUES (?)", (t,))
-                tid = cur2.lastrowid
-            conn.execute(
-                "INSERT OR IGNORE INTO solucion_tag(solucion_id, tag_id) VALUES (?, ?)",
-                (sid, tid),
-            )
+    _poner_tags(conn, sid, tags or [])
     conn.commit()
     conn.close()
     return sid
+
+
+def _poner_tags(conn, sid: int, tags: list[str]) -> None:
+    """Agrega las etiquetas a la solución (las que ya tenía se quedan; las nuevas suman un uso)."""
+    for t in tags:
+        t = t.strip().lower()
+        if not t:
+            continue
+        tag_id = conn.execute("SELECT id FROM tags WHERE nombre = ?", (t,)).fetchone()
+        if tag_id:
+            conn.execute("UPDATE tags SET usos = usos + 1 WHERE id = ?", (tag_id["id"],))
+            tid = tag_id["id"]
+        else:
+            tid = conn.execute("INSERT INTO tags(nombre) VALUES (?)", (t,)).lastrowid
+        conn.execute("INSERT OR IGNORE INTO solucion_tag(solucion_id, tag_id) VALUES (?, ?)", (sid, tid))
+
+
+def _categoria_id(conn, categoria: Optional[str], crear: bool = False) -> Optional[int]:
+    if not categoria:
+        return None
+    fila = conn.execute("SELECT id FROM categorias WHERE nombre = ?", (categoria,)).fetchone()
+    if fila:
+        return fila["id"]
+    return conn.execute("INSERT INTO categorias(nombre) VALUES (?)", (categoria,)).lastrowid if crear else None
+
+
+def _hashes(texto: Optional[str]) -> set[str]:
+    return set((texto or "").split())
+
+
+def edit_solution(sid: int, titulo: Optional[str] = None, problema: Optional[str] = None,
+                  solucion: Optional[str] = None, categoria: Optional[str] = None,
+                  tags: Optional[list[str]] = None, url: Optional[str] = None) -> str:
+    """
+    Corrige una solución: cambia solo los campos que se pasan; `tags` reemplaza todas sus etiquetas.
+    Conserva el id y las estadísticas, y guarda el hash de la versión vieja en `reemplaza`: al sincronizar,
+    las otras máquinas cambian su copia vieja por esta en vez de quedarse con las dos.
+    Devuelve '' si salió bien, o el motivo por el que no se pudo.
+    """
+    conn = init_if_needed()
+    try:
+        fila = conn.execute("SELECT * FROM soluciones WHERE id = ?", (sid,)).fetchone()
+        if not fila:
+            return f"No existe la solución #{sid}."
+        t = titulo if titulo is not None else fila["titulo"]
+        p = problema if problema is not None else fila["problema"]
+        s = solucion if solucion is not None else fila["solucion"]
+        if not t.strip() or not p.strip() or not s.strip():
+            return "El título, el problema y la solución no pueden quedar vacíos."
+        h = _hash(t + p + s)
+        igual = conn.execute("SELECT id FROM soluciones WHERE hash = ? AND id <> ?", (h, sid)).fetchone()
+        if igual:
+            return f"Ya hay otra solución con ese mismo texto: #{igual['id']}."
+        reemplaza = _hashes(fila["reemplaza"])
+        if fila["hash"] and fila["hash"] != h:
+            reemplaza.add(fila["hash"])
+        reemplaza.discard(h)  # volver a un texto anterior no lo marca como viejo
+        cat = _categoria_id(conn, categoria) if categoria is not None else fila["categorias_id"]
+        if categoria and cat is None:
+            return f"No existe la categoría «{categoria}»."
+        conn.execute(
+            "UPDATE soluciones SET titulo=?, problema=?, solucion=?, categorias_id=?, url=?, hash=?, reemplaza=?, "
+            "actualizada_en=datetime('now') WHERE id=?",
+            (t, p, s, cat, url if url is not None else fila["url"], h, " ".join(sorted(reemplaza)), sid),
+        )
+        if tags is not None:
+            conn.execute("DELETE FROM solucion_tag WHERE solucion_id = ?", (sid,))
+            _poner_tags(conn, sid, tags)
+        conn.commit()
+        return ""
+    finally:
+        conn.close()
 
 
 def register_pattern(texto_deteccion: str, etiqueta: str,
@@ -169,15 +223,30 @@ def export_json(path: Optional[str] = None) -> str:
 
 
 def import_json(path: str) -> int:
-    """Importa soluciones desde un archivo JSON exportado. Devuelve nº nuevas."""
+    """
+    Importa soluciones desde un archivo JSON exportado. Devuelve nº nuevas (o actualizadas por una edición).
+    Las editadas (edit_solution) traen en `reemplaza` los hashes de sus versiones viejas: una versión vieja que
+    llega no se importa, y la copia vieja que hay aquí se actualiza en su lugar (conserva id y estadísticas).
+    """
     with open(path, "r", encoding="utf-8") as f:
         data = json.load(f)
     conn = init_if_needed()
+    viejos = set()  # todo lo que alguna edición, de aquí o del archivo, dejó atrás
+    for r in conn.execute("SELECT reemplaza FROM soluciones WHERE reemplaza <> ''"):
+        viejos |= _hashes(r["reemplaza"])
+    for d in data:
+        viejos |= _hashes(d.get("reemplaza"))
     count = 0
     for d in data:
         h = _hash(d["titulo"] + d["problema"] + d["solucion"])
-        dup = conn.execute("SELECT id FROM soluciones WHERE hash = ?", (h,)).fetchone()
+        if h in viejos:
+            continue  # una versión vieja de algo que ya se editó
+        reemplaza = _hashes(d.get("reemplaza"))
+        dup = conn.execute("SELECT id, reemplaza FROM soluciones WHERE hash = ?", (h,)).fetchone()
         if dup:
+            if not reemplaza <= _hashes(dup["reemplaza"]):
+                conn.execute("UPDATE soluciones SET reemplaza = ? WHERE id = ?",
+                             (" ".join(sorted(reemplaza | _hashes(dup["reemplaza"]))), dup["id"]))
             continue
         # Las lecciones de agentes (url leccion://ID) se identifican por su ID:
         # si ya existe, no se duplica aunque su texto haya cambiado.
@@ -186,19 +255,40 @@ def import_json(path: str) -> int:
             "SELECT id FROM soluciones WHERE url = ?", (url,)
         ).fetchone():
             continue
-        if d.get("categoria") and not conn.execute(
-            "SELECT id FROM categorias WHERE nombre = ?", (d["categoria"],)
-        ).fetchone():
-            conn.execute("INSERT INTO categorias(nombre) VALUES (?)", (d["categoria"],))
-            conn.commit()
-        conn.close()
-        add_solution(
-            titulo=d["titulo"], problema=d["problema"], solucion=d["solucion"],
-            categoria=d.get("categoria") or None,
-            tags=d.get("tags"), url=d.get("url"), fuente=d.get("fuente") or "import",
-        )
-        conn = init_if_needed()
+        cat = _categoria_id(conn, d.get("categoria") or None, crear=True)
+        vieja = None
+        for v in sorted(reemplaza):
+            vieja = conn.execute("SELECT id FROM soluciones WHERE hash = ?", (v,)).fetchone()
+            if vieja:
+                break
+        if vieja:  # aquí estaba la versión vieja: se corrige en su lugar
+            sid = vieja["id"]
+            conn.execute(
+                "UPDATE soluciones SET titulo=?, problema=?, solucion=?, categorias_id=?, url=?, hash=?, reemplaza=?, "
+                "actualizada_en=datetime('now') WHERE id=?",
+                (d["titulo"], d["problema"], d["solucion"], cat, d.get("url"), h, " ".join(sorted(reemplaza)), sid),
+            )
+            conn.execute("DELETE FROM solucion_tag WHERE solucion_id = ?", (sid,))
+        else:
+            sid = conn.execute(
+                "INSERT INTO soluciones(titulo, problema, solucion, categorias_id, url, fuente, hash, reemplaza) "
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                (d["titulo"], d["problema"], d["solucion"], cat, d.get("url"), d.get("fuente") or "import", h,
+                 " ".join(sorted(reemplaza))),
+            ).lastrowid
+        _poner_tags(conn, sid, d.get("tags") or [])
         count += 1
+    # Si aquí quedaron las dos versiones (la vieja y la editada), la vieja se va y sus usos pasan a la nueva.
+    for v in viejos:
+        vieja = conn.execute("SELECT * FROM soluciones WHERE hash = ?", (v,)).fetchone()
+        nueva = conn.execute("SELECT id FROM soluciones WHERE (' ' || reemplaza || ' ') LIKE ? AND hash <> ?",
+                             (f"% {v} %", v)).fetchone()
+        if vieja and nueva:
+            conn.execute("UPDATE soluciones SET veces_usada = veces_usada + ?, veces_buscada = veces_buscada + ?, "
+                         "veces_resuelta = veces_resuelta + ? WHERE id = ?",
+                         (vieja["veces_usada"], vieja["veces_buscada"], vieja["veces_resuelta"], nueva["id"]))
+            conn.execute("DELETE FROM soluciones WHERE id = ?", (vieja["id"],))
+    conn.commit()
     conn.close()
     return count
 

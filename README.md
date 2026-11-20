@@ -89,8 +89,9 @@ Añade la siguiente sección a la configuración de tu cliente MCP:
 Al cargarse, la IA tendrá acceso a las siguientes herramientas automáticas:
 1. `search_solutions`: Busca respuestas locales usando el limpiador de logs.
 2. `add_solution`: Permite a la IA guardar una nueva solución cuando resuelva algo útil.
-3. `record_usage`: Incrementa la prioridad de una solución existente al confirmarse que funcionó.
-4. `get_report`: Obtiene estadísticas de errores del desarrollador.
+3. `edit_solution`: Corrige una solución existente (conserva su ID y sus usos; la sincronización reemplaza la versión vieja en las otras máquinas).
+4. `record_usage`: Incrementa la prioridad de una solución existente al confirmarse que funcionó.
+5. `get_report`: Obtiene estadísticas de errores del desarrollador.
 
 ---
 

@@ -111,6 +111,10 @@ def init_db(db_path: str | None = None) -> None:
     conn = get_conn(db_path)
     try:
         conn.executescript(SCHEMA)
+        # Bases de antes de edit_solution: los hashes de las versiones que una solución editada reemplaza
+        # (separados por espacios), para que la sincronización no traiga de vuelta el texto viejo.
+        if "reemplaza" not in {c[1] for c in conn.execute("PRAGMA table_info(soluciones)")}:
+            conn.execute("ALTER TABLE soluciones ADD COLUMN reemplaza TEXT NOT NULL DEFAULT ''")
         conn.commit()
     finally:
         conn.close()
