@@ -78,3 +78,13 @@ Prompts por regla, para aplicarlas de a una: [`../arquitectura-arc/`](../arquite
 7. Agregar las reglas en el `AGENTS.md` del proyecto (ver el de zas: «cero violaciones de arquitectura» y «hooks de git»).
 
 Prohibido, en todos los proyectos: usar `--no-verify` o `SKIP_PRE_COMMIT=1` para saltar la auditoría, y editar el auditor, su prueba, `arc_config.json` o `.gitleaks.toml` para que pase una violación.
+
+## 5. Proyectos TypeScript o web: cada archivo nuevo con su prueba (referencia: GameIVP)
+
+Es el equivalente de `check_layer_tests.dart` de zas para proyectos con vitest. Está copiado en [`referencia-gameivp/`](referencia-gameivp/), con las mismas rutas que en GameIVP; `VERSION.txt` dice de qué commit sale.
+
+- **Qué revisa:** cada `.ts` que el commit **agrega** en `src/` (salvo `.d.ts`) lo tiene que importar alguna prueba de `tests/unit/` (ruta relativa, `@/` o `import(...)`). Lo que no se puede probar con vitest (una escena de Phaser que solo dibuja) lleva en el archivo `// sin-prueba: <motivo>`. Los archivos que ya existían no se revisan.
+- **Por qué:** en GameIVP, siete commits con escenas nuevas sin pruebas pasaron el pre-commit y recién el pre-push los frenó, cuando la cobertura total bajó del mínimo. Así se ve en el mismo commit y en qué archivo.
+- **Piezas:** `scripts/check_archivos_con_prueba.sh` (la regla), `tests/unit/checkArchivosConPrueba.spec.ts` (su prueba: pasa, se frena, exento) y `.githooks/pre-commit.local` (cómo se llama: `sh scripts/check_archivos_con_prueba.sh $(git diff --cached --name-only --diff-filter=A)`).
+- **Adoptarlo:** copiar el script y su prueba, cambiar `src/` y `tests/unit` si el proyecto usa otras carpetas, y agregar esa línea al `pre-commit.local`. Probarlo preparando un archivo sin prueba: el hook tiene que fallar con `exit 1`.
+- **Límite:** que una prueba importe el archivo no dice cuánto lo prueba; para eso sigue el mínimo de cobertura del pre-push. Revisa la copia de trabajo, no la preparada (para un archivo nuevo casi siempre coinciden).

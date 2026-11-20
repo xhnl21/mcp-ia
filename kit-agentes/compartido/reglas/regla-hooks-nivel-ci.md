@@ -6,6 +6,7 @@ Vale para todos los proyectos Dart o Flutter. La referencia completa está en `<
 
 - Instala los hooks comunes del kit (`sh <mcp-ia>/kit-agentes/hooks.sh <proyecto>`). Ya traen **gitleaks** en el pre-commit (sobre lo que se va a subir, con el `.gitleaks.toml` del proyecto si existe) y **osv-scanner** en el pre-push (los archivos de bloqueo de la raíz), en cualquier lenguaje.
 - En los `.local` del proyecto se agregan las demás revisiones que haría un CI: el SDK de `.fvmrc`, la cobertura global y la de las líneas cambiadas, y el auditor ARC.
+- En un proyecto TypeScript o web con vitest, el pre-commit pide una prueba para cada `.ts` nuevo de `src/`, o `// sin-prueba: <motivo>` (referencia: `hooks-nivel-ci/referencia-gameivp/`, sección 5 del README).
 - Herramientas: `brew install gitleaks osv-scanner` y `fvm`. Si faltan, el hook avisa y omite esa revisión. Instálalas: no se rodean.
 - El proyecto lleva su guía `docs/devops/configurar_hooks_desde_cero.md`, adaptada de la de zas, con un prompt para un agente que no tiene nada configurado.
 

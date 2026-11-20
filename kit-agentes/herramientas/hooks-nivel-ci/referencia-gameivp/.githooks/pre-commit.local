@@ -1,0 +1,24 @@
+#!/bin/sh
+# Gate 5 (GameIVP): secretos con gitleaks y línea base de lint/tipos si hay código TS/Vue.
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks git --pre-commit --staged --no-banner --redact || exit 1
+else
+  echo "⚠️ gitleaks no está instalado (brew install gitleaks): se omite la revisión de secretos."
+fi
+if echo "$STAGED_FILES" | grep -qE '^(src|tests)/.*\.(ts|vue|js)$|package(-lock)?\.json$'; then
+  sh scripts/check_baseline.sh || exit 1
+  # Lo que eslint y vue-tsc no ven: .js o .vue sin lang="ts", `as unknown as` y componentes sin separar.
+  npx vitest run tests/unit/tipado.spec.ts tests/unit/estructuraComponentes.spec.ts --reporter=dot >/dev/null 2>&1 || {
+    echo "❌ Tipado o estructura de componentes: npx vitest run tests/unit/tipado.spec.ts tests/unit/estructuraComponentes.spec.ts"
+    exit 1
+  }
+  # Cada .ts nuevo de src/ con su prueba (o «// sin-prueba: <motivo>»): que la cobertura no baje recién en el pre-push.
+  # shellcheck disable=SC2046
+  sh scripts/check_archivos_con_prueba.sh $(git diff --cached --name-only --diff-filter=A) || exit 1
+  # Pruebas de lo que cambió: vitest sigue los import y corre los spec que usan esos archivos (más los spec del commit).
+  RELACIONADOS=$(echo "$STAGED_FILES" | grep -E '^(src|tests)/.*\.(ts|vue)$' | tr '\n' ' ')
+  if [ -n "$RELACIONADOS" ]; then
+    # shellcheck disable=SC2086
+    npx vitest related --run $RELACIONADOS --reporter=dot --passWithNoTests || { echo "❌ Fallan pruebas relacionadas con tu cambio: npx vitest related --run $RELACIONADOS"; exit 1; }
+  fi
+fi
