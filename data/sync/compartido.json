@@ -19107,5 +19107,61 @@
       "cobertura",
       "jsdom"
     ]
+  },
+  {
+    "id": 770,
+    "titulo": "[zas] Seguridad: «Enviar código OTP» responde 422 Command.TenantCode tras reiniciar la app",
+    "problema": "En Ajustes → Seguridad, «Enviar código OTP» muestra «error de validacion: el cuerpo de la solicitud no es valido: Key: 'Command.TenantCode' Error:Field validation…» (POST /auth/forgot-password, 422). El cuerpo solo lleva {email}. Pasa cuando la app se reinicia con la sesión abierta: el usuario rehidratado no trae tenant_code/trade_code y tradeCodeInput está vacío.",
+    "solucion": "Causa: security_screen.dart armaba el tenantCode con user['tenant_code'] ?? user['trade_code'] ?? merchant.trade_code ?? tradeCodeInput, todos vacíos en una sesión rehidratada; el datasource omite tenant_code si viene vacío. Arreglo: LoginSubmitHandler.sessionEmailAndTradeCode() (getter LoginCubit.tenantCode) toma como último recurso el subdominio de baseUrl si el host contiene '.api.' (https://214783262.api.somoszas.com → 214783262; api.somoszas.com no se usa), y SecurityScreen usa context.read<LoginCubit>().tenantCode. Pruebas de regresión en login_submit_handler_test.dart. Verificado en el Redmi: el body lleva tenant_code y responde 201. Misma lógica que billingTenantCode() de immediate_debit_screen.dart.",
+    "categorias_id": 2,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-20 12:21:37",
+    "actualizada_en": "2026-11-20 12:21:37",
+    "hash": "82e5959644e1f4eb1b8b7d19",
+    "categoria": "runtime",
+    "tags": [
+      "flutter",
+      "zas",
+      "hydrated_bloc",
+      "seguridad",
+      "otp",
+      "sesion",
+      "tenant_code"
+    ]
+  },
+  {
+    "id": 771,
+    "titulo": "[zas] local_auth: el diálogo de huella de Android sale en inglés («Authentication required», «Verify identity»)",
+    "problema": "LocalAuthentication.authenticate() muestra en Android el título «Authentication required», la pista «Verify identity» y el botón «Cancel» aunque la app esté en español; solo localizedReason sale traducido.",
+    "solucion": "Causa: local_auth_android usa sus textos por defecto en inglés (Intl.message) si no se pasan authMessages. Arreglo: agregar local_auth_android como dependencia directa (ya estaba en el lock; solo cambia transitive → direct main) y pasar authMessages: const [AndroidAuthMessages(signInTitle: 'Autenticación requerida', signInHint: 'Verifica tu identidad', cancelButton: 'Cancelar')] en local_auth_service_impl.dart. En las pruebas con mocktail hay que agregar authMessages: any(named: 'authMessages') a los when/verify y registerFallbackValue(<AndroidAuthMessages>[]); AuthMessages no se exporta desde package:local_auth, así que se usa AndroidAuthMessages como tipo.",
+    "categorias_id": 9,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-20 12:26:47",
+    "actualizada_en": "2026-11-20 12:26:47",
+    "hash": "356e68e0710ee7fb6a0f8ace",
+    "categoria": "plataforma",
+    "tags": [
+      "android",
+      "flutter",
+      "zas",
+      "local_auth",
+      "mocktail",
+      "biometria",
+      "i18n"
+    ]
   }
 ]
