@@ -1,0 +1,14 @@
+#!/bin/sh
+# Reglas propias de mcp-ia (Gate 5 del pre-commit común). El repositorio es PÚBLICO.
+
+# Datos personales (cédulas, teléfonos, correos reales) en lo que se va a subir.
+# La prueba del detector queda afuera: sus datos son inventados pero tienen que parecer reales para que falle.
+AGREGADO=$(git diff --cached -U0 --no-color -- . ':(exclude)scripts/test_datos_privados.sh' | grep '^+' | grep -v '^+++')
+if [ -n "$AGREGADO" ]; then
+  printf '%s\n' "$AGREGADO" | sh scripts/revisar_datos_privados.sh || exit 1
+fi
+
+# El detector de datos personales tiene su prueba: si cambia, se corre.
+if echo "$STAGED_FILES" | grep -Eq '^scripts/(revisar_datos_privados|test_datos_privados)\.sh$'; then
+  sh scripts/test_datos_privados.sh || { echo "❌ Falló la prueba del detector de datos personales."; exit 1; }
+fi
