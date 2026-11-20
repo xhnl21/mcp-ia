@@ -19163,5 +19163,30 @@
       "biometria",
       "i18n"
     ]
+  },
+  {
+    "id": 772,
+    "titulo": "[mcp-ia] El detector de datos personales del pre-commit frena el commit de su propia prueba",
+    "problema": "Al hacer commit de scripts/test_datos_privados.sh, el pre-commit.local de mcp-ia falla con «❌ Posibles datos personales (este repositorio es público)» y lista los ejemplos inventados de la prueba (una cédula, un RIF, dos teléfonos y un correo de gmail).",
+    "solucion": "Causa: el hook revisa todo lo agregado (git diff --cached -U0) y la prueba del detector necesita datos inventados que parezcan reales para comprobar que falla. Arreglo: en .githooks/pre-commit.local excluir solo ese archivo: git diff --cached -U0 --no-color -- . \":(exclude)scripts/test_datos_privados.sh\". El archivo sigue protegido porque el hook corre su prueba cuando cambia. No agregar excepciones por patrón ni para otros archivos: un dato real se cambia por un ejemplo (V12345678, ana@example.com).",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-20 15:01:42",
+    "actualizada_en": "2026-11-20 15:02:39",
+    "hash": "721899200919cf211424d4a2",
+    "categoria": null,
+    "tags": [
+      "mcp-ia",
+      "git-hooks",
+      "pre-commit",
+      "datos-personales"
+    ]
   }
 ]
