@@ -20363,5 +20363,30 @@
       "cypress",
       "e2e"
     ]
+  },
+  {
+    "id": 788,
+    "titulo": "[GameIVP] Una condición en negativo («todo lo que no es X») incluye en silencio los tipos nuevos",
+    "problema": "En TierraScene, el descanso gratis se decidía con `if (seguro.tipo !== \"pueblo\")`: al agregar el tipo de lugar «mazmorra», la entrada de las mazmorras también curaba gratis, contra lo que dice el manual (solo cosmódromos y casa). Apareció al sacar la decisión a una función pura y probar cada tipo.",
+    "solucion": "Causa: la condición enumeraba la excepción en vez de los casos que sí aplican, así que cada tipo nuevo entraba solo. Arreglo: listar los que sí (cosmodromo o casa → descanso; el resto → seguro) en una función pura (alCaminar en data/exploracionTierra.ts) con una prueba por tipo. En general: con uniones que crecen (TipoLugar), preferir condiciones en positivo o un switch exhaustivo.",
+    "categorias_id": 4,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-23 12:42:28",
+    "actualizada_en": "2026-11-23 12:42:28",
+    "hash": "9ae177d0c32750446ade61cf",
+    "reemplaza": "",
+    "categoria": "estado",
+    "tags": [
+      "gameivp",
+      "typescript",
+      "condiciones"
+    ]
   }
 ]
