@@ -22001,5 +22001,82 @@
       "webview",
       "cdp"
     ]
+  },
+  {
+    "id": 851,
+    "titulo": "[GameIVP] La mesa del herrero no reparaba la pieza puesta: «No tienes esa pieza»",
+    "problema": "En la herrería (PanelComercio), al arrastrar la espada que Dude lleva puesta a la mesa y pulsar Reparar o Mejorar no pasaba nada: la escena respondía «No tienes esa pieza». Las pruebas unitarias pasaban.",
+    "solucion": "Causa: usePanelComercio recibía un tercer parámetro opcional (mapa nombre→id) que el .vue no pasaba; con el valor por defecto {} el «quien» quedaba null, la escena buscaba una copia libre y no había. La prueba sí pasaba el mapa, así que no lo vio. Arreglo: el panel emite el nombre de quien la lleva (t.puesta) y el panel del pueblo, que ya convierte nombre→id, hace el resto; sin parámetros opcionales que el .vue pueda olvidar. Lección: probar la lógica del componente con la misma llamada que hace el .vue.",
+    "categorias_id": 4,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-25 18:24:29",
+    "actualizada_en": "2026-11-25 18:24:29",
+    "hash": "b31c942266287302bfec0655",
+    "reemplaza": "",
+    "categoria": "estado",
+    "tags": [
+      "gameivp",
+      "vue",
+      "drag-and-drop"
+    ]
+  },
+  {
+    "id": 852,
+    "titulo": "[GameIVP] Arrastrar en el teléfono: la zona donde soltar quedaba fuera de la pantalla",
+    "problema": "Con vue-draggable-plus (SortableJS) en el WebView de Android, arrastrar una tarjeta de la tienda a «Tu inventario» no compraba: la cuadrícula de la tienda ocupaba media pantalla y la zona de soltar quedaba abajo, casi oculta; al soltar sobre el título o la ayuda no pasaba nada.",
+    "solucion": "Causa: Sortable solo acepta el drop sobre el elemento de la lista (la cuadrícula), no sobre su sección. Arreglo: la tienda en una sola fila que se desliza de lado (grid-auto-flow: column; overflow-x: auto) y la cuadrícula del personaje con min-height grande, así las dos zonas entran en pantalla. Para probar en el teléfono: adb shell input draganddrop x1 y1 x2 y2 1500 (mantiene antes de mover); las coordenadas, medidas en el WebView con getBoundingClientRect × devicePixelRatio + la barra de estado.",
+    "categorias_id": 3,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-25 18:24:29",
+    "actualizada_en": "2026-11-25 18:24:29",
+    "hash": "a66c25e9a03c39c2d9e79063",
+    "reemplaza": "",
+    "categoria": "widgets",
+    "tags": [
+      "android",
+      "gameivp",
+      "vue",
+      "webview",
+      "sortablejs"
+    ]
+  },
+  {
+    "id": 853,
+    "titulo": "[GameIVP] Pruebas e2e de Cypress rotas sin aviso tras cambiar la interfaz",
+    "problema": "Al pasar las tiendas del pueblo a arrastrar (PanelComercio), las pruebas de Cypress (tests/e2e/specs/combateTierra.cy.ts) seguían buscando [data-accion=\"comprar-objeto\"] y [data-accion=\"comprar-equipo\"]; otra fallaba desde la fase 1 del infierno (buscaba juicio-divino en una catedral común: ahora solo se enseña en San Pedro). Los commits pasaban igual.",
+    "solucion": "Causa: los ganchos de commit y de push corren vitest, vue-tsc y eslint, pero no Cypress (solo scripts/publicar_app.sh las corre antes de publicar, y con --sin-e2e se saltan). Arreglo: al cambiar un panel, buscar sus data-accion y data-test en tests/e2e (grep) y correr esa spec: npx vite --port 5173 --strictPort & ; env -u ELECTRON_RUN_AS_NODE npx cypress run --spec tests/e2e/specs/<spec>.cy.ts. Para arrastrar con SortableJS, Cypress usa el modo de tocar del panel (tarjeta y después zona). novedades.cy.ts (lluvia de plasma) es inestable por tiempos: corrida sola pasa.",
+    "categorias_id": null,
+    "url": null,
+    "fuente": "manual",
+    "lenguaje": "dart",
+    "framework": "flutter",
+    "veces_usada": 0,
+    "veces_buscada": 0,
+    "veces_resuelta": 0,
+    "last_used": null,
+    "creada_en": "2026-11-25 18:57:44",
+    "actualizada_en": "2026-11-25 18:57:44",
+    "hash": "03f33554384a4fc5bf89c4c1",
+    "reemplaza": "",
+    "categoria": null,
+    "tags": [
+      "gameivp",
+      "cypress",
+      "e2e"
+    ]
   }
 ]
